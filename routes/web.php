@@ -13,6 +13,21 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::group(['namespace' => 'Auth'], function(){
+    Route::get('/login', 'Login\SignInController@showFrom')->name('login');
+    Route::post('/authenticate', 'Login\SignInController@sauthenticateUser')->name('signin');
+
+    Route::get('/logout', 'Logout\LogoutController@logout')->name('logout');
+
+    Route::get('/signup', 'SignUp\SignUpController@showFrom')->name('signup');
+    Route::post('/register', 'SignUp\SignUpController@register')->name('register');
+
+    Route::get('/forgot-password', 'ForgotPassword\ForgotPasswordController@showFrom')->name('forgot-password');
+    Route::get('/recover-password', 'ForgotPassword\ForgotPasswordController@showRecoverForm')->name('recover-password');
+    Route::post('/reset-password', 'ForgotPassword\ForgotPasswordController@resetPassword')->name('reset-password');
+
+
+});
 
 Route::group(['prefix' => 'admin'], function(){
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
