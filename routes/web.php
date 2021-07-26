@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 Route::group(['namespace' => 'Auth'], function(){
     Route::get('/login', 'Login\SignInController@showFrom')->name('login');
-    Route::post('/authenticate', 'Login\SignInController@sauthenticateUser')->name('signin');
+    Route::post('/authenticate', 'Login\SignInController@authenticateUser')->name('signin');
 
     Route::get('/logout', 'Logout\LogoutController@logout')->name('logout');
 

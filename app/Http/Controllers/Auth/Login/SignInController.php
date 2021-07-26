@@ -2,12 +2,21 @@
 
 namespace App\Http\Controllers\Auth\Login;
 
+use App\Contracts\UserRepositoryInterface;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CreateSignInRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class SignInController extends Controller
 {
+    protected $userRepository;
+
+    public function __construct(UserRepositoryInterface $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
+
     public function showFrom()
     {
         $title = 'Login to App';
@@ -15,10 +24,13 @@ class SignInController extends Controller
         return view('admin.pages.auth.signin.signin', compact('title'));
     }
 
-    public function sauthenticateUser(Request $request)
+    public function authenticateUser(CreateSignInRequest $request)
     {
         try{
-            return redirect()->route('dashboard');
+            if($this->userRepository->isAuthenticate($request)){
+                return redirect()->route('dashboard');
+            }
+            return redirect()->back();
         }catch(\Exception $e){
             Log::error($e->getFile(). ' ' . $e->getLine() . ' ' . $e->getMessage());
             return redirect()->back()->withErrors([

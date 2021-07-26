@@ -3,11 +3,18 @@
 namespace App\Http\Controllers\Auth\SignUp;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\CreateSignUpRequest;
+use App\Contracts\UserRepositoryInterface;
 use Illuminate\Support\Facades\Log;
 
 class SignUpController extends Controller
 {
+    protected $userRepository;
+
+    public function __construct(UserRepositoryInterface $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
     
     public function showFrom()
     {
@@ -16,10 +23,13 @@ class SignUpController extends Controller
         return view('admin.pages.auth.signup.signup', compact('title'));
     }
 
-    public function register(Request $request)
+    public function register(CreateSignUpRequest $request)
     {
         try{
+            
+            $this->userRepository->create($request);
             return redirect()->route('login');
+            
         }catch(\Exception $e){
             Log::error($e->getFile(). ' ' . $e->getLine() . ' ' . $e->getMessage());
             return redirect()->back()->withErrors([
