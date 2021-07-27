@@ -27,7 +27,7 @@ class SignUpController extends Controller
     {
         try{
             
-            $this->userRepository->create($request);
+            $this->userRepository->userRegistration($request);
             return redirect()->route('login');
             
         }catch(\Exception $e){

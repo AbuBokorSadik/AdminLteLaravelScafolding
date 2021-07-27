@@ -22,7 +22,7 @@ class ForgotPasswordController extends Controller
 
             $title = 'Recover Password';
             $user = 'User Get By Email'; //DB QUERY
-            return view('admin.pages.auth.forgotPassword.recoverPassword', compact('title', 'user'));
+            return view('admin.pages.auth.forgotPassword.reco        dd($user);verPassword', compact('title', 'user'));
 
         }catch(\Exception $e){
 

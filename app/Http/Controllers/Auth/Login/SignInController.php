@@ -27,8 +27,11 @@ class SignInController extends Controller
     public function authenticateUser(CreateSignInRequest $request)
     {
         try{
-            if($this->userRepository->isAuthenticate($request)){
+            $isAuthenticated = $this->userRepository->isAuthenticate($request);
+            // dd(auth()->user());
+            if($isAuthenticated){
                 return redirect()->route('dashboard');
+                
             }
             return redirect()->back();
         }catch(\Exception $e){

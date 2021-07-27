@@ -6,9 +6,7 @@ use Illuminate\Http\Request;
 
 interface UserRepositoryInterface
 {
-    public function create(Request $request);
-
-    public function findByEmail($email);
+    public function userRegistration(Request $request);
 
     public function isAuthenticate(Request $request);
 
