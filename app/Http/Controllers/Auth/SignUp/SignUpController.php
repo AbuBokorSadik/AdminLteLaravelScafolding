@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth\SignUp;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CreateSignUpRequest;
+use App\Http\Requests\Auth\Signup\SignUpRequest;
 use App\Contracts\UserRepositoryInterface;
 use Illuminate\Support\Facades\Log;
 
@@ -23,7 +23,7 @@ class SignUpController extends Controller
         return view('admin.pages.auth.signup.signup', compact('title'));
     }
 
-    public function register(CreateSignUpRequest $request)
+    public function register(SignUpRequest $request)
     {
         try {
 

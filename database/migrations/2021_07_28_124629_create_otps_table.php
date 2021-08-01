@@ -22,7 +22,7 @@ class CreateOtpsTable extends Migration
             $table->string('ip_address',45)->nullable();
             $table->tinyInteger('status')->default(0);
             $table->timestamps();
-            $table->softDeletes('deleted_at', 0);
+            $table->softDeletes('deleted_at');
         });
     }
 

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Auth\Login;
 
 use App\Contracts\UserRepositoryInterface;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CreateSignInRequest;
+use App\Http\Requests\Auth\Signin\SignInRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -24,7 +24,7 @@ class SignInController extends Controller
         return view('admin.pages.auth.signin.signin', compact('title'));
     }
 
-    public function authenticateUser(CreateSignInRequest $request)
+    public function authenticateUser(SignInRequest $request)
     {
         try {
             $isAuthenticated = $this->userRepository->isAuthenticate($request);
