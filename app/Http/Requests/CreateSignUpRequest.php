@@ -26,8 +26,7 @@ class CreateSignUpRequest extends FormRequest
         return [
             'name' => 'required',
             'email' => 'required|email|unique:users',
-            'password' => 'required|min:6',
-            'retype_password' => 'required|required_with:password|same:password|min:6',
+            'password' => 'required|confirmed|min:6',
         ];
     }
 }

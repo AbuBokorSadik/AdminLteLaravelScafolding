@@ -26,20 +26,18 @@ class SignInController extends Controller
 
     public function authenticateUser(CreateSignInRequest $request)
     {
-        try{
+        try {
             $isAuthenticated = $this->userRepository->isAuthenticate($request);
-            // dd(auth()->user());
-            if($isAuthenticated){
+            if ($isAuthenticated) {
                 return redirect()->route('dashboard');
-                
             }
-            return redirect()->back();
-        }catch(\Exception $e){
-            Log::error($e->getFile(). ' ' . $e->getLine() . ' ' . $e->getMessage());
-            return redirect()->back()->withErrors([
-                'errorMsg' => 'Something went wrong. Please try again later.'
-            ]);
 
+            $request->session()->flash('error_alert', 'These credentials do not match our records.');
+            return redirect()->back();
+        } catch (\Exception $e) {
+            Log::error($e->getFile() . ' ' . $e->getLine() . ' ' . $e->getMessage());
+            $request->session()->flash('error_alert', 'These credentials do not match our records.');
+            return redirect()->back();
         }
     }
 }

@@ -15,7 +15,7 @@ class SignUpController extends Controller
     {
         $this->userRepository = $userRepository;
     }
-    
+
     public function showFrom()
     {
         $title = 'Signup to App';
@@ -25,17 +25,15 @@ class SignUpController extends Controller
 
     public function register(CreateSignUpRequest $request)
     {
-        try{
-            
+        try {
+
             $this->userRepository->userRegistration($request);
+            $request->session()->flash('success_alert', 'Successfully user register.');
             return redirect()->route('login');
-            
-        }catch(\Exception $e){
-            Log::error($e->getFile(). ' ' . $e->getLine() . ' ' . $e->getMessage());
-            return redirect()->back()->withErrors([
-                'errorMsg' => 'Something went wrong. Please try again later.'
-            ]);
+        } catch (\Exception $e) {
+            Log::error($e->getFile() . ' ' . $e->getLine() . ' ' . $e->getMessage());
+            $request->session()->flash('error_alert', 'Something went wrong. Please try again later.');
+            return redirect()->route('login');
         }
     }
-
 }

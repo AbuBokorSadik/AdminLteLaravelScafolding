@@ -24,7 +24,8 @@ Route::group(['namespace' => 'Auth'], function () {
     Route::post('/register', 'SignUp\SignUpController@register')->name('register');
 
     Route::get('/forgot-password', 'ForgotPassword\ForgotPasswordController@showFrom')->name('forgot-password');
-    Route::get('/recover-password', 'ForgotPassword\ForgotPasswordController@showRecoverForm')->name('recover-password');
+    Route::get('/forgot-password-otp-generate', 'ForgotPassword\ForgotPasswordController@otpGenerate')->name('forgot-password-otp-generate');
+    Route::get('/forgot-password-otp-verify', 'ForgotPassword\ForgotPasswordController@otpVerify')->name('forgot-password-otp-verify');
     Route::post('/reset-password', 'ForgotPassword\ForgotPasswordController@resetPassword')->name('reset-password');
 });
 

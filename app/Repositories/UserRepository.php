@@ -13,17 +13,15 @@ class UserRepository implements UserRepositoryInterface
 
     public function userRegistration(Request $request)
     {
-        $data = $request->all();
-        return $this->create($data);
-        
+        return $this->create($request);    
     }
 
-   protected function create(array $data)
+   protected function create(Request $request)
     {
       return User::create([
-        'name' => $data['name'],
-        'email' => $data['email'],
-        'password' => Hash::make($data['password'])
+        'name' => $request->name,
+        'email' => $request->email,
+        'password' => Hash::make($request->password)
       ]);
     } 
 

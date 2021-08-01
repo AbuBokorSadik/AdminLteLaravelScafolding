@@ -9,20 +9,22 @@
   <!-- /.login-logo -->
   <div class="card">
     <div class="card-body login-card-body">
-      <p class="login-box-msg">You forgot your password? Here you can easily retrieve a new password.</p>
+      <p class="login-box-msg">Please check your email {{$user->email}} to the OTP</p>
 
       @include('alert.flashAlert')
-      
-      {!! Form::open(['route' => 'forgot-password-otp-generate', 'method' => 'get']) !!}
+
+
+      {!! Form::open(['route' => 'forgot-password-otp-verify', 'method' => 'get']) !!}
+      {!! Form::hidden('email', $user->email) !!}
       <div class="input-group mb-3">
-        {!! Form::text('email',null,['class' => 'form-control', 'placeholder' => 'Email']) !!}
+        {!! Form::text('otp',null,['class' => 'form-control', 'placeholder' => 'Enter 6 Digit OTP']) !!}
         <div class="input-group-append">
           <div class="input-group-text">
-            <span class="fas fa-envelope"></span>
+            <span class="fas fa-key"></span>
           </div>
         </div>
         <div class="col-12">
-          @error('email')
+          @error('otp')
           <span class="text-danger">{{ $message }}</span>
           @enderror
         </div>
@@ -30,7 +32,7 @@
 
       <div class="row">
         <div class="col-12">
-          {!! Form::submit('Request new OTP', ['class' => 'btn btn-primary btn-block']) !!}
+          {!! Form::submit('Submit OTP', ['class' => 'btn btn-primary btn-block']) !!}
         </div>
         <!-- /.col -->
       </div>
@@ -38,9 +40,6 @@
 
       <p class="mt-3 mb-1">
         <a href="{{ route('login') }}">Login</a>
-      </p>
-      <p class="mb-0">
-        <a href="{{ route('signup') }}" class="text-center">Register a new membership</a>
       </p>
     </div>
     <!-- /.login-card-body -->
