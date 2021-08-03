@@ -10,6 +10,7 @@
                     <h1>Change Password</h1>
                 </div>
             </div>
+            @include('alert.flashAlert')
         </div>
     </section>
 
@@ -21,30 +22,45 @@
                         <div class="card-header">
                             <h3 class="card-title">Change Password</h3>
                         </div>
-                        <form>
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <label for="oldPassword">Old Password</label>
-                                    <input type="email" class="form-control" id="oldPassword" placeholder="Old Password">
-                                </div>
-                                <div class="form-group">
-                                    <label for="newPassword">New Password</label>
-                                    <input type="password" class="form-control" id="newPassword" placeholder="New Password">
-                                </div>
-                                <div class="form-group">
-                                    <label for="re-typePassword">Re-type Password</label>
-                                    <input type="password" class="form-control" id="re-typePassword" placeholder="Re-type Password">
-                                </div>
-                                <div class="card-footer">
-                                    <button type="submit" class="btn btn-success">Change Password</button>
-                                    <button type="submit" class="btn btn-default float-right">Cancel</button>
-                                </div>
-                        </form>
+                        {!! Form::open(['route' => 'change-password-update', 'method' => 'post']) !!}
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="oldPassword">Old Password</label>
+                                {!! Form::password('old_password',['class' => 'form-control', 'id' => 'oldPassword', 'placeholder' => 'Old Password']) !!}
+                            </div>
+                            <div class="col-12">
+                                @error('old_password')
+                                <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label for="newPassword">New Password</label>
+                                {!! Form::password('password',['class' => 'form-control', 'id' => 'oldPassword', 'placeholder' => 'New Password']) !!}
+                            </div>
+                            <div class="col-12">
+                                @error('password')
+                                <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label for="re-typePassword">Re-type Password</label>
+                                {!! Form::password('password_confirmation',['class' => 'form-control', 'id' => 'oldPassword', 'placeholder' => 'Re-type Password']) !!}
+                            </div>
+                            <div class="col-12">
+                                @error('password_confirmation')
+                                <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="card-footer">
+                                {!! Form::submit('Change Password', ['class' => 'btn btn-success']) !!}
+                                {!! Form::submit('Cancel', ['class' => 'btn btn-default float-right']) !!}
+                            </div>
+                            {!! Form::close() !!}
+                        </div>
                     </div>
-                </div>
 
+                </div>
             </div>
-        </div>
     </section>
 </div>
 

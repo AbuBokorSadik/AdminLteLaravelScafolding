@@ -29,6 +29,7 @@ Route::group(['namespace' => 'Auth'], function () {
     Route::post('/reset-password', 'ForgotPassword\ForgotPasswordController@resetPassword')->name('reset-password');
 
     Route::get('/change-password', 'ChangePassword\ChangePasswordController@showFrom')->name('change-password');
+    Route::post('/change-password-update', 'ChangePassword\ChangePasswordController@updatePassword')->name('change-password-update');
 });
 
 
