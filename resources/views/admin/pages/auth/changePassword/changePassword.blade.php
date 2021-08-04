@@ -27,8 +27,6 @@
                             <div class="form-group">
                                 <label for="oldPassword">Old Password</label>
                                 {!! Form::password('old_password',['class' => 'form-control', 'id' => 'oldPassword', 'placeholder' => 'Old Password']) !!}
-                            </div>
-                            <div class="col-12">
                                 @error('old_password')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -36,8 +34,6 @@
                             <div class="form-group">
                                 <label for="newPassword">New Password</label>
                                 {!! Form::password('password',['class' => 'form-control', 'id' => 'oldPassword', 'placeholder' => 'New Password']) !!}
-                            </div>
-                            <div class="col-12">
                                 @error('password')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -45,8 +41,6 @@
                             <div class="form-group">
                                 <label for="re-typePassword">Re-type Password</label>
                                 {!! Form::password('password_confirmation',['class' => 'form-control', 'id' => 'oldPassword', 'placeholder' => 'Re-type Password']) !!}
-                            </div>
-                            <div class="col-12">
                                 @error('password_confirmation')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror

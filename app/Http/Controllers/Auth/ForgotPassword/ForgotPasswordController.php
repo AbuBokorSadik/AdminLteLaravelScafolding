@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth\ForgotPassword;
 
 use App\Http\Controllers\Controller;
 use App\Models\Otp;
+use App\Models\PasswordHistory;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -80,7 +81,7 @@ class ForgotPasswordController extends Controller
     {
 
         $request->validate([
-            'password' => 'required|confirmed|min:6',
+            'password' => ['required','between:8,32','confirmed'],
         ]);
 
         try {
@@ -106,6 +107,11 @@ class ForgotPasswordController extends Controller
 
                 $user->password = bcrypt($request->password);
                 $user->save();
+
+                PasswordHistory::create([
+                    'user_id' => $user->id,
+                    'password' => $user->password,
+                ]);
             });
             $request->session()->flash('success_alert', 'Your Password Reset Successfully.');
             return redirect()->route('login');

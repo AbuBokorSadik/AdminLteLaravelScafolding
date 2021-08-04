@@ -12,7 +12,6 @@ class LogoutController extends Controller
     public function logout()
     {
         try{
-            Session::flush();
             Auth::logout();
             return redirect()->route('login');
         }catch(\Exception $e){

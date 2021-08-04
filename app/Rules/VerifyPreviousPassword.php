@@ -1,13 +1,16 @@
 <?php
 
-namespace App\Rules\Verify;
+namespace App\Rules;
 
+use App\Traits\PA_DSS_Auth_Trait;
 use Illuminate\Contracts\Validation\Rule;
-use Illuminate\Support\Facades\Hash;
 
-class VerifyOldPassword implements Rule
+class VerifyPreviousPassword implements Rule
 {
+    use PA_DSS_Auth_Trait;
+
     private $user;
+    
     /**
      * Create a new rule instance.
      *
@@ -27,11 +30,7 @@ class VerifyOldPassword implements Rule
      */
     public function passes($attribute, $value)
     {
-
-        if (Hash::check($value, $this->user->password)) {
-            return true;
-        }
-        return false;
+        return ! $this->isPasswordMatchesWithXPreviousPassword($this->user,$value);
     }
 
     /**
@@ -41,6 +40,6 @@ class VerifyOldPassword implements Rule
      */
     public function message()
     {
-        return 'The old password is not matched.';
+        return 'Sorry! the password you are tyring to set matches with one of the 5 previous passwords. Please try a different one.';
     }
 }
