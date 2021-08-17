@@ -7,22 +7,20 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class OtpMail extends Mailable
+class AgentMail extends Mailable
 {
     use Queueable, SerializesModels;
-
     public $user;
-    public $otp;
-
+    public $password;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($user, $otp)
+    public function __construct($user, $password)
     {
         $this->user = $user;
-        $this->otp = $otp;
+        $this->password = $password;
     }
 
     /**
@@ -32,6 +30,6 @@ class OtpMail extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.otp.otpEmail');
+        return $this->view('emails.agent.passwordEmail');
     }
 }

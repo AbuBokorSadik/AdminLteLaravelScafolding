@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Agent;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateSignInRequest extends FormRequest
+class AgentStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,8 @@ class CreateSignInRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|email',
-            'password' => 'required|min:6',
+            'name' => 'required',
+            'email' => ['required', 'email', 'unique:users'],
         ];
     }
 }

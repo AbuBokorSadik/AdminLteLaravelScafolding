@@ -15,7 +15,7 @@ class ChangePasswordController extends Controller
     public function showFrom(Request $request)
     {
         $title = 'Change Password';
-
+    
         return view('admin.pages.auth.changePassword.changePassword', compact('title'));
     }
 

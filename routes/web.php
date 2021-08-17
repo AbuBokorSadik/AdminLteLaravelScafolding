@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Agent\AgentController;
 use App\Http\Controllers\Auth\ChangePassword\ChangePasswordController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use Illuminate\Support\Facades\Route;
@@ -28,7 +29,6 @@ Route::group(['namespace' => 'Auth'], function () {
     Route::get('/forgot-password-otp-generate', 'ForgotPassword\ForgotPasswordController@otpGenerate')->name('forgot-password-otp-generate');
     Route::get('/forgot-password-otp-verify', 'ForgotPassword\ForgotPasswordController@otpVerify')->name('forgot-password-otp-verify');
     Route::post('/reset-password', 'ForgotPassword\ForgotPasswordController@resetPassword')->name('reset-password');
-
 });
 
 
@@ -37,4 +37,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['isAuth']], function () {
 
     Route::get('/change-password', [ChangePasswordController::class, 'showFrom'])->name('change-password');
     Route::post('/change-password-update', [ChangePasswordController::class, 'updatePassword'])->name('change-password-update');
+
+    Route::resource('categories', Category\CategoryController::class);
+
+    Route::resource('products', Product\ProductController::class);
+
+    Route::resource('agents', Agent\AgentController::class);
 });

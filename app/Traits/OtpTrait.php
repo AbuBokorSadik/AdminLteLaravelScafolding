@@ -5,7 +5,6 @@ namespace App\Traits;
 use App\Mail\OtpMail;
 use App\Models\Otp;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 trait OtpTrait

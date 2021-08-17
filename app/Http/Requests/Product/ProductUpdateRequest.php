@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Product;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateSignUpRequest extends FormRequest
+class ProductUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,8 +25,13 @@ class CreateSignUpRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|confirmed|min:6',
+            'unit_price' => ['required', 'numeric'],
+            // 'image' => ['nullable'],
+            'height' => ['required', 'numeric'],
+            'width' => ['required', 'numeric'],
+            'weight' => ['required', 'numeric'],
+            'size' => ['required', 'numeric'],
+            'status' => ['required', 'in:0,1'],
         ];
     }
 }
