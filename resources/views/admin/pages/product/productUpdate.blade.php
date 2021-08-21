@@ -3,7 +3,6 @@
 @section('contentWrapper')
 
 <div class="content-wrapper">
-    @include('alert.flashAlert')
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -15,6 +14,11 @@
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
                         <li class="breadcrumb-item active">Update Product</li>
                     </ol>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-sm-4">
+                    @include('alert.flashAlert')
                 </div>
             </div>
         </div>

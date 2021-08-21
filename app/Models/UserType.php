@@ -11,4 +11,9 @@ class UserType extends Model
     
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];
     protected $guarded = ['id'];
+
+    public function user()
+    {
+        return $this->hasMany(User::class, 'user_type_id');
+    }
 }

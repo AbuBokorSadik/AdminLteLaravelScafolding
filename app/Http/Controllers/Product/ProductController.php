@@ -8,6 +8,7 @@ use App\Http\Requests\Product\ProductUpdateRequest;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
@@ -31,9 +32,9 @@ class ProductController extends Controller
                 ->filterByName($request)
                 ->filterByCategoryID($request)
                 ->filterByStatus($request)
-                ->filterByUnitPrice($request)
                 ->filterByCreatedAtDateRange($request)
                 ->where('created_by_id', auth()->user()->id)
+                ->orderBy('id', 'DESC')
                 ->paginate(20);
 
             $categories = Category::where('created_by_id', auth()->user()->id)->pluck('name', 'id');
@@ -79,22 +80,24 @@ class ProductController extends Controller
             $fileName = time() . '_' . $request->image->getClientOriginalName();
             $filePath = $request->file('image')->storeAs('uploads', $fileName, 'public');
 
-            Product::create([
-                'created_by_id' => auth()->user()->id,
-                'category_id' => $request->category_id,
-                'name' => $request->name,
-                'description' => $request->description,
-                'unit_price' => $request->unit_price,
-                'image' => $filePath,
-                'height' => $request->height,
-                'width' => $request->width,
-                'weight' => $request->weight,
-                'size' => $request->size,
-                'status' => $request->status,
-            ]);
+            DB::transaction(function () use ($request, $filePath) {
+                Product::create([
+                    'created_by_id' => auth()->user()->id,
+                    'category_id' => $request->category_id,
+                    'name' => $request->name,
+                    'description' => $request->description,
+                    'unit_price' => $request->unit_price,
+                    'image' => $filePath,
+                    'height' => $request->height,
+                    'width' => $request->width,
+                    'weight' => $request->weight,
+                    'size' => $request->size,
+                    'status' => $request->status,
+                ]);
+            });
 
-            $request->session()->flash('success_alert', 'Your Product Create Successfully.');
-            return redirect()->route('products.index');
+            $request->session()->flash('success_alert', 'Product Created Successfully.');
+            return redirect()->back();
         } catch (\Exception $e) {
             Log::error($e->getFile() . ' ' . $e->getLine() . ' ' . $e->getMessage());
             $request->session()->flash('error_alert', 'Something went wrong. Please try again later.');
@@ -147,24 +150,25 @@ class ProductController extends Controller
     public function update(ProductUpdateRequest $request, $id)
     {
         try {
-            $product = Product::find($id);
+            DB::transaction(function () use ($request, $id) {
+                $product = Product::find($id);
+                $product->category_id = $request->category_id;
+                $product->name = $request->name;
+                $product->description = $request->description;
+                $product->unit_price = $request->unit_price;
+                $product->height = $request->height;
+                $product->width = $request->width;
+                $product->weight = $request->weight;
+                $product->size = $request->size;
+                $product->status = $request->status;
 
-            $product->category_id = $request->category_id;
-            $product->name = $request->name;
-            $product->description = $request->description;
-            $product->unit_price = $request->unit_price;
-            $product->height = $request->height;
-            $product->width = $request->width;
-            $product->weight = $request->weight;
-            $product->size = $request->size;
-            $product->status = $request->status;
+                // $fileName = time() . '_' . $request->image->getClientOriginalName();
+                // $filePath = $request->file('image')->storeAs('uploads', $fileName, 'public');
+                // $product->image = '/storage/' . $filePath;
+                $product->save();
+            });
 
-            // $fileName = time() . '_' . $request->image->getClientOriginalName();
-            // $filePath = $request->file('image')->storeAs('uploads', $fileName, 'public');
-            // $product->image = '/storage/' . $filePath;
-            $product->save();
-
-            $request->session()->flash('success_alert', 'Your Products Update Successfully.');
+            $request->session()->flash('success_alert', 'Products Updated Successfully.');
             return redirect()->route('products.index');
         } catch (\Exception $e) {
             Log::error($e->getFile() . ' ' . $e->getLine() . ' ' . $e->getMessage());

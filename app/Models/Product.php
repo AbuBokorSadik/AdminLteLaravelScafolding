@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\HelperTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 
 class Product extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HelperTrait;
 
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];
     protected $guarded = ['id'];
@@ -51,17 +52,18 @@ class Product extends Model
         }
     }
 
-    public function scopeFilterByUnitPrice($query, Request $request)
-    {
-        if ($request->filled('unit_price')) {
-            return $query->whereBetween('unit_price', explode(' - ', $request->unit_price));
-        }
-    }
+    // public function scopeFilterByUnitPrice($query, Request $request)
+    // {
+    //     if ($request->filled('unit_price')) {
+    //         return $query->whereBetween('unit_price', explode(' - ', $request->unit_price));
+    //     }
+    // }
 
     public function scopeFilterByCreatedAtDateRange($query, Request $request)
     {
         if ($request->filled('createdAtDateRange')) {
-            return $query->whereBetween('created_at', explode(' - ', $request->createdAtDateRange));
+            $date = $this->extractDateRange($request->createdAtDateRange);
+            return $query->whereBetween('created_at', [$date['date_from'], $date['date_to']]);
         }
     }
 }

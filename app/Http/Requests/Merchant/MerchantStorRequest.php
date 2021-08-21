@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Agent;
+namespace App\Http\Requests\Merchant;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AgentStoreRequest extends FormRequest
+class MerchantStorRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,8 +25,8 @@ class AgentStoreRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'email' => ['required', 'email', 'unique:users'],
-            'mobile' => ['required', 'unique:users'],
+            'email' => ['required', 'email', ],
+            'mobile' => ['required', ],
             // 'user_type_id' => 'required',
         ];
     }

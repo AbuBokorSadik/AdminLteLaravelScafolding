@@ -8,10 +8,9 @@
 </head>
 <body>
     <h2>Dear {{ $user->name }},</h2>
-    <p>Your user name: {{ $user->name }}</p>
+    <p>Your user name: {{ $user->email }}</p>
     <p>Your password: {{ $password }}</p>
-    <p>Use this <a href="http://127.0.0.1:8000/login">Link</a> and the password to log in your account.</p>
+    <p>Click on this link <a href="{{ route('login') }}">{{ route('login') }}</a>. Use avobe Username and Password to log in to your account.</p>
 
 </body>
 </html>
-

@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Agent;
+namespace App\Http\Controllers\Merchant;
 
 use App\Constant\StatusTypeConst;
 use App\Constant\UserTypeConst;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Agent\AgentStoreRequest;
-use App\Mail\Agent\AgentInvitationMail;
+use App\Http\Requests\Merchant\MerchantStorRequest;
+use App\Mail\Merchant\MerchantInvitationMail;
 use App\Models\User;
-use App\Models\UsersAgent;
+use App\Models\UsersMerchant;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
-class AgentController extends Controller
+class MerchantController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -25,10 +25,10 @@ class AgentController extends Controller
      */
     public function index(Request $request)
     {
-        $title = 'Agent List';
+        $title = 'Merchant List';
         try {
-            $agents = User::where('user_type_id', UserTypeConst::AGENT)
-                ->whereHas('agentsAdmin', function (Builder $query) {
+            $merchants = User::where('user_type_id', UserTypeConst::MERCHANT)
+                ->whereHas('merchantsAdmin', function (Builder $query) {
                     $query->where('user_id', auth()->user()->id);
                 })
                 ->filterByID($request)
@@ -40,13 +40,9 @@ class AgentController extends Controller
                 ->orderBy('id', 'DESC')
                 ->paginate(20);
 
-            // echo '<pre>';
-            // print_r($agents->toArray());
-            // exit();
-
             $request->flash();
 
-            return view('admin.pages.agent.agentList', compact('title', 'agents'));
+            return view('admin.pages.merchant.merchantList', compact('title', 'merchants'));
         } catch (\Exception $e) {
             Log::error($e->getFile() . ' ' . $e->getLine() . ' ' . $e->getMessage());
             $request->session()->flash('error_alert', 'Something went wrong. Please try again later.');
@@ -61,9 +57,9 @@ class AgentController extends Controller
      */
     public function create(Request $request)
     {
-        $title = 'Add Agent';
+        $title = 'Add Merchant';
         try {
-            return view('admin.pages.agent.agentAdd', compact('title'));
+            return view('admin.pages.merchant.merchantAdd', compact('title'));
         } catch (\Exception $e) {
             Log::error($e->getFile() . ' ' . $e->getLine() . ' ' . $e->getMessage());
             $request->session()->flash('error_alert', 'Something went wrong. Please try again later.');
@@ -77,34 +73,53 @@ class AgentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(AgentStoreRequest $request)
+    public function store(MerchantStorRequest $request)
     {
+
         try {
-            DB::transaction(function () use ($request) {
-                $randPassword = bin2hex(random_bytes(4));
-                $agent = User::create([
-                    'user_type_id' => UserTypeConst::AGENT,
-                    'name' => $request->name,
-                    'email' => $request->email,
-                    'mobile' => $request->mobile,
-                    'password' => Hash::make($randPassword),
-                    'status' => StatusTypeConst::ACTIVE,
-                ]);
+            $merchant = User::where([
+                'user_type_id' => UserTypeConst::MERCHANT,
+                'email' => $request->email
+            ])->first();
 
-                UsersAgent::create([
+            return DB::transaction(function () use ($merchant, $request) {
+                if (!$merchant) {
+
+                    $randPassword = bin2hex(random_bytes(4));
+                    $merchant = User::create([
+                        'user_type_id' => UserTypeConst::MERCHANT,
+                        'name' => $request->name,
+                        'email' => $request->email,
+                        'mobile' => $request->mobile,
+                        'password' => Hash::make($randPassword),
+                        'status' => StatusTypeConst::ACTIVE,
+                    ]);
+                    Mail::to($request->email)->send(new MerchantInvitationMail($merchant, $randPassword));
+                }
+
+                $usersMerchant = UsersMerchant::where([
                     'user_id' => auth()->user()->id,
-                    'agent_id' => $agent->id,
+                    'merchant_id' => $merchant->id,
+                ])
+                    ->first();
+
+                if ($usersMerchant) {
+                    $request->session()->flash('error_alert', 'You have already added this merchant.');
+                    return redirect()->route('merchants.create');
+                }
+
+                UsersMerchant::create([
+                    'user_id' => auth()->user()->id,
+                    'merchant_id' => $merchant->id,
                 ]);
-
-                Mail::to($request->email)->send(new AgentInvitationMail($agent, $randPassword));
+                
+                $request->session()->flash('success_alert', 'Merchant Created Successfully.');
+                return redirect()->route('merchants.create');
             });
-
-            $request->session()->flash('success_alert', 'Agent Created Successfully.');
-            return redirect()->back();
         } catch (\Exception $e) {
             Log::error($e->getFile() . ' ' . $e->getLine() . ' ' . $e->getMessage());
             $request->session()->flash('error_alert', 'Something went wrong. Please try again later.');
-            return redirect()->route('agents.index');
+            return redirect()->route('merchants.index');
         }
     }
 
@@ -140,18 +155,18 @@ class AgentController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            DB::transaction(function () use($id){
-                $agent = User::find($id);
-                $agent->status = !$agent->status;
-                $agent->save();
+            DB::transaction(function () use ($request, $id) {
+                $merchant = User::find($id);
+                $merchant->status = !$merchant->status;
+                $merchant->save();
             });
 
-            $request->session()->flash('success_alert', 'Agent Status Updated Successfully.');
-            return redirect()->route('agents.index');
+            $request->session()->flash('success_alert', 'Merchant Status Updated Successfully.');
+            return redirect()->route('merchants.index');
         } catch (\Exception $e) {
             Log::error($e->getFile() . ' ' . $e->getLine() . ' ' . $e->getMessage());
             $request->session()->flash('error_alert', 'Something went wrong. Please try again later.');
-            return redirect()->route('agents.index');
+            return redirect()->route('merchants.index');
         }
     }
 

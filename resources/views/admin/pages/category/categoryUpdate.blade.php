@@ -16,7 +16,11 @@
                     </ol>
                 </div>
             </div>
-            @include('alert.flashAlert')
+            <div class="row mb-2">
+                <div class="col-sm-4">
+                    @include('alert.flashAlert')
+                </div>
+            </div>
         </div>
     </section>
 

@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Category\CategoryStoreRequest;
 use App\Http\Requests\Category\CategoryUpdateRequest;
 use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class CategoryController extends Controller
@@ -25,6 +27,7 @@ class CategoryController extends Controller
                 ->filterByAlias($request)
                 ->filterByStatus($request)
                 ->where('created_by_id', auth()->user()->id)
+                ->orderBy('id', 'DESC')
                 ->paginate(20);
 
             $request->flash();
@@ -63,15 +66,17 @@ class CategoryController extends Controller
     public function store(CategoryStoreRequest $request)
     {
         try {
-            Category::create([
-                'created_by_id' => auth()->user()->id,
-                'name' => $request->name,
-                'alias' => $request->alias,
-                'status' => $request->status,
-            ]);
+            DB::transaction(function () use ($request) {
+                Category::create([
+                    'created_by_id' => auth()->user()->id,
+                    'name' => $request->name,
+                    'alias' => $request->alias,
+                    'status' => $request->status,
+                ]);
+            });
 
-            $request->session()->flash('success_alert', 'Your Category Created Successfully.');
-            return redirect()->route('categories.index');
+            $request->session()->flash('success_alert', 'Category Created Successfully.');
+            return redirect()->back();
         } catch (\Exception $e) {
             Log::error($e->getFile() . ' ' . $e->getLine() . ' ' . $e->getMessage());
             $request->session()->flash('error_alert', 'Something went wrong. Please try again later.');
@@ -107,7 +112,6 @@ class CategoryController extends Controller
 
             return view('admin.pages.category.categoryUpdate', compact('title', 'category'));
         } catch (\Exception $e) {
-            dd('catch');
             Log::error($e->getFile() . ' ' . $e->getLine() . ' ' . $e->getMessage());
             $request->session()->flash('Something went wrong. Please try again later.');
             return redirect()->back();
@@ -124,16 +128,18 @@ class CategoryController extends Controller
     public function update(CategoryUpdateRequest $request, $id)
     {
         try {
-            $category = Category::where([
-                'id' => $id,
-            ])
-                ->update([
-                    'name' => $request->name,
-                    'alias' => $request->alias,
-                    'status' => $request->status,
-                ]);
+            DB::transaction(function () use ($request, $id) {
+                Category::where([
+                    'id' => $id,
+                ])
+                    ->update([
+                        'name' => $request->name,
+                        'alias' => $request->alias,
+                        'status' => $request->status,
+                    ]);
+            });
 
-            $request->session()->flash('success_alert', 'Your Category Update Successfully.');
+            $request->session()->flash('success_alert', 'Category Updated Successfully.');
             return redirect()->route('categories.index');
         } catch (\Exception $e) {
             Log::error($e->getFile() . ' ' . $e->getLine() . ' ' . $e->getMessage());
@@ -152,8 +158,10 @@ class CategoryController extends Controller
     {
         try {
             $category = Category::find($id);
-            $request->session()->flash('error_alert', $category->name . ' Category Delete Successfully.');
             $category->delete();
+            Product::where('category_id', $id)->delete();
+            $request->session()->flash('error_alert', $category->name . ' Category Deleted Successfully.');
+
 
             return redirect()->route('categories.index');
         } catch (\Exception $e) {

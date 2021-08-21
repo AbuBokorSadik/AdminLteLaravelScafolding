@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Agent\AgentController;
 use App\Http\Controllers\Auth\ChangePassword\ChangePasswordController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use Illuminate\Support\Facades\Route;
@@ -43,4 +42,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['isAuth']], function () {
     Route::resource('products', Product\ProductController::class);
 
     Route::resource('agents', Agent\AgentController::class);
+
+    Route::resource('merchants', Merchant\MerchantController::class);
+
+    Route::resource('profiles', Profile\ProfileController::class);
 });

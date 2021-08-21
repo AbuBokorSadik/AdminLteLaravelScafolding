@@ -57,7 +57,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <!-- <div class="row">
                     <div class="col">
                         <div class="form-group">
                             {!! Form::label('unitPrice', 'Unit Price') !!}
@@ -82,14 +82,14 @@
                             {!! Form::text('weight', old('weight'), ['id' => 'weight']) !!}
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <div class="row">
-                    <div class="col-sm-3">
+                    <!-- <div class="col-sm-3">
                         <div class="form-group">
                             {!! Form::label('size', 'Size') !!}
                             {!! Form::text('size', old('size'), ['id' => 'size']) !!}
                         </div>
-                    </div>
+                    </div> -->
                     <div class="col-sm-3">
                         <div class="form-group">
                         {!! Form::label('createdAtDateRange', 'Select Created At Date Range') !!}
@@ -116,7 +116,7 @@
 
                 <div class="card-tools">
                     {!! Form::open(['route' => 'products.create', 'method' => 'get']) !!}
-                    {!! Form::button('<i class="fas fa-plus"> Add Product</i>', ['type'=>'submit', 'class' => 'btn btn-success']) !!}
+                    {!! Form::button('<i class="fas fa-plus fa-sm"> Add Product</i>', ['type'=>'submit', 'class' => 'btn btn-success']) !!}
                     {!! Form::close() !!}
                 </div>
             </div>
@@ -223,7 +223,7 @@
                                     </div>
                                     <div class="col">
                                         {!! Form::open(['route' => ['products.destroy', $product->id], 'method' => 'delete']) !!}
-                                        {!! Form::button('<i class="fas fa-trash"> Delete</i>', ['type'=>'submit', 'class' => 'btn btn-danger btn-sm']) !!}
+                                        {!! Form::button('<i class="fas fa-trash fa-sm"> Delete</i>', ['type'=>'submit', 'class' => 'btn btn-danger btn-sm']) !!}
                                         {!! Form::close() !!}
                                     </div>
                                 </div>

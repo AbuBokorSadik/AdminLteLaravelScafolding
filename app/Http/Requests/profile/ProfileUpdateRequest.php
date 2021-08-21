@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Agent;
+namespace App\Http\Requests\profile;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
 
-class AgentStoreRequest extends FormRequest
+class ProfileUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,9 +26,10 @@ class AgentStoreRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'email' => ['required', 'email', 'unique:users'],
-            'mobile' => ['required', 'unique:users'],
-            // 'user_type_id' => 'required',
+            'additional_email' => ['nullable', 'email'],
+            'additional_mobile' => 'nullable',
+            'address' => 'nullable',
+            'avater' => ['nullable', 'image', 'mimes:jpg,jpeg,png'],
         ];
     }
 }

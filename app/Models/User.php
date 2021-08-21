@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
-use Faker\Provider\UserAgent;
+use App\Traits\HelperTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Http\Request;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, SoftDeletes, HelperTrait;
 
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];
 
@@ -22,6 +24,7 @@ class User extends Authenticatable
         'user_type_id',
         'name',
         'email',
+        'mobile',
         'password',
         'status',
     ];
@@ -50,9 +53,75 @@ class User extends Authenticatable
         return $this->hasMany(Product::class);
     }
 
-    public function agent()
+    public function agents()
     {
-        return $this->hasMany(UserAgent::class);
+        return $this->hasMany(UsersAgent::class);
     }
 
+    public function agentsAdmin()
+    {
+        return $this->hasOne(UsersAgent::class, 'agent_id');
+    }
+
+    public function merchants()
+    {
+        return $this->hasMany(UsersMerchant::class);
+    }
+
+    public function merchantsAdmin()
+    {
+        return $this->hasOne(UsersMerchant::class, 'merchant_id');
+    }
+
+    public function userType()
+    {
+        return $this->belongsTo(UserType::class);
+    }
+
+    public function scopeFilterByID($query, Request $request)
+    {
+        if ($request->filled('id')) {
+            return $query->where('id', $request->id);
+        }
+    }
+
+    public function scopeFilterByName($query, Request $request)
+    {
+        if ($request->filled('name')) {
+            return $query->where('name', $request->name);
+        }
+    }
+
+    public function scopeFilterByEmail($query, Request $request)
+    {
+        if ($request->filled('email')) {
+            return $query->where('email', $request->email);
+        }
+    }
+
+    public function scopeFilterByMobile($query, Request $request)
+    {
+        if ($request->filled('mobile')) {
+            return $query->where('mobile', $request->mobile);
+        }
+    }
+
+    public function scopeFilterByStatus($query, Request $request)
+    {
+        if ($request->filled('status')) {
+            return $query->where('status', $request->status);
+        }
+    }
+
+    public function scopeFilterByCreatedAtDateRange($query, Request $request)
+    {
+        if ($request->filled('createdAtDateRange')) {
+            $date = $this->extractDateRange($request->createdAtDateRange);
+            // $cadr = explode(' - ', $request->createdAtDateRange);
+            // echo '<pre>';
+            // print_r($date);
+            // exit();
+            return $query->whereBetween('created_at', [$date['date_from'], $date['date_to']]);
+        }
+    }
 }
