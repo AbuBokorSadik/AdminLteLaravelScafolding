@@ -7,16 +7,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Profile Details</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item">
-                            <a class="btn btn-info" href="{{ route('profiles.edit',auth()->user()->id) }}">
-                                Profile Update
-                            </a>
-                        </li>
-                    </ol>
+                    <h1>Merchant Details</h1>
                 </div>
             </div>
             <div class="row mb-2">
@@ -36,7 +27,7 @@
                     <!-- general form elements -->
                     <div class="card card-success">
                         <div class="card-header">
-                            <h3 class="card-title">Profile Details</h3>
+                            <h3 class="card-title">Merchant Details</h3>
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
@@ -50,7 +41,7 @@
                                                     <p><b>Name</b> </p>
                                                 </div>
                                                 <div class="col-6">
-                                                    <p>{{ auth()->user()->name }}</p>
+                                                    <p>{{ $merchant->name }}</p>
                                                 </div>
                                             </div>
                                         </li>
@@ -60,7 +51,7 @@
                                                     <p><b>Address</b> </p>
                                                 </div>
                                                 <div class="col-6">
-                                                    <p>{{ auth()->user()->address }}</p>
+                                                    <p>{{ $merchant->address }}</p>
                                                 </div>
                                             </div>
                                         </li>
@@ -70,7 +61,7 @@
                                                     <p><b>Email</b> </p>
                                                 </div>
                                                 <div class="col-6">
-                                                    <p>{{ auth()->user()->email }}</p>
+                                                    <p>{{ $merchant->email }}</p>
                                                 </div>
                                             </div>
                                         </li>
@@ -80,7 +71,7 @@
                                                     <p><b>Mobile</b> </p>
                                                 </div>
                                                 <div class="col-6">
-                                                    <p>{{ auth()->user()->mobile }}</p>
+                                                    <p>{{ $merchant->mobile }}</p>
                                                 </div>
                                             </div>
                                         </li>
@@ -90,7 +81,7 @@
                                                     <p><b>Additional email</b> </p>
                                                 </div>
                                                 <div class="col-6">
-                                                    <p>{{ auth()->user()->additional_email }}</p>
+                                                    <p>{{ $merchant->additional_email }}</p>
                                                 </div>
                                             </div>
                                         </li>
@@ -100,7 +91,7 @@
                                                     <p><b>Additional mobile</b> </p>
                                                 </div>
                                                 <div class="col-6">
-                                                    <p>{{ auth()->user()->additional_mobile }}</p>
+                                                    <p>{{ $merchant->additional_mobile }}</p>
                                                 </div>
                                             </div>
                                         </li>
@@ -110,12 +101,12 @@
                                                     <p><b>Type</b> </p>
                                                 </div>
                                                 <div class="col-6">
-                                                    <p>{{ auth()->user()->userType->name }}</p>
+                                                    <p>{{ $merchant->userType->name }}</p>
                                                 </div>
                                             </div>
                                         </li>
                                         @php
-                                        $status = auth()->user()->status ? " class='fas fa-check-circle fa-2x' style='color:green'" : " class='fas fa-times-circle fa-2x' style='color:red'";
+                                        $status = $merchant->status ? " class='fas fa-check-circle fa-2x' style='color:green'" : " class='fas fa-times-circle fa-2x' style='color:red'";
                                         @endphp
                                         <li class="list-group-item">
                                             <div class="row">
@@ -130,7 +121,7 @@
                                     </ul>
                                 </div>
                                 @php
-                                $imgpath = auth()->user()->avater ? '/storage/' . auth()->user()->avater : 'img/dummy-user.png';
+                                $imgpath = $merchant->avater ? '/storage/' . $merchant->avater : 'img/dummy-user.png';
                                 @endphp
                                 <div class="col-sm-4">
                                     <div class="text-center">
@@ -138,6 +129,12 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="card-footer">
+                            <a class="btn btn-secondary" href="{{ route('merchants.index') }}">
+                                </i>
+                                Cancel
+                            </a>
                         </div>
                     </div>
                 </div>

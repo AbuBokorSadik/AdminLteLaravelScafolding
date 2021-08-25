@@ -164,7 +164,7 @@
                                 @endphp
                                 <div class="col-sm-4">
                                     <div class="text-center">
-                                        <img class="img-thumbnail" src="{{ asset($imgpath) }}" alt="">
+                                        <img class="img-thumbnail" style="height: 250px; width: 250px;" src="{{ asset($imgpath) }}" alt="">
                                     </div>
                                 </div>
                             </div>

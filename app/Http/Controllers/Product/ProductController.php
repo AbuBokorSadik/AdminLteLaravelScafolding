@@ -92,6 +92,7 @@ class ProductController extends Controller
                     'width' => $request->width,
                     'weight' => $request->weight,
                     'size' => $request->size,
+                    'measurement_unit' => $request->measurement_unit,
                     'status' => $request->status,
                 ]);
             });
@@ -160,11 +161,15 @@ class ProductController extends Controller
                 $product->width = $request->width;
                 $product->weight = $request->weight;
                 $product->size = $request->size;
+                $product->measurement_unit = $request->measurement_unit;
                 $product->status = $request->status;
+                if ($request->image) {
+                    $fileName = time() . '_' . $request->image->getClientOriginalName();
+                    $filePath = $request->file('image')->storeAs('product', $fileName, 'public');
+                    Storage::disk('public')->delete($product->image);
+                    $product->image = $filePath;
+                }
 
-                // $fileName = time() . '_' . $request->image->getClientOriginalName();
-                // $filePath = $request->file('image')->storeAs('uploads', $fileName, 'public');
-                // $product->image = '/storage/' . $filePath;
                 $product->save();
             });
 

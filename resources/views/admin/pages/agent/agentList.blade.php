@@ -145,10 +145,10 @@
                                 @php
                                 $imgpath = $agent->avater ? '/storage/' . $agent->avater : 'img/dummy-user.png';
                                 @endphp
-                                <img class="profile-user-img img-fluid img-circle" src="{{ asset($imgpath) }}" alt="">
+                                <img class="profile-user-img img-fluid img-circle" style="height: 45px; width: 45px;" src="{{ asset($imgpath) }}" alt="">
                             </td>
                             <td class="project-state">
-                                <span class="badge badge-{{ ($agent->status) ? 'success' : 'danger' }}">
+                                <span class="badge badge-{{ ($agent->status) ? 'success' : 'danger' }}" style="width: 60px;">
                                     {{ ($agent->status) ? 'Active' : 'Inactive' }}
                                 </span>
                             </td>
@@ -163,11 +163,19 @@
                                 @php
                                 $btnClass = $agent->status ? 'btn-danger' : 'btn-success'
                                 @endphp
-
-                                {!! Form::open(['route' => ['agents.update', $agent->id], 'method' => 'put']) !!}
-                                {!! Form::button(($agent->status) ? 'Inactive' : 'Active', ['type'=>'submit', 'class' => 'btn ' . $btnClass . ' btn-sm']) !!}
-                                {!! Form::close() !!}
-
+                                <div class="row">
+                                    <div class="col-6">
+                                        {!! Form::open(['route' => ['agents.update', $agent->id], 'method' => 'put']) !!}
+                                        {!! Form::button(($agent->status) ? 'Inactive' : 'Active', ['type'=>'submit', 'class' => 'btn ' . $btnClass . ' btn-sm', 'style' => 'width:80px']) !!}
+                                        {!! Form::close() !!}
+                                    </div>
+                                    <div class="col-6">
+                                        <a class="btn btn-info btn-sm" href="{{ route('agents.show', $agent->id) }}" style="width: 80px;">
+                                            <i class="fas fa-eye"></i>
+                                            Show
+                                        </a>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                         @endforeach

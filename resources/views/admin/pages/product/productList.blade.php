@@ -92,7 +92,7 @@
                     </div> -->
                     <div class="col-sm-3">
                         <div class="form-group">
-                        {!! Form::label('createdAtDateRange', 'Select Created At Date Range') !!}
+                            {!! Form::label('createdAtDateRange', 'Select Created At Date Range') !!}
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="far fa-clock"></i></span>
@@ -181,7 +181,7 @@
                                 {{ $product->category->name }}
                             </td>
                             <td>
-                                <img src="{{ asset('/storage/' . $product->image) }}" alt="Image not found" style="width:100px">
+                                <img src="{{ asset('/storage/' . $product->image) }}" alt="Image not found" style="height:80px; width:80px;">
                             </td>
                             <td>
                                 {{ $product->description }}
@@ -202,7 +202,7 @@
                                 {{ $product->size }}
                             </td>
                             <td class="project-state">
-                                <span class="badge badge-{{ ($product->status) ? 'success' : 'danger' }}">
+                                <span class="badge badge-{{ ($product->status) ? 'success' : 'danger' }}" style="width: 60px;">
                                     {{ ($product->status) ? 'Active' : 'Inactive' }}
                                 </span>
                             </td>
@@ -212,18 +212,18 @@
                             <td>
                                 {{ $product->updated_at }}
                             </td>
-                            <td>
+                            <td class="text-center">
                                 <div class="row">
-                                    <div class="col">
-                                        <a class="btn btn-info btn-sm" href="products/{{$product->id}}/edit">
+                                    <div class="col-6">
+                                        <a class="btn btn-info btn-sm" href="products/{{$product->id}}/edit" style="width: 80px;">
                                             <i class="fas fa-pencil-alt">
                                             </i>
                                             Edit
                                         </a>
                                     </div>
-                                    <div class="col">
+                                    <div class="col-6">
                                         {!! Form::open(['route' => ['products.destroy', $product->id], 'method' => 'delete']) !!}
-                                        {!! Form::button('<i class="fas fa-trash fa-sm"> Delete</i>', ['type'=>'submit', 'class' => 'btn btn-danger btn-sm']) !!}
+                                        {!! Form::button('<i class="fas fa-trash fa-sm"> Delete</i>', ['type'=>'submit', 'class' => 'btn btn-danger btn-sm', 'style' => 'width:80px']) !!}
                                         {!! Form::close() !!}
                                     </div>
                                 </div>

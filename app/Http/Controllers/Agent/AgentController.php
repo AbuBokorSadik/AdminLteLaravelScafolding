@@ -114,9 +114,18 @@ class AgentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        //
+        $title = 'Agent Details';
+        try {
+            $agent = User::where('id',$id)->first();
+
+            return view('admin.pages.agent.agentShow', compact('title', 'agent'));
+        } catch (\Exception $e) {
+            Log::error($e->getFile() . ' ' . $e->getLine() . ' ' . $e->getMessage());
+            $request->session()->flash('error_alert', 'Something went wrong. Please try again later.');
+            return redirect()->back();
+        }
     }
 
     /**

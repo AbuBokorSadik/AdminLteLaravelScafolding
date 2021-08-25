@@ -37,7 +37,7 @@
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
-                        {!! Form::open(['route' => ['products.update', $product->id], 'method' => 'put']) !!}
+                        {!! Form::open(['route' => ['products.update', $product->id], 'method' => 'put', 'files' => true]) !!}
                         <div class="card-body">
                             <div class="form-group">
                                 {!! Form::label('productName', 'Name') !!}
@@ -86,13 +86,22 @@
                                 @enderror
                             </div>
                             <div class="form-group">
+                                {!! Form::label('productMeasurementUnit', 'Measurement Unit') !!}
+                                {!! Form::text('measurement_unit', $product->measurement_unit, ['id' => 'productMeasurementUnit', 'placeholder' => 'Enter measurement unit', 'class' => 'form-control']) !!}
+                                @error('measurement_unit')
+                                <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="form-group">
                                 {!! Form::label('productStatus', 'Status') !!}
                                 {!! Form::select('status', ['1' => 'Active', '0' => 'Inactive'], $product->status, ['class' => 'form-control', 'id' => 'productStatus']) !!}
                             </div>
                             <div class="row form-group">
                                 <div class="col-6">
-                                    {!! Form::file('image', ['id' => 'chooseFile', 'class' => 'custom-file-input']) !!}
-                                    {!! Form::label('chooseFile', $product->image, ['class' => 'custom-file-label']) !!}
+                                    <div class="custom-file">
+                                        {!! Form::file('image', ['id' => 'chooseFile', 'class' => 'custom-file-input']) !!}
+                                        {!! Form::label('chooseFile', 'Select product image...', ['class' => 'custom-file-label']) !!}
+                                    </div>
                                 </div>
                                 <div class="col">
                                     @if(!empty(asset('/storage/' . $product->image)))

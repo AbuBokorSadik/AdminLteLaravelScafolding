@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
@@ -103,9 +104,10 @@ class ProfileController extends Controller
                 $profile->address = $request->address;
                 $profile->additional_email = $request->additional_email;
                 $profile->additional_mobile = $request->additional_mobile;
-                if ($request->avater) {
+                if ($request->avater) {     
                     $fileName = time() . '_' . $request->avater->getClientOriginalName();
                     $filePath = $request->file('avater')->storeAs('profiles', $fileName, 'public');
+                    Storage::disk('public')->delete($profile->avater);
                     $profile->avater = $filePath;
                 }
                 $profile->save();

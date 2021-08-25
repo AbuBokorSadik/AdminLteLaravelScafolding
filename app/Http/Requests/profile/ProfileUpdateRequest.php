@@ -29,7 +29,7 @@ class ProfileUpdateRequest extends FormRequest
             'additional_email' => ['nullable', 'email'],
             'additional_mobile' => 'nullable',
             'address' => 'nullable',
-            'avater' => ['nullable', 'image', 'mimes:jpg,jpeg,png'],
+            'avater' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:1024'],
         ];
     }
 }

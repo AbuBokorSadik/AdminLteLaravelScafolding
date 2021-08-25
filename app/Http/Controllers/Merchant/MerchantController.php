@@ -129,9 +129,18 @@ class MerchantController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        //
+        $title = 'Merchant Details';
+        try {
+            $merchant = User::where('id',$id)->first();
+
+            return view('admin.pages.merchant.merchantShow', compact('title', 'merchant'));
+        } catch (\Exception $e) {
+            Log::error($e->getFile() . ' ' . $e->getLine() . ' ' . $e->getMessage());
+            $request->session()->flash('error_alert', 'Something went wrong. Please try again later.');
+            return redirect()->back();
+        }
     }
 
     /**

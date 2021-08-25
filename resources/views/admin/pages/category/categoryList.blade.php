@@ -128,7 +128,7 @@
                             </td>
                             </td>
                             <td class="project-state">
-                                <span class="badge badge-{{ ($category->status) ? 'success' : 'danger' }}">
+                                <span class="badge badge-{{ ($category->status) ? 'success' : 'danger' }}" style="width: 60px;">
                                     {{ ($category->status) ? 'Active' : 'Inactive' }}
                                 </span>
                             </td>
@@ -138,18 +138,18 @@
                             <td>
                                 {{ $category->updated_at }}
                             </td>
-                            <td>
+                            <td class="text-center">
                                 <div class="row">
-                                    <div class="col-md-6">
-                                        <a class="btn btn-info btn-sm" href="categories/{{$category->id}}/edit">
+                                    <div class="col-6">
+                                        <a class="btn btn-info btn-sm" href="categories/{{$category->id}}/edit" style="width: 80px;">
                                             <i class="fas fa-pencil-alt">
                                             </i>
                                             Edit
                                         </a>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-6">
                                         {!! Form::open(['route' => ['categories.destroy', $category->id], 'method' => 'delete']) !!}
-                                        {!! Form::button('<i class="fas fa-trash"> Delete</i>', ['type'=>'submit', 'class' => 'btn btn-danger btn-sm']) !!}
+                                        {!! Form::button('<i class="fas fa-trash fa-sm"> Delete</i>', ['type'=>'submit', 'class' => 'btn btn-danger btn-sm', 'style' => 'width:80px']) !!}
                                         {!! Form::close() !!}
                                     </div>
                                 </div>

@@ -26,11 +26,12 @@ class ProductUpdateRequest extends FormRequest
         return [
             'name' => 'required',
             'unit_price' => ['required', 'numeric'],
-            // 'image' => ['nullable'],
+            'image' => ['nullable','image','mimes:jpg,jpeg,png'],
             'height' => ['required', 'numeric'],
             'width' => ['required', 'numeric'],
             'weight' => ['required', 'numeric'],
             'size' => ['required', 'numeric'],
+            'measurement_unit' => 'required',
             'status' => ['required', 'in:0,1'],
         ];
     }

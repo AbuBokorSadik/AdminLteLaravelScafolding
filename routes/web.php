@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\Auth\ChangePassword\ChangePasswordController;
+use App\Http\Controllers\Dashboard\AdminDashboardController;
+use App\Http\Controllers\AgentPanel\Dashboard\AgentDashboardController;
+use App\Http\Controllers\MerchantPanel\Dashboard\MerchantDashboardController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use Illuminate\Support\Facades\Route;
 
@@ -30,20 +33,32 @@ Route::group(['namespace' => 'Auth'], function () {
     Route::post('/reset-password', 'ForgotPassword\ForgotPasswordController@resetPassword')->name('reset-password');
 });
 
-
-Route::group(['prefix' => 'admin', 'middleware' => ['isAuth']], function () {
+Route::group(['middleware' => ['isAuth', 'isActive']], function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/change-password', [ChangePasswordController::class, 'showFrom'])->name('change-password');
     Route::post('/change-password-update', [ChangePasswordController::class, 'updatePassword'])->name('change-password-update');
 
-    Route::resource('categories', Category\CategoryController::class);
-
-    Route::resource('products', Product\ProductController::class);
-
-    Route::resource('agents', Agent\AgentController::class);
-
-    Route::resource('merchants', Merchant\MerchantController::class);
-
     Route::resource('profiles', Profile\ProfileController::class);
+
+    Route::group(['prefix' => 'admin', 'middleware' => ['isAdmin']], function () {
+        Route::get('/', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+
+        Route::resource('categories', Category\CategoryController::class);
+
+        Route::resource('products', Product\ProductController::class);
+
+        Route::resource('agents', Agent\AgentController::class);
+
+        Route::resource('merchants', Merchant\MerchantController::class);
+    });
+
+    Route::group(['prefix' => 'agent', 'middleware' => ['isAgent']], function () {
+        Route::get('/', [AgentDashboardController::class, 'index'])->name('agent.dashboard');
+    });
+
+    Route::group(['prefix' => 'merchant', 'middleware' => ['isMerchant']], function () {
+        Route::get('/', [MerchantDashboardController::class, 'index'])->name('merchant.dashboard');
+    });
 });
+add

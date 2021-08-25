@@ -86,6 +86,13 @@
                                 @enderror
                             </div>
                             <div class="form-group">
+                                {!! Form::label('productMeasurementUnit', 'Measurement Unit') !!}
+                                {!! Form::text('measurement_unit','', ['id' => 'productMeasurementUnit', 'placeholder' => 'Enter measurement unit', 'class' => 'form-control']) !!}
+                                @error('measurement_unit')
+                                <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="form-group">
                                 {!! Form::label('productStatus', 'Status') !!}
                                 {!! Form::select('status', ['1' => 'Active', '0' => 'Inactive'], 1, ['class' => 'form-control', 'id' => 'productStatus']) !!}
                             </div>

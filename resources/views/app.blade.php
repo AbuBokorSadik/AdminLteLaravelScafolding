@@ -12,7 +12,29 @@
 
     @include('admin.navigation.navbar')
 
+    @php
+    use App\Constant\UserTypeConst;
+
+    if(auth()->user()->user_type_id == UserTypeConst::ADMIN){
+    @endphp
+
     @include('admin.navigation.sidebar')
+
+    @php
+    }elseif(auth()->user()->user_type_id == UserTypeConst::MERCHANT){
+    @endphp
+
+    @include('admin.navigation.merchantPanel.sidebar')
+
+    @php
+    }else{
+    @endphp
+
+    @include('admin.navigation.agentPanel.sidebar')
+    
+    @php
+    }
+    @endphp
 
     @yield('contentWrapper')
 

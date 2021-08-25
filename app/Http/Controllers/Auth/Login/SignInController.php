@@ -6,6 +6,7 @@ use App\Contracts\UserRepositoryInterface;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\Signin\SignInRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class SignInController extends Controller
@@ -28,7 +29,13 @@ class SignInController extends Controller
     {
         try {
             $isAuthenticated = $this->userRepository->isAuthenticate($request);
+
             if ($isAuthenticated) {
+                if (!auth()->user()->status) {
+                    Auth::logout();
+                    $request->session()->flash('error_alert', 'Your account is inactive.');
+                    return redirect()->route('login');
+                }
                 return redirect()->route('dashboard');
             }
 

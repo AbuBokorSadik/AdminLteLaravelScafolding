@@ -145,10 +145,10 @@
                                 @php
                                 $imgpath = $merchant->avater ? '/storage/' . $merchant->avater : 'img/dummy-user.png';
                                 @endphp
-                                <img class="profile-user-img img-fluid img-circle" src="{{ asset($imgpath) }}" alt="">
+                                <img class="profile-user-img img-fluid img-circle" style="height: 45px; width: 45px;" src="{{ asset($imgpath) }}" alt="">
                             </td>
                             <td class="project-state">
-                                <span class="badge badge-{{ ($merchant->status) ? 'success' : 'danger' }}">
+                                <span class="badge badge-{{ ($merchant->status) ? 'success' : 'danger' }}" style="width: 60px;">
                                     {{ ($merchant->status) ? 'Active' : 'Inactive' }}
                                 </span>
                             </td>
@@ -158,17 +158,23 @@
                             <td>
                                 {{ $merchant->updated_at }}
                             </td>
-
                             @php
                             $btnClass = $merchant->status ? 'btn-danger' : 'btn-success'
                             @endphp
-
                             <td class="text-center">
-
-                                {!! Form::open(['route' => ['merchants.update', $merchant->id], 'method' => 'put']) !!}
-                                {!! Form::button(($merchant->status) ? 'Inactive' : 'Active', ['type'=>'submit', 'class' => 'btn ' . $btnClass . ' btn-sm']) !!}
-                                {!! Form::close() !!}
-
+                                <div class="row">
+                                    <div class="col-6">
+                                        {!! Form::open(['route' => ['merchants.update', $merchant->id], 'method' => 'put']) !!}
+                                        {!! Form::button(($merchant->status) ? 'Inactive' : 'Active', ['type'=>'submit', 'class' => 'btn ' . $btnClass . ' btn-sm', 'style' => 'width:80px']) !!}
+                                        {!! Form::close() !!}
+                                    </div>
+                                    <div class="col-6">
+                                        <a class="btn btn-info btn-sm" href="{{ route('merchants.show', $merchant->id) }}" style="width: 80px;">
+                                            <i class="fas fa-eye"></i>
+                                            Show
+                                        </a>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                         @endforeach
