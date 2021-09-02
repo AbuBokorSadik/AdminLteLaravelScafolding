@@ -59,6 +59,7 @@ Route::group(['middleware' => ['isAuth', 'isActive']], function () {
 
     Route::group(['prefix' => 'merchant', 'middleware' => ['isMerchant']], function () {
         Route::get('/', [MerchantDashboardController::class, 'index'])->name('merchant.dashboard');
+
+        Route::resource('orders', MerchantPanel\Order\OrderController::class);
     });
 });
-add

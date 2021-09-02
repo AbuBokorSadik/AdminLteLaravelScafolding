@@ -26,7 +26,7 @@
         <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
         <li class="nav-item">
-          <a href="/merchant" class="nav-link">
+          <a href="{{ route('dashboard') }}" class="nav-link">
             <i class="fas fa-tachometer-alt"></i>
             <p>
               Dashboard
@@ -34,7 +34,19 @@
             </p>
           </a>
         </li>
-
+        <li class="nav-header">MANAGE ORDER</li>
+        <li class="nav-item">
+          <a href="{{ route('orders.index') }}" class="nav-link">
+          <i class="fas fa-shopping-cart"></i>
+            <p>Order List</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="{{ route('orders.create') }}" class="nav-link">
+          <i class="fas fa-cart-plus"></i>
+            <p>Add Order</p>
+          </a>
+        </li>
       </ul>
     </nav>
     <!-- /.sidebar-menu -->

@@ -26,7 +26,7 @@
         <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
         <li class="nav-item">
-          <a href="/admin" class="nav-link">
+          <a href="{{ route('dashboard') }}" class="nav-link">
             <i class="fas fa-tachometer-alt"></i>
             <p>
               Dashboard
@@ -42,7 +42,6 @@
             <p>Merchant List</p>
           </a>
         </li>
-
         <li class="nav-item">
           <a href="{{ route('merchants.create') }}" class="nav-link">
             <i class="fas fa-user-plus"></i>
