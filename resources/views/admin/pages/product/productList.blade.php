@@ -105,7 +105,7 @@
             </div>
             <div class="card-footer">
                 {!! Form::submit('Search', ['class' => 'btn btn-success']) !!}
-                {!! Form::submit('Clear Filter', ['class' => 'btn btn-secondary', ]) !!}
+                {!! Form::submit('Clear Filter', ['class' => 'btn btn-secondary', 'id' => 'clear' ]) !!}
             </div>
             {!! Form::close() !!}
         </div>
@@ -162,8 +162,8 @@
                             </th>
                             <th>
                                 Updated Time
-                            </th class="text-center">
-                            <th>
+                            </th>
+                            <th class="text-center">
                                 Action
                             </th>
                         </tr>

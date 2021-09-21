@@ -5,6 +5,11 @@ use App\Http\Controllers\Dashboard\AdminDashboardController;
 use App\Http\Controllers\AgentPanel\Dashboard\AgentDashboardController;
 use App\Http\Controllers\MerchantPanel\Dashboard\MerchantDashboardController;
 use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\MerchantPanel\Order\ProductSelectController;
+use App\Http\Controllers\MerchantPanel\Order\ProductServiceChargeController;
+use App\Http\Controllers\MerchantPanel\Order\SellerAreaController;
+use App\Http\Controllers\MerchantPanel\Order\SellerProductController;
+use App\Http\Controllers\Order\OrderStatusUpdateController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -51,6 +56,15 @@ Route::group(['middleware' => ['isAuth', 'isActive']], function () {
         Route::resource('agents', Agent\AgentController::class);
 
         Route::resource('merchants', Merchant\MerchantController::class);
+
+        Route::resource('order', Order\OrderController::class);
+
+        Route::get('product/{product_id}','Order\ProductSelectController@getProduct')->name('product');
+
+        Route::get('order-types/{buyer_id}','Order\OrderTypeController@getOrderTypes')->name('order-types');
+
+        Route::get('service-charge/{buyer_id}/{order_type_id}', 'Order\ProductServiceChargeController@getServiceCharge')->name('service-charge');
+        Route::post('order-status-update',[OrderStatusUpdateController::class, 'updateOrderStatus'])->name('order.status.update');
     });
 
     Route::group(['prefix' => 'agent', 'middleware' => ['isAgent']], function () {
@@ -60,6 +74,16 @@ Route::group(['middleware' => ['isAuth', 'isActive']], function () {
     Route::group(['prefix' => 'merchant', 'middleware' => ['isMerchant']], function () {
         Route::get('/', [MerchantDashboardController::class, 'index'])->name('merchant.dashboard');
 
+        Route::get('seller-product/{seller_id}',[SellerProductController::class,'getProducts'])->name('seller-product');
+
+        Route::get('product/{product_id}',[ProductSelectController::class,'getProduct'])->name('product');
+
+        Route::get('areas/{seller_id}',[SellerAreaController::class,'getAreas'])->name('areas');
+
+        Route::get('service-charge/{order_type_id}',[ProductServiceChargeController::class, 'getServiceCharge'])->name('service-charge');
+
         Route::resource('orders', MerchantPanel\Order\OrderController::class);
+
+        Route::post('order-status-update',[OrderStatusUpdateController::class, 'updateOrderStatus'])->name('merchant.order.status.update');
     });
 });

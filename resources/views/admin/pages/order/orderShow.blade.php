@@ -30,7 +30,7 @@
                     <!-- general form elements -->
                     <div class="card card-info">
                         <div class="card-header">
-                            <h3 class="card-title">Seller Details</h3>
+                            <h3 class="card-title">Buyer Details</h3>
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
@@ -41,15 +41,15 @@
                                         <li class="list-group-item">
                                             <div class="row">
                                                 <div class="col-6">
-                                                    <p><b>Seller Name</b> </p>
+                                                    <p><b>Name</b> </p>
                                                 </div>
                                                 <div class="col-6">
                                                     <p>
                                                         @php
-                                                        $imgpath = $order->orderAssaingment->assaignedTo->avater ? '/storage/' . $order->orderAssaingment->assaignedTo->avater : 'img/dummy-user.jpg';
+                                                        $imgpath = $order->orderAssaingment->assaignedBy->avater ? '/storage/' . $order->orderAssaingment->assaignedBy->avater : 'img/dummy-user.jpg';
                                                         @endphp
                                                         <img class="profile-user-img img-fluid img-circle" style="height: 45px; width: 45px;" src="{{ asset($imgpath) }}" alt="">
-                                                        {{ $order->orderAssaingment->assaignedTo->name }}
+                                                        {{ $order->orderAssaingment->assaignedBy->name }}
                                                     </p>
                                                 </div>
                                             </div>
@@ -61,7 +61,7 @@
                                                 </div>
                                                 <div class="col-6">
                                                     <p>
-                                                        {{ $order->orderAssaingment->assaignedTo->email }}
+                                                        {{ $order->orderAssaingment->assaignedBy->email }}
                                                     </p>
                                                 </div>
                                             </div>
@@ -73,7 +73,7 @@
                                                 </div>
                                                 <div class="col-6">
                                                     <p>
-                                                        {{ $order->orderAssaingment->assaignedTo->mobile }}
+                                                        {{ $order->orderAssaingment->assaignedBy->mobile }}
                                                     </p>
                                                 </div>
                                             </div>
@@ -85,7 +85,7 @@
                                                 </div>
                                                 <div class="col-6">
                                                     <p>
-                                                        {{ $order->orderAssaingment->assaignedTo->address }}
+                                                        {{ $order->orderAssaingment->assaignedBy->address }}
                                                     </p>
                                                 </div>
                                             </div>
@@ -109,7 +109,7 @@
                     <!-- general form elements -->
                     <div class="card card-info">
                         <div class="card-header">
-                            <h3 class="card-title">Total Payable</h3>
+                            <h3 class="card-title">Total Receivable</h3>
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
@@ -183,7 +183,7 @@
                                         <li class="list-group-item">
                                             <div class="row">
                                                 <div class="col-6 text-right">
-                                                    <p><b>Total Payable :</b> </p>
+                                                    <p><b>Total Receivable :</b> </p>
                                                 </div>
                                                 <div class="col-2 text-right">
                                                     <p>
@@ -201,7 +201,7 @@
             </div>
         </div>
         <div class="card-footer">
-            <a class="btn btn-secondary" href="{{ route('orders.index') }}">
+            <a class="btn btn-secondary" href="{{ route('order.index') }}">
                 </i>
                 Cancel
             </a>

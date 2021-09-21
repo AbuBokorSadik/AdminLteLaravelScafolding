@@ -1,18 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\MerchantPanel\Order;
+namespace App\Http\Controllers\Order;
 
+use App\Constant\OrderStatusSlabConst;
 use App\Constant\OrderStatusTypeConst;
 use App\Constant\PaymentStatusTypeConst;
-use App\Constant\StatusTypeConst;
-use App\Constant\UserTypeConst;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\MerchantPanel\Order\OrderStoreRequest;
+use App\Http\Requests\Order\OrderStoreRequest;
+use App\Models\Area;
 use App\Models\CompanyTaskOrderType;
 use App\Models\Order;
 use App\Models\OrderAssignment;
 use App\Models\OrderAssignmentActivity;
 use App\Models\OrderProduct;
+use App\Models\OrderStatus;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
@@ -32,14 +33,13 @@ class OrderController extends Controller
         $title = 'Order List';
         try {
             $orders = Order::wherehas('orderAssaingment', function (Builder $query) {
-                $query->where('assigned_by_id', auth()->user()->id);
+                $query->where('assigned_to_id', auth()->user()->id);
             })
-                ->with(['orderType', 'orderAssaingment.assaignedTo', 'orderAssaingment.orderStatus'])
+                ->with(['orderType', 'orderAssaingment.assaignedBy'])
                 ->filterByID($request)
                 ->filterByOrderID($request)
                 ->filterByContactName($request)
                 ->filterByContactEmail($request)
-                ->filterByContactMobile($request)
                 ->filterByContactMobile($request)
                 ->filterByOrderType($request)
                 ->filterByDeadlineDateRange($request)
@@ -47,13 +47,20 @@ class OrderController extends Controller
                 ->orderBy('id', 'DESC')
                 ->paginate(20);
 
+            $orderStatuses = OrderStatus::pluck('status', 'id');
+
+            $agents = User::wherehas('agentsAdmin', function (Builder $query) {
+                $query->where('user_id', auth()->user()->id);
+            })
+                ->get();
+
             // echo '<pre>';
-            // print_r($orders->toArray());
+            // print_r($agents->toArray());
             // exit();
 
             $request->flash();
 
-            return view('admin.pages.merchantPanel.order.orderList', compact('title', 'orders'));
+            return view('admin.pages.order.orderList', compact('title', 'orders', 'orderStatuses', 'agents'));
         } catch (\Exception $e) {
             Log::error($e->getFile() . ' ' . $e->getLine() . ' ' . $e->getMessage());
             $request->session()->flash('error_alert', 'Something went wrong. Please try again later.');
@@ -70,19 +77,25 @@ class OrderController extends Controller
     {
         $title = 'Add Order';
         try {
-            $sellers = User::where('user_type_id', UserTypeConst::ADMIN)
-                ->whereHas('merchants', function (Builder $query) {
-                    $query->where('merchant_id', auth()->user()->id)
-                        ->where('status', StatusTypeConst::ACTIVE);
-                })
+            $buyers = User::wherehas('merchants', function (Builder $query) {
+                $query->where('user_id', auth()->user()->id);
+            })
                 ->get();
 
+            $products = Product::where([
+                'created_by_id' => auth()->user()->id
+            ])
+                ->pluck('name', 'id');
+
+            $areas = Area::where([
+                'created_by_id' => auth()->user()->id,
+            ])
+                ->pluck('name', 'id');
             // echo '<pre>';
-            // print_r($sellers->toArray());
+            // print_r($buyers->toArray());
             // exit();
 
-            $orderTypes = CompanyTaskOrderType::where('company_id', auth()->user()->id)->pluck('type', 'type_id');
-            return view('admin.pages.merchantPanel.order.orderAdd', compact('title', 'orderTypes', 'sellers'));
+            return view('admin.pages.order.orderAdd', compact('title', 'buyers', 'products', 'areas'));
         } catch (\Exception $e) {
             Log::error($e->getFile() . ' ' . $e->getLine() . ' ' . $e->getMessage());
             $request->session()->flash('error_alert', 'Something went wrong. Please try again later.');
@@ -96,7 +109,7 @@ class OrderController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(OrderStoreRequest $request)
+    public function store(Request $request)
     {
         // echo '<pre>';
         // print_r($request->all());
@@ -117,7 +130,7 @@ class OrderController extends Controller
                 $order = Order::create([
                     'order_id' => $order_unique_id,
                     'created_by_id' => auth()->user()->id,
-                    'order_type_id' => $request->order_type,
+                    'order_type_id' => $request->orderType,
                     'contact_name' => $request->name,
                     'contact_mobile' => $request->mobile,
                     'contact_email' => $request->email,
@@ -169,7 +182,7 @@ class OrderController extends Controller
                 // print_r([gettype($order_type->slab_type),OrderStatusSlabConst::FIXED]);
                 // exit();
 
-                if ($order_type->slab_type == 'F') {
+                if ($order_type->slab_type == OrderStatusSlabConst::FIXED) {
                     $service_charge = $order_type->charge;
                 } else {
                     $service_charge = ($amount * $order_type->charge) / 100;
@@ -177,10 +190,10 @@ class OrderController extends Controller
 
                 OrderAssignment::create([
                     'order_id' => $order->id,
-                    'assigned_by_id' => auth()->user()->id,
-                    'assigned_to_id' => $request->seller,
+                    'assigned_by_id' => $request->buyerId,
+                    'assigned_to_id' => auth()->user()->id,
                     'current_order_status_id' => OrderStatusTypeConst::PENDING,
-                    'area_id' => $request->area,
+                    'area_id' => $request->area_id,
                     'service_charge' => $service_charge,
                     'payment' => PaymentStatusTypeConst::DUE,
                 ]);
@@ -214,15 +227,15 @@ class OrderController extends Controller
                 ->paginate(15);
 
             $orderAssignmentActivities = OrderAssignmentActivity::with(['createdBy', 'orderStatus'])
-            ->where('order_assignment_id', $order->orderAssaingment->id)
-            ->orderBy('id', 'DESC')
-            ->paginate(15);
+                ->where('order_assignment_id', $order->orderAssaingment->id)
+                ->orderBy('id', 'DESC')
+                ->paginate(15);
 
             // echo '<pre>';
-            // print_r($products->toArray());
+            // print_r($orderAssignmentActivities->toArray());
             // exit();
 
-            return view('admin.pages.merchantPanel.order.orderShow', compact('title', 'order', 'products', 'orderAssignmentActivities'));
+            return view('admin.pages.order.orderShow', compact('title', 'order', 'products', 'orderAssignmentActivities'));
         } catch (\Exception $e) {
             Log::error($e->getFile() . ' ' . $e->getLine() . ' ' . $e->getMessage());
             $request->session()->flash('error_alert', 'Something went wrong. Please try again later.');
@@ -250,7 +263,7 @@ class OrderController extends Controller
      */
     public function update(Request $request, $id)
     {
-        
+        //
     }
 
     /**
@@ -261,6 +274,6 @@ class OrderController extends Controller
      */
     public function destroy($id)
     {
-        
+        //
     }
 }

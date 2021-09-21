@@ -3,60 +3,63 @@
 @section('customJs')
 <script>
     $(function() {
-
-        const getAreas = function(seller) {
-            if (seller) {
-                const getUrl = "{{ URL('merchant/areas') }}" + "/" + seller;
-                $.ajax({
-                    type: "GET",
-                    url: getUrl,
-                    success: function(response) {
-                        const data = JSON.parse(response);
-                        if (data.code == 200) {
-                            $("#contactArea").html(data.data);
-
-                            console.log(data.data);
-                        } else {
-                            alert("Something went wrong. Please try again later.");
-                        }
-                    },
-                    error: function() {
-                        alert("Something went wrong. Please try again later.");
-                    }
-                });
-            } else {
-                $("#contactArea").html("");
-            }
-        }
-
-        const getProducts = function() {
-
-
+        const getOrderType = function(){
             if ($(this).val()) {
-                const getUrl = "{{ URL('merchant/seller-product') }}" + "/" + $(this).val();
-                $.ajax({
-                    type: "GET",
-                    url: getUrl,
-                    success: function(response) {
-                        const data = JSON.parse(response);
-                        if (data.code == 200) {
-                            $("#seller-product").html(data.data);
-                            console.log(data.data);
-                        } else {
+                    const getUrl = "{{ URL('admin/order-types') }}" + "/" + $(this).val();
+                    $.ajax({
+                        type: "GET",
+                        url: getUrl,
+                        success: function(response) {
+                            const data = JSON.parse(response);
+                            if (data.code == 200) {
+                                $("#add-orderType").html(data.data);
+                                console.log(data.data);
+                            } else {
+                                alert("Something went wrong. Please try again later.");
+                            }
+                        },
+                        error: function() {
                             alert("Something went wrong. Please try again later.");
                         }
-                    },
-                    error: function() {
-                        alert("Something went wrong. Please try again later.");
-                    }
-                });
-            } else {
-                $("#seller-product").html("");
-            }
-            getAreas($(this).val())
+                    });
+                }
         }
 
-        $("#seller").change(getProducts);
+        const getProduct = function() {
+            if ($(this).val()) {
+                let product_id = $(this).val();
+                let product_exist = false;
+                $(".product_quantity").each(function() {
+                    if (product_id == $(this).attr("product_id")) {
+                        product_exist = true;
+                    }
+
+                });
+                // console.log("product exist: " + product_exist);
+                if (!product_exist) {
+                    const getUrl = "{{ URL('admin/product') }}" + "/" + $(this).val();
+                    $.ajax({
+                        type: "GET",
+                        url: getUrl,
+                        success: function(response) {
+                            const data = JSON.parse(response);
+                            if (data.code == 200) {
+                                $("#add_product").append(data.data);
+                                console.log(data.data);
+                            } else {
+                                alert("Something went wrong. Please try again later.");
+                            }
+                        },
+                        error: function() {
+                            alert("Something went wrong. Please try again later.");
+                        }
+                    });
+                }
+            }
+        }
+
+        $("#buyerId").change(getOrderType);
+        $("#product").change(getProduct);
     });
 </script>
 @endsection
@@ -88,7 +91,7 @@
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
-            {!! Form::open(['route' => 'orders.store', 'method' => 'post', 'files' => true]) !!}
+            {!! Form::open(['route' => 'order.store', 'method' => 'post', 'files' => true]) !!}
             <div class="row">
                 <!-- left column -->
                 <div class="col-md">
@@ -100,31 +103,34 @@
                         <!-- /.card-header -->
                         <!-- form start -->
                         <div class="card-body">
-                            <div class="form-group">
-                                {!! Form::label('orderType', 'Order Type') !!}
-                                {!! Form::select('order_type', $orderTypes->prepend('Select order type...', null), null, ['class' => 'form-control', 'id' => 'orderType']) !!}
-                                @error('order_type')
-                                <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
                             <div class="form-group" id="seller-div">
-                                <label>Seller</label>
-                                <select name="seller" id="seller" class="form-control">
-                                    <option value="" selected>Select seller...</option>
-                                    @foreach($sellers as $seller)
+                                <label>Buyer</label>
+                                <select name="buyerId" id="buyerId" class="form-control">
+                                    <option value="" selected>Select buyer...</option>
+                                    @foreach($buyers as $buyer)
                                     @php
-                                    $imgpath = $seller->avater ? '/storage/' . $seller->avater : 'img/dummy-user.png';
+                                    $imgpath = $buyer->avater ? '/storage/' . $buyer->avater : 'img/dummy-user.png';
                                     @endphp
-                                    <option value="{{ $seller->id }}" data-img-src="{{ asset($imgpath) }}">
-                                        {{ $seller->name }}
+                                    <option value="{{ $buyer->id }}" data-img-src="{{ asset($imgpath) }}">
+                                        {{ $buyer->name }}
                                     </option>
                                     @endforeach
                                 </select>
-                                @error('seller')
+                                @error('buyerId')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <div class="form-group" id="seller-product">
+                            <div id="add-orderType">
+                                <!-- order type goes here-->
+                            </div>
+                            <div class="form-group">
+                                {!! Form::label('product', 'Product') !!}
+                                {!! Form::select('product', $products->prepend('Select product...', null), null, ['class' => 'form-control', 'id' => 'product']) !!}
+                                @error('product')
+                                <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="form-group" id="add_product">
                                 <!-- seller product goes here-->
                             </div>
                             <div class="form-group">
@@ -234,7 +240,13 @@
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <div id="contactArea"></div>
+                            <div class="form-group">
+                                {!! Form::label('area_id', 'Contact Area') !!}
+                                {!! Form::select('area_id', $areas->prepend('Select contact area...', null), null, ['class' => 'form-control', 'id' => 'area_id']) !!}
+                                @error('product')
+                                <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
                             <div class="form-group">
                                 {!! Form::label('address', 'Contact Address') !!}
                                 {!! Form::text('address','', ['id' => 'address', 'placeholder' => 'Enter address...', 'class' => 'form-control']) !!}
@@ -277,7 +289,7 @@
             <div class="card-footer">
                 {!! Form::submit('Place order', ['class' => 'btn btn-success btn-sm']) !!}
 
-                <a class="btn btn-secondary btn-sm" href="{{ route('orders.index') }}">
+                <a class="btn btn-secondary btn-sm" href="{{ route('order.index') }}">
                     </i>
                     Cancel
                 </a>

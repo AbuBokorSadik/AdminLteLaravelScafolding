@@ -65,7 +65,7 @@ class User extends Authenticatable
 
     public function merchants()
     {
-        return $this->hasMany(UsersMerchant::class);
+        return $this->hasMany(UsersMerchant::class, 'merchant_id');
     }
 
     public function merchantsAdmin()
@@ -76,6 +76,11 @@ class User extends Authenticatable
     public function userType()
     {
         return $this->belongsTo(UserType::class);
+    }
+
+    public function areas()
+    {
+        return $this->hasMany(Area::class, 'created_by_id');
     }
 
     public function scopeFilterByID($query, Request $request)

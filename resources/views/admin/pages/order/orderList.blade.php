@@ -3,13 +3,16 @@
 @section('customJs')
 <script>
     $(function() {
-        const cancelOrder = function() {
-            $("#orderCancelModal").modal('show');
-            $("#formOrderAssaingmentId").val($(this).attr('orderAssaingmentId'));
-            // alert($("#formOrderAssaingmentId").val());
+        const updateStatus = function() {
+            $("#orderStatusChangeModal").modal('show');
+            const orderAssaingmentId = $(this).attr("orderAssaingmentId");
+            const orderStatusId = $(this).val();
+            $("#formOrderAssaingmentId").val(orderAssaingmentId);
+            $("#formOrderStatusId").val(orderStatusId);
+            // alert("Aid: " + orderAssaingmentId + "Oid: " + orderStatusId);
         }
 
-        $(".cancelOrder").click(cancelOrder);
+        $(".change_order_status_id").change(updateStatus);
     });
 </script>
 @endsection
@@ -41,19 +44,19 @@
     <!-- Main content -->
     <section class="content">
         <div class="card">
-            {!! Form::open(['route' => 'orders.index', 'method' => 'get']) !!}
+            {!! Form::open(['route' => 'order.index', 'method' => 'get']) !!}
             <div class="card-body">
                 <div class="row">
                     <div class="col">
                         <div class="form-group">
-                            {!! Form::label('id', 'Id') !!}
-                            {!! Form::text('id', old('id'), ['id' => 'id', 'placeholder' => 'Enter id...', 'class' => 'form-control']) !!}
+                            {!! Form::label('orderId', 'Order Id') !!}
+                            {!! Form::text('order_id', old('order_id'), ['id' => 'orderId', 'placeholder' => 'Enter order id...', 'class' => 'form-control']) !!}
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group">
-                            {!! Form::label('orderId', 'Order Id') !!}
-                            {!! Form::text('order_id', old('order_id'), ['id' => 'orderId', 'placeholder' => 'Enter order id...', 'class' => 'form-control']) !!}
+                            {!! Form::label('buyerName', 'Buyer Name') !!}
+                            {!! Form::text('buyerName', old('buyerName'), ['id' => 'buyerName', 'placeholder' => 'Enter buyer name...', 'class' => 'form-control']) !!}
                         </div>
                     </div>
                     <div class="col">
@@ -119,20 +122,23 @@
             <div class="card-header">
                 <h3 class="card-title">Order List</h3>
                 <div class="card-tools">
-                    {!! Form::open(['route' => 'orders.create', 'method' => 'get']) !!}
+                    {!! Form::open(['route' => 'order.create', 'method' => 'get']) !!}
                     {!! Form::button('<i class="fas fa-plus"> Add order</i>', ['type'=>'submit', 'class' => 'btn btn-success']) !!}
                     {!! Form::close() !!}
                 </div>
             </div>
             <div class="card-body p-0">
-                <table class="table table-striped projects text-center" id="dataTable">
+                <table class="table table-striped projects text-center">
                     <thead>
                         <tr>
                             <th>
                                 Order Id
                             </th>
                             <th>
-                                Seller Information
+                                Assignee
+                            </th>
+                            <th>
+                                Buyer Information
                             </th>
                             <th>
                                 Contact Name
@@ -162,6 +168,9 @@
                                 Created Time
                             </th>
                             <th>
+                                Assigne Order
+                            </th>
+                            <th>
                                 Action
                             </th>
                         </tr>
@@ -171,18 +180,21 @@
                         <tr>
                             <td>
                                 <span style="font-weight: bold; color: #3d9970;">
-                                    {{ $order->order_id }}
+                                    {{ $order->order_id}}
                                 </span>
+                            </td>
+                            <td>
+
                             </td>
                             <td>
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        {{ $order->orderAssaingment->assaignedTo->name }}
+                                        {{ $order->orderAssaingment->assaignedBy->name }}
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-sm">
-                                        {{ $order->orderAssaingment->assaignedTo->mobile }}
+                                        {{ $order->orderAssaingment->assaignedBy->mobile }}
                                     </div>
                                 </div>
                             </td>
@@ -202,10 +214,14 @@
                                 {!! Form::submit($order->orderType->type, ['class' => 'btn btn-sm', 'style' => 'background-color:' . $order->orderType->color . '; width: 80px;']) !!}
                             </td>
                             <td>
-                                {!! Form::submit($order->orderAssaingment->orderStatus->status, ['class' => 'btn btn-sm', 'style' => 'background-color:' . $order->orderAssaingment->orderStatus->color . '; width: 80px;']) !!}
+                                @if($order->orderAssaingment->orderStatus->id == App\Constant\OrderStatusTypeConst::CANCELED)
+                                {!! Form::submit($order->orderAssaingment->orderStatus->status, ['class' => 'btn btn-sm', 'style' => 'background-color:' . $order->orderAssaingment->orderStatus->color . '; width: 120px;']) !!}
+                                @else
+                                {!! Form::select('change_order_status_id', $orderStatuses, $order->orderAssaingment->orderStatus->id, ['class' => 'form-control change_order_status_id', 'id' => 'change_order_status_id', 'orderAssaingmentId' => $order->orderAssaingment->id, 'style' => 'background-color:' . $order->orderAssaingment->orderStatus->color . ';width: 120px;']) !!}
+                                @endif
                             </td>
                             <td>
-                                {{ ceil($order->amount) }} <b> {{ config('app_configuration.currency') }} </b>
+                                {{ ceil($order->amount) }} <b> {{ config('app_configuration.currency')}} </b>
                             </td>
                             <td>
                                 {{ date('d M, Y', strtotime($order->deadline)) }}
@@ -213,20 +229,15 @@
                             <td>
                                 {{ date('d M, Y', strtotime($order->created_at)) }}
                             </td>
+                            <td>
+                                {!! Form::select('agent_id', $agents, '', ['class' => 'form-control agent_id', 'style' => 'background-color:' . $order->orderAssaingment->orderStatus->color . ';']) !!}
+                            </td>
                             <td class="text-center">
-                                <div class="row">
-                                    <div class="col-6">
-                                        <a class="btn btn-info btn-sm" href="{{ route('orders.show', $order->id) }}" style="width: 80px;">
-                                            <i class="fas fa-eye"></i>
-                                            Show
-                                        </a>
-                                    </div>
-                                    <div class="col-6">
-                                        @if($order->orderAssaingment->orderStatus->id == App\Constant\OrderStatusTypeConst::PENDING)
-                                        {!! Form::button('<i class="fas fa-trash fa-sm"> Cancel</i>', ['orderAssaingmentId' => $order->orderAssaingment->id, 'type'=>'submit', 'class' => 'btn btn-danger btn-sm cancelOrder', 'style' => 'width:80px']) !!}
-                                        @endif
-                                    </div>
-                                </div>
+                                <a class="btn btn-info btn-sm" href="{{ route('order.show', $order->id) }}" style="width: 80px;">
+                                    <i class="fas fa-eye"></i>
+                                    Show
+                                </a>
+
                             </td>
                         </tr>
                         @endforeach
@@ -239,18 +250,17 @@
             <!-- /.card-body -->
         </div>
         <!-- /.card -->
-
     </section>
     <!-- /.content -->
 </div>
 
-<div class="modal fade" id="orderCancelModal">
+<div class="modal fade" id="orderStatusChangeModal">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
 
             <!-- Modal Header -->
             <div class="modal-header">
-                <h4 class="modal-title">Cancel Order</h4>
+                <h4 class="modal-title">Change Order Status</h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
 
@@ -258,17 +268,18 @@
             <div class="form-group">
                 <div class="card-body">
                     <div class="modal-body text-center">
-                        <p>Are you sure to cancel the order.</p>
+                        <p>Are you sure to change the order status.</p>
                     </div>
                 </div>
             </div>
 
             <!-- Modal footer -->
             <div class="modal-footer">
-                {!! Form::open(['route' => 'merchant.order.status.update', 'method' => 'post']) !!}
-                {!! Form::submit('Close', ['class' => 'btn btn-danger', 'data-dismiss' => 'modal', ]) !!}
+                {!! Form::open(['route' => 'order.status.update', 'method' => 'post']) !!}
                 {!! Form::hidden('formOrderAssaingmentId', '', ['id' => 'formOrderAssaingmentId']) !!}
-                {!! Form::submit('Cancel order', ['class' => 'btn btn-success']) !!}
+                {!! Form::hidden('formOrderStatusId', '', ['id' => 'formOrderStatusId']) !!}
+                {!! Form::submit('Close', ['class' => 'btn btn-danger', 'data-dismiss' => 'modal', ]) !!}
+                {!! Form::submit('Change order', ['class' => 'btn btn-success']) !!}
                 {!! Form::close() !!}
             </div>
 

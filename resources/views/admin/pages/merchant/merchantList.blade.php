@@ -77,7 +77,7 @@
             </div>
             <div class="card-footer">
                 {!! Form::submit('Search', ['class' => 'btn btn-success']) !!}
-                {!! Form::submit('Clear Filter', ['class' => 'btn btn-secondary']) !!}
+                {!! Form::submit('Clear Filter', ['class' => 'btn btn-secondary', 'id' => 'clear']) !!}
             </div>
             {!! Form::close() !!}
         </div>

@@ -1,3 +1,4 @@
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
 <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
 <!-- <script src="plugins/jquery-ui/jquery-ui.min.js"></script> -->
 
@@ -57,5 +58,15 @@
       showDropdowns: true,
     })
 
+    const clearFilter = function() {
+      $('input:text, select').each(function() {
+        $(this).val('');
+      });
+    }
+
+    $("#clear").click(clearFilter);
+
   })
 </script>
+
+@yield('customJs')

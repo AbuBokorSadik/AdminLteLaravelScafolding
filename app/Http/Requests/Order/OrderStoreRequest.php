@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\MerchantPanel\Order;
+namespace App\Http\Requests\Order;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -37,7 +37,7 @@ class OrderStoreRequest extends FormRequest
             'deadline' => 'required',
             'reference_id' => 'required',
             'order_type' => 'required',
-            'seller' => 'required',
+            'buyerId' => 'required',
             // 'amount' => 'required',
             'instruction' => 'nullable',
             'note' => 'nullable',
