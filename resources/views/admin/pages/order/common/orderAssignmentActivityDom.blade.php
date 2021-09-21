@@ -37,7 +37,7 @@
                         <td>
                             @php
                             $serialNo++;
-                            $imgpath = $orderAssignmentActivity->createdBy->avater ? '/storage/' . $orderAssignmentActivity->createdBy->avater : 'img/dummy-user.jpg';
+                            $imgpath = $orderAssignmentActivity->createdBy->avater ? '/storage/' . $orderAssignmentActivity->createdBy->avater : 'img/dummy-user.png';
                             @endphp
                             <img class="profile-user-img img-fluid img-circle" style="height: 45px; width: 45px;" src="{{ asset($imgpath) }}" alt="">
                             {{ $orderAssignmentActivity->createdBy->name }}

@@ -15,11 +15,11 @@ class OrderStatusUpdateController extends Controller
 {
     public function updateOrderStatus(Request $request)
     {
-        // echo "<pre>";
-        // print_r($request->all());
-        // exit();
+        echo "<pre>";
+        print_r($request->all());
+        exit();
 
-        $orderAssignment = OrderAssignment::where('id', $request->formOrderAssaingmentId)
+        $orderAssignment = OrderAssignment::where('id', $request->formOrderAssignmentId)
             ->first();
 
         if ($orderAssignment->current_order_status_id != OrderStatusTypeConst::PENDING) {
@@ -34,7 +34,7 @@ class OrderStatusUpdateController extends Controller
                 $orderAssignment->save();
 
                 OrderAssignmentActivity::create([
-                    'order_assignment_id' => $request->formOrderAssaingmentId,
+                    'order_assignment_id' => $request->formOrderAssignmentId,
                     'created_by_id' => auth()->user()->id,
                     'status_id' => OrderStatusTypeConst::CANCELED,
                 ]);

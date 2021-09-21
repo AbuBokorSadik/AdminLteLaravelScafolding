@@ -46,10 +46,10 @@
                                                 <div class="col-6">
                                                     <p>
                                                         @php
-                                                        $imgpath = $order->orderAssaingment->assaignedBy->avater ? '/storage/' . $order->orderAssaingment->assaignedBy->avater : 'img/dummy-user.jpg';
+                                                        $imgpath = $order->orderAssignment->assignedBy->avater ? '/storage/' . $order->orderAssignment->assignedBy->avater : 'img/dummy-user.png';
                                                         @endphp
                                                         <img class="profile-user-img img-fluid img-circle" style="height: 45px; width: 45px;" src="{{ asset($imgpath) }}" alt="">
-                                                        {{ $order->orderAssaingment->assaignedBy->name }}
+                                                        {{ $order->orderAssignment->assignedBy->name }}
                                                     </p>
                                                 </div>
                                             </div>
@@ -61,7 +61,7 @@
                                                 </div>
                                                 <div class="col-6">
                                                     <p>
-                                                        {{ $order->orderAssaingment->assaignedBy->email }}
+                                                        {{ $order->orderAssignment->assignedBy->email }}
                                                     </p>
                                                 </div>
                                             </div>
@@ -73,7 +73,7 @@
                                                 </div>
                                                 <div class="col-6">
                                                     <p>
-                                                        {{ $order->orderAssaingment->assaignedBy->mobile }}
+                                                        {{ $order->orderAssignment->assignedBy->mobile }}
                                                     </p>
                                                 </div>
                                             </div>
@@ -85,7 +85,7 @@
                                                 </div>
                                                 <div class="col-6">
                                                     <p>
-                                                        {{ $order->orderAssaingment->assaignedBy->address }}
+                                                        {{ $order->orderAssignment->assignedBy->address }}
                                                     </p>
                                                 </div>
                                             </div>
@@ -136,7 +136,7 @@
                                                 </div>
                                                 <div class="col-2 text-right">
                                                     <p>
-                                                        {{ ceil($order->orderAssaingment->service_charge) }} <b> {{ config('app_configuration.currency')}} </b>
+                                                        {{ ceil($order->orderAssignment->service_charge) }} <b> {{ config('app_configuration.currency')}} </b>
                                                     </p>
                                                 </div>
                                             </div>
@@ -148,7 +148,7 @@
                                                 </div>
                                                 <div class="col-2 text-right">
                                                     <p>
-                                                        {{ ceil($order->orderAssaingment->area_charge) }} <b> {{ config('app_configuration.currency')}} </b>
+                                                        {{ ceil($order->orderAssignment->area_charge) }} <b> {{ config('app_configuration.currency')}} </b>
                                                     </p>
                                                 </div>
                                             </div>
@@ -160,7 +160,7 @@
                                                 </div>
                                                 <div class="col-2 text-right">
                                                     <p>
-                                                        {{ ceil($order->orderAssaingment->weight_charge) }} <b> {{ config('app_configuration.currency')}} </b>
+                                                        {{ ceil($order->orderAssignment->weight_charge) }} <b> {{ config('app_configuration.currency')}} </b>
                                                     </p>
                                                 </div>
                                             </div>
@@ -172,13 +172,13 @@
                                                 </div>
                                                 <div class="col-2 text-right">
                                                     <p>
-                                                        {{ ceil($order->orderAssaingment->delivery_type_charge) }} <b> {{ config('app_configuration.currency')}} </b>
+                                                        {{ ceil($order->orderAssignment->delivery_type_charge) }} <b> {{ config('app_configuration.currency')}} </b>
                                                     </p>
                                                 </div>
                                             </div>
                                         </li>
                                         @php
-                                        $total_payable = ceil($order->amount + $order->orderAssaingment->service_charge + $order->orderAssaingment->area_charge + $order->orderAssaingment->weight_charge + $order->orderAssaingment->delivery_type_charge);
+                                        $total_payable = ceil($order->amount + $order->orderAssignment->service_charge + $order->orderAssignment->area_charge + $order->orderAssignment->weight_charge + $order->orderAssignment->delivery_type_charge);
                                         @endphp
                                         <li class="list-group-item">
                                             <div class="row">

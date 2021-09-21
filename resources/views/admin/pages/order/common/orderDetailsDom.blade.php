@@ -44,7 +44,7 @@
                                     </div>
                                     <div class="col-6">
                                         <p>
-                                            {!! Form::submit($order->orderAssaingment->orderStatus->status, ['class' => 'btn btn-sm', 'style' => 'background-color:' . $order->orderAssaingment->orderStatus->color . '; width: 80px;']) !!}
+                                            {!! Form::submit($order->orderAssignment->orderStatus->status, ['class' => 'btn btn-sm', 'style' => 'background-color:' . $order->orderAssignment->orderStatus->color . '; width: 80px;']) !!}
                                         </p>
                                     </div>
                                 </div>
@@ -56,7 +56,7 @@
                                     </div>
                                     <div class="col-6">
                                         <p>
-                                            {{ $order->orderAssaingment->payment }}
+                                            {{ $order->orderAssignment->payment }}
                                         </p>
                                     </div>
                                 </div>

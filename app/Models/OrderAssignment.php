@@ -18,12 +18,12 @@ class OrderAssignment extends Model
         return $this->belongsTo(Order::class, 'order_id');
     }
 
-    public function assaignedTo()
+    public function assignedTo()
     {
         return $this->belongsTo(User::class, 'assigned_to_id');
     }
 
-    public function assaignedBy()
+    public function assignedBy()
     {
         return $this->belongsTo(User::class, 'assigned_by_id');
     }

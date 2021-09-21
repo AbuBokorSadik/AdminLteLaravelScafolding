@@ -31,10 +31,10 @@ class OrderController extends Controller
     {
         $title = 'Order List';
         try {
-            $orders = Order::wherehas('orderAssaingment', function (Builder $query) {
+            $orders = Order::wherehas('orderAssignment', function (Builder $query) {
                 $query->where('assigned_by_id', auth()->user()->id);
             })
-                ->with(['orderType', 'orderAssaingment.assaignedTo', 'orderAssaingment.orderStatus'])
+                ->with(['orderType', 'orderAssignment.assignedTo', 'orderAssignment.orderStatus'])
                 ->filterByID($request)
                 ->filterByOrderID($request)
                 ->filterByContactName($request)
@@ -206,7 +206,7 @@ class OrderController extends Controller
         $title = 'Order Details';
         try {
             $order = Order::where('id', $id)
-                ->with(['orderType', 'orderAssaingment.orderStatus', 'orderAssaingment.assaignedBy'])
+                ->with(['orderType', 'orderAssignment.orderStatus', 'orderAssignment.assignedBy'])
                 ->first();
 
             $products = OrderProduct::with(['product'])
@@ -214,7 +214,7 @@ class OrderController extends Controller
                 ->paginate(15);
 
             $orderAssignmentActivities = OrderAssignmentActivity::with(['createdBy', 'orderStatus'])
-            ->where('order_assignment_id', $order->orderAssaingment->id)
+            ->where('order_assignment_id', $order->orderAssignment->id)
             ->orderBy('id', 'DESC')
             ->paginate(15);
 

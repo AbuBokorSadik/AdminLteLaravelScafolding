@@ -9,6 +9,8 @@ use App\Http\Controllers\MerchantPanel\Order\ProductSelectController;
 use App\Http\Controllers\MerchantPanel\Order\ProductServiceChargeController;
 use App\Http\Controllers\MerchantPanel\Order\SellerAreaController;
 use App\Http\Controllers\MerchantPanel\Order\SellerProductController;
+use App\Http\Controllers\Order\AgentInfoController;
+use App\Http\Controllers\Order\AssigneAgentController;
 use App\Http\Controllers\Order\OrderStatusUpdateController;
 use Illuminate\Support\Facades\Route;
 
@@ -64,7 +66,12 @@ Route::group(['middleware' => ['isAuth', 'isActive']], function () {
         Route::get('order-types/{buyer_id}','Order\OrderTypeController@getOrderTypes')->name('order-types');
 
         Route::get('service-charge/{buyer_id}/{order_type_id}', 'Order\ProductServiceChargeController@getServiceCharge')->name('service-charge');
-        Route::post('order-status-update',[OrderStatusUpdateController::class, 'updateOrderStatus'])->name('order.status.update');
+
+        Route::post('order-status-update', [OrderStatusUpdateController::class, 'updateOrderStatus'])->name('order.status.update');
+    
+        Route::post('assigne-agent', [AssigneAgentController::class, 'assigneAgent'])->name('assigne.agent');
+
+        Route::get('agent-info/{agent_id}', [AgentInfoController::class, 'getAgentInfo'])->name('agent.info');
     });
 
     Route::group(['prefix' => 'agent', 'middleware' => ['isAgent']], function () {

@@ -5,8 +5,8 @@
     $(function() {
         const cancelOrder = function() {
             $("#orderCancelModal").modal('show');
-            $("#formOrderAssaingmentId").val($(this).attr('orderAssaingmentId'));
-            // alert($("#formOrderAssaingmentId").val());
+            $("#formOrderAssignmentId").val($(this).attr('orderAssignmentId'));
+            // alert($("#formOrderAssignmentId").val());
         }
 
         $(".cancelOrder").click(cancelOrder);
@@ -177,12 +177,12 @@
                             <td>
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        {{ $order->orderAssaingment->assaignedTo->name }}
+                                        {{ $order->orderAssignment->assignedTo->name }}
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-sm">
-                                        {{ $order->orderAssaingment->assaignedTo->mobile }}
+                                        {{ $order->orderAssignment->assignedTo->mobile }}
                                     </div>
                                 </div>
                             </td>
@@ -202,7 +202,7 @@
                                 {!! Form::submit($order->orderType->type, ['class' => 'btn btn-sm', 'style' => 'background-color:' . $order->orderType->color . '; width: 80px;']) !!}
                             </td>
                             <td>
-                                {!! Form::submit($order->orderAssaingment->orderStatus->status, ['class' => 'btn btn-sm', 'style' => 'background-color:' . $order->orderAssaingment->orderStatus->color . '; width: 80px;']) !!}
+                                {!! Form::submit($order->orderAssignment->orderStatus->status, ['class' => 'btn btn-sm', 'style' => 'background-color:' . $order->orderAssignment->orderStatus->color . '; width: 80px;']) !!}
                             </td>
                             <td>
                                 {{ ceil($order->amount) }} <b> {{ config('app_configuration.currency') }} </b>
@@ -222,8 +222,8 @@
                                         </a>
                                     </div>
                                     <div class="col-6">
-                                        @if($order->orderAssaingment->orderStatus->id == App\Constant\OrderStatusTypeConst::PENDING)
-                                        {!! Form::button('<i class="fas fa-trash fa-sm"> Cancel</i>', ['orderAssaingmentId' => $order->orderAssaingment->id, 'type'=>'submit', 'class' => 'btn btn-danger btn-sm cancelOrder', 'style' => 'width:80px']) !!}
+                                        @if($order->orderAssignment->orderStatus->id == App\Constant\OrderStatusTypeConst::PENDING)
+                                        {!! Form::button('<i class="fas fa-trash fa-sm"> Cancel</i>', ['orderAssignmentId' => $order->orderAssignment->id, 'type'=>'submit', 'class' => 'btn btn-danger btn-sm cancelOrder', 'style' => 'width:80px']) !!}
                                         @endif
                                     </div>
                                 </div>
@@ -267,7 +267,7 @@
             <div class="modal-footer">
                 {!! Form::open(['route' => 'merchant.order.status.update', 'method' => 'post']) !!}
                 {!! Form::submit('Close', ['class' => 'btn btn-danger', 'data-dismiss' => 'modal', ]) !!}
-                {!! Form::hidden('formOrderAssaingmentId', '', ['id' => 'formOrderAssaingmentId']) !!}
+                {!! Form::hidden('formOrderAssignmentId', '', ['id' => 'formOrderAssignmentId']) !!}
                 {!! Form::submit('Cancel order', ['class' => 'btn btn-success']) !!}
                 {!! Form::close() !!}
             </div>
