@@ -32,4 +32,9 @@ class OrderAssignment extends Model
     {
         return $this->belongsTo(OrderStatus::class, 'current_order_status_id');
     }
+
+    public function task()
+    {
+        return $this->hasOne(Task::class, 'order_assignment_id');
+    }
 }

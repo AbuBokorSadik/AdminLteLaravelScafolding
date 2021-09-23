@@ -18,4 +18,13 @@ class OrderAssignmentActivity extends Model
     {
         return $this->belongsTo(OrderStatus::class, 'status_id');
     }
+
+    public static function createActivity(OrderAssignment $orderAssignment, $statusId)
+    {
+        OrderAssignmentActivity::create([
+            'order_assignment_id' => $orderAssignment->id,
+            'created_by_id' => auth()->user()->id,
+            'status_id' => $statusId
+        ]);
+    }
 }

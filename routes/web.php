@@ -61,6 +61,8 @@ Route::group(['middleware' => ['isAuth', 'isActive']], function () {
 
         Route::resource('order', Order\OrderController::class);
 
+        Route::resource('tasks', Task\TaskController::class);
+
         Route::get('product/{product_id}','Order\ProductSelectController@getProduct')->name('product');
 
         Route::get('order-types/{buyer_id}','Order\OrderTypeController@getOrderTypes')->name('order-types');

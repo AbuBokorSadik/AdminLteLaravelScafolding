@@ -18,11 +18,12 @@ class CreateTasksTable extends Migration
             $table->string('task_id')->nullable();
             $table->unsignedBigInteger('created_by_id')->nullable();
             $table->foreign('created_by_id')->references('id')->on('users');
-            $table->string('assigned_id')->nullable();
+            $table->unsignedBigInteger('assigned_id')->nullable();
             $table->foreign('assigned_id')->references('id')->on('users');
             $table->unsignedBigInteger('order_assignment_id')->nullable();
             $table->foreign('order_assignment_id')->references('id')->on('order_assignments');
             $table->unsignedBigInteger('area_id')->nullable();
+            $table->foreign('area_id')->references('id')->on('areas');
             $table->unsignedBigInteger('current_status_id')->nullable();
             $table->foreign('current_status_id')->references('id')->on('order_statuses');
             $table->timestamp('deadline')->nullable();
@@ -39,6 +40,11 @@ class CreateTasksTable extends Migration
             $table->string('ref_id')->nullable();
             $table->integer('sequence')->nullable();
             $table->integer('sequence_version')->nullable();
+            $table->decimal('service_charge',11,2)->nullable();
+            $table->string('cancellation_reason')->nullable();
+            $table->string('reschedule_reason')->nullable();
+            $table->enum('payment',['PAID', 'DUE', 'IN PROGRESS'])->nullable();
+            $table->string('note')->nullable();
             $table->timestamps();
             $table->softDeletes('deleted_at')->nullable();
         });

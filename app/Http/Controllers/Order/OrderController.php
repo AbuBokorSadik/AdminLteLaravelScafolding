@@ -35,7 +35,7 @@ class OrderController extends Controller
             $orders = Order::wherehas('orderAssignment', function (Builder $query) {
                 $query->where('assigned_to_id', auth()->user()->id);
             })
-                ->with(['orderType', 'orderAssignment.assignedBy'])
+                ->with(['orderType', 'orderAssignment.assignedBy', 'orderAssignment.task', 'orderAssignment.task.assignedTo'])
                 ->filterByID($request)
                 ->filterByOrderID($request)
                 ->filterByContactName($request)

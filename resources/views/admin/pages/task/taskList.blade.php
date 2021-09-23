@@ -3,46 +3,7 @@
 @section('customJs')
 <script>
     $(function() {
-        const updateStatus = function() {
-            $("#orderStatusChangeModal").modal('show');
-            const orderAssignmentId = $(this).attr("orderAssignmentId");
-            const orderStatusId = $(this).val();
-            $("#formOrderAssignmentId").val(orderAssignmentId);
-            $("#formOrderStatusId").val(orderStatusId);
-            // alert("Aid: " + orderAssignmentId + "Oid: " + orderStatusId);
-        }
 
-        const assignAgent = function() {
-            $("#orderAssignmentId").val($(this).attr("orderAssignmentId"));
-            $("#agentId").val($(this).val());
-
-            const getUrl = "{{ URL('admin/agent-info') }}" + "/" + $(this).val();
-
-            $.ajax({
-                type: "GET",
-                url: getUrl,
-                success: function(response) {
-                    const data = JSON.parse(response);
-                    if (data.code == 200) {
-                        $("#message").html(data.data);
-                        // console.log(data.data);
-                    } else {
-                        alert("Something went wrong. Please try again later.");
-                    }
-                },
-                error: function() {
-                    alert("Something went wrong. Please try again later.");
-                }
-            });
-
-            $("#agentSelectModal").modal('show');
-
-            // alert();
-        }
-
-        $(".agents").change(assignAgent);
-
-        $(".change_order_status_id").change(updateStatus);
     });
 </script>
 @endsection
@@ -59,7 +20,7 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="">Home</a></li>
-                        <li class="breadcrumb-item active">Order List</li>
+                        <li class="breadcrumb-item active">Task List</li>
                     </ol>
                 </div>
             </div>
@@ -74,7 +35,7 @@
     <!-- Main content -->
     <section class="content">
         <div class="card">
-            {!! Form::open(['route' => 'order.index', 'method' => 'get']) !!}
+            {!! Form::open(['route' => 'tasks.index', 'method' => 'get']) !!}
             <div class="card-body">
                 <div class="row">
                     <div class="col">

@@ -32,9 +32,10 @@
               Dashboard
               <span class="badge badge-info right"></span>
             </p>
-
           </a>
         </li>
+
+        <!-- manage merchant -->
         <li class="nav-header">MANAGE MERCHANT</li>
         <li class="nav-item">
           <a href="{{ route('merchants.index') }}" class="nav-link">
@@ -63,7 +64,7 @@
           </a>
         </li>
 
-
+        <!-- category -->
         <li class="nav-header"> CATEGORY</li>
         <li class="nav-item">
           <a href="{{ route('categories.index') }}" class="nav-link">
@@ -78,7 +79,7 @@
           </a>
         </li>
 
-
+        <!-- product -->
         <li class="nav-header">PRODUCT</li>
         <li class="nav-item">
           <a href="{{ route('products.index') }}" class="nav-link">
@@ -93,6 +94,7 @@
           </a>
         </li>
 
+        <!-- order -->
         <li class="nav-header">ORDER</li>
         <li class="nav-item">
           <a href="{{ route('order.index') }}" class="nav-link">
@@ -104,6 +106,15 @@
           <a href="{{ route('order.create') }}" class="nav-link">
           <i class="fas fa-cart-plus"></i>
             <p>Add Order</p>
+          </a>
+        </li>
+
+        <!-- task -->
+        <li class="nav-header">TASK</li>
+        <li class="nav-item">
+          <a href="{{ route('tasks.index') }}" class="nav-link">
+          <i class="fas fa-tasks"></i>
+            <p>Task List</p>
           </a>
         </li>
       </ul>

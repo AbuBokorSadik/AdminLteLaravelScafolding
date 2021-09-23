@@ -9,4 +9,5 @@ class OrderStatusTypeConst
     const INPROGRESS = 3;
     const SUCCESSFUL = 4;
     const CANCELED = 5;
+    const ASSIGNED = 6;
 }
