@@ -12,7 +12,9 @@ class AdminDashboardController extends Controller
     {
         $title = 'Admin | Dashboard';
 
-        return view('admin.pages.dashboard.dashboard', compact('title'));
+        $dashboard_active = 'active';
+
+        return view('admin.pages.dashboard.dashboard', compact('title', 'dashboard_active'));
     }
 
 }

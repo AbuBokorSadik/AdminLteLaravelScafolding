@@ -153,7 +153,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="far fa-clock"></i></span>
                                     </div>
-                                    {!! Form::text('deadline', '', ['id' => 'deadlineDate', 'class' => 'form-control float-right']) !!}
+                                    {!! Form::text('deadline', '', ['class' => 'form-control float-right deadlineDate']) !!}
                                 </div>
                                 @error('deadline')
                                 <span class="text-danger">{{ $message }}</span>

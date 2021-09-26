@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\HelperTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Http\Request;
 
 class Task extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HelperTrait;
 
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];
     protected $guarded = ['id'];
@@ -48,8 +50,85 @@ class Task extends Model
         return $task->id;
     }
 
+    public function orderAssignment()
+    {
+        return $this->belongsTo(OrderAssignment::class, 'order_assignment_id');
+    }
+
     public function assignedTo()
     {
         return $this->belongsTo(User::class, 'assigned_id');
+    }
+
+    public function assignedBy()
+    {
+        return $this->belongsTo(User::class, 'created_by_id');
+    }
+
+    public function status()
+    {
+        return $this->belongsTo(OrderStatus::class, 'current_status_id');
+    }
+
+    public function scopeFilterByTaskID($query, Request $request)
+    {
+        if ($request->filled('task_id')) {
+            return $query->where('task_id', $request->task_id);
+        }
+    }
+
+    public function scopeFilterByOrderID($query, Request $request)
+    {
+        if ($request->filled('order_id')) {
+            return $query->WhereHas('orderAssignment.order', function($query) use($request){
+                return $query->where('order_id', $request->order_id);
+            });
+        }
+    }
+
+    public function scopeFilterByContactName($query, Request $request)
+    {
+        if ($request->filled('contact_name')) {
+            return $query->where('contact_name', $request->contact_name);
+        }
+    }
+
+    public function scopeFilterByContactEmail($query, Request $request)
+    {
+        if ($request->filled('contact_email')) {
+            return $query->where('contact_email', $request->contact_email);
+        }
+    }
+
+    public function scopeFilterByContactMobile($query, Request $request)
+    {
+        if ($request->filled('contact_mobile')) {
+            return $query->where('contact_mobile', $request->contact_mobile);
+        }
+    }
+
+    public function scopeFilterByOrderType($query, Request $request)
+    {
+        if ($request->filled('order_type_id')) {
+            return $query->whereHas('orderAssignment.order.orderType', function($query) use($request){
+                return $query->where('type_id', $request->order_type_id);
+            });
+        }
+    }
+
+    public function scopeFilterByCreatedAtDateRange($query, Request $request)
+    {
+        if ($request->filled('createdAtDateRange')) {
+            $date = $this->extractDateRange($request->createdAtDateRange);
+            return $query->whereBetween('created_at', [$date['date_from'], $date['date_to']]);
+        }
+    }
+
+    public function scopeFilterByDeadlineDateRange($query, Request $request)
+    {
+        if ($request->filled('deadlineDateRange')) {
+            $date = $this->extractDateRange($request->deadlineDateRange);
+            return $query->whereBetween('deadline', [$date['date_from'], $date['date_to']]);
+        }
     }
 }

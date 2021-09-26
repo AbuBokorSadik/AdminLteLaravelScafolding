@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Profile;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\profile\ProfileUpdateRequest;
+use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -21,9 +22,9 @@ class ProfileController extends Controller
     {
         $title = 'Profile Details';
         try {
-                // echo '<pre>';
-                // print_r(auth()->user()->userType->toArray());
-                // exit();
+            // echo '<pre>';
+            // print_r(auth()->user()->userType->toArray());
+            // exit();
 
             return view('admin.pages.profile.profile', compact('title'));
         } catch (\Exception $e) {
@@ -74,6 +75,7 @@ class ProfileController extends Controller
     public function edit(Request $request, $id)
     {
         $title = 'Profile Update';
+
         try {
 
 
@@ -104,7 +106,7 @@ class ProfileController extends Controller
                 $profile->address = $request->address;
                 $profile->additional_email = $request->additional_email;
                 $profile->additional_mobile = $request->additional_mobile;
-                if ($request->avater) {     
+                if ($request->avater) {
                     $fileName = time() . '_' . $request->avater->getClientOriginalName();
                     $filePath = $request->file('avater')->storeAs('profiles', $fileName, 'public');
                     Storage::disk('public')->delete($profile->avater);

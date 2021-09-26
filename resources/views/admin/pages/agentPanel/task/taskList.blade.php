@@ -44,7 +44,7 @@
     <!-- Main content -->
     <section class="content">
         <div class="card">
-            {!! Form::open(['route' => 'tasks.index', 'method' => 'get']) !!}
+            {!! Form::open(['route' => 'agent-tasks.index', 'method' => 'get']) !!}
             <div class="card-body">
                 <div class="row">
                     <div class="col">
@@ -133,7 +133,7 @@
                                 Order Id
                             </th>
                             <th>
-                                Assignee
+                                Assigned By
                             </th>
                             <th>
                                 Contact Name
@@ -187,17 +187,17 @@
                                 <div class="row">
                                     <div class="col-sm-12">
                                         @php
-                                        $imgpath = $task->assignedTo->avater ? '/storage/' . $task->assignedTo->avater : 'img/dummy-user.png';
+                                        $imgpath = $task->assignedBy->avater ? '/storage/' . $task->assignedBy->avater : 'img/dummy-user.png';
                                         @endphp
                                         <img class="profile-user-img img-fluid img-circle" style="height: 45px; width: 45px;" src="{{ asset($imgpath) }}" alt="">
                                     </div>
                                     <div class="col-sm-12">
-                                        {{ $task->assignedTo->name }}
+                                        {{ $task->assignedBy->name }}
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-sm">
-                                        {{ $task->assignedTo->mobile }}
+                                        {{ $task->assignedBy->mobile }}
                                     </div>
                                 </div>
                             </td>
@@ -236,18 +236,10 @@
                                 {{ date('d M, Y', strtotime($task->created_at)) }}
                             </td>
                             <td class="text-center">
-
-                                <a class="btn btn-info btn-sm" href="{{ route('tasks.edit', $task->id) }}" style="width: 80px;">
-                                    <i class="fas fa-pencil-alt">
-                                    </i>
-                                    Edit
-                                </a>
-
-                                <a class="btn btn-info btn-sm" href="{{ route('tasks.show', $task->id) }}" style="width: 80px;">
+                                <a class="btn btn-info btn-sm" href="{{ route('agent-tasks.show', $task->id) }}" style="width: 80px;">
                                     <i class="fas fa-eye"></i>
                                     Show
                                 </a>
-
                             </td>
                         </tr>
                         @endforeach
@@ -287,7 +279,7 @@
 
             <!-- Modal footer -->
             <div class="modal-footer">
-                {!! Form::open(['route' => 'task.status.update', 'method' => 'post']) !!}
+                {!! Form::open(['route' => 'agent.task.status.update', 'method' => 'post']) !!}
                 {!! Form::hidden('formOrderAssignmentId', '', ['id' => 'formOrderAssignmentId']) !!}
                 {!! Form::hidden('formOrderStatusId', '', ['id' => 'formOrderStatusId']) !!}
                 {!! Form::submit('Close', ['class' => 'btn btn-danger', 'data-dismiss' => 'modal', ]) !!}

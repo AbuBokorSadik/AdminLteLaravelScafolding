@@ -214,7 +214,6 @@
                                 </span>
                             </td>
                             <td>
-                                <!-- $order->orderAssignment->task->assignedTo->id -->
                                 @if(!empty($order->orderAssignment->task))
                                 <div class="row">
                                     <div class="col-sm-12">
@@ -341,7 +340,7 @@
                 {!! Form::hidden('formOrderAssignmentId', '', ['id' => 'formOrderAssignmentId']) !!}
                 {!! Form::hidden('formOrderStatusId', '', ['id' => 'formOrderStatusId']) !!}
                 {!! Form::submit('Close', ['class' => 'btn btn-danger', 'data-dismiss' => 'modal', ]) !!}
-                {!! Form::submit('Change order', ['class' => 'btn btn-success']) !!}
+                {!! Form::submit('Change order status', ['class' => 'btn btn-success']) !!}
                 {!! Form::close() !!}
             </div>
 

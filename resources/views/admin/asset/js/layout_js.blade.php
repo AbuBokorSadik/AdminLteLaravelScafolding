@@ -70,7 +70,7 @@
     })
 
     //Date picker
-    $('#deadlineDate').daterangepicker({
+    $('.deadlineDate').daterangepicker({
       singleDatePicker: true,
       showDropdowns: true,
     })

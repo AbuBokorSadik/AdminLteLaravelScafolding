@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\ChangePassword\ChangePasswordController;
 use App\Http\Controllers\Dashboard\AdminDashboardController;
 use App\Http\Controllers\AgentPanel\Dashboard\AgentDashboardController;
+use App\Http\Controllers\AgentPanel\Task\TaskStatusUpdateController;
 use App\Http\Controllers\MerchantPanel\Dashboard\MerchantDashboardController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\MerchantPanel\Order\ProductSelectController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\MerchantPanel\Order\SellerProductController;
 use App\Http\Controllers\Order\AgentInfoController;
 use App\Http\Controllers\Order\AssigneAgentController;
 use App\Http\Controllers\Order\OrderStatusUpdateController;
+use App\Http\Controllers\Task\OrderStatusUpdateController as TaskOrderStatusUpdateController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -70,6 +72,8 @@ Route::group(['middleware' => ['isAuth', 'isActive']], function () {
         Route::get('service-charge/{buyer_id}/{order_type_id}', 'Order\ProductServiceChargeController@getServiceCharge')->name('service-charge');
 
         Route::post('order-status-update', [OrderStatusUpdateController::class, 'updateOrderStatus'])->name('order.status.update');
+
+        Route::post('task-status-update', [TaskOrderStatusUpdateController::class, 'updateOrderStatus'])->name('task.status.update');
     
         Route::post('assigne-agent', [AssigneAgentController::class, 'assigneAgent'])->name('assigne.agent');
 
@@ -78,6 +82,10 @@ Route::group(['middleware' => ['isAuth', 'isActive']], function () {
 
     Route::group(['prefix' => 'agent', 'middleware' => ['isAgent']], function () {
         Route::get('/', [AgentDashboardController::class, 'index'])->name('agent.dashboard');
+
+        Route::resource('agent-tasks', AgentPanel\Task\TaskController::class);
+
+        Route::post('task-status-update', [TaskStatusUpdateController::class, 'updateOrderStatus'])->name('agent.task.status.update');
     });
 
     Route::group(['prefix' => 'merchant', 'middleware' => ['isMerchant']], function () {

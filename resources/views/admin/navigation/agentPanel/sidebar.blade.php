@@ -35,6 +35,14 @@
           </a>
         </li>
 
+        <!-- task -->
+        <li class="nav-header">TASK</li>
+        <li class="nav-item">
+          <a href="{{ route('agent-tasks.index') }}" class="nav-link">
+          <i class="fas fa-tasks"></i>
+            <p>Task List</p>
+          </a>
+        </li>
       </ul>
     </nav>
     <!-- /.sidebar-menu -->
