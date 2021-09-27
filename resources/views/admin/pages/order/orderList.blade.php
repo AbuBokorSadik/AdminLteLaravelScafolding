@@ -85,37 +85,31 @@
                     </div>
                     <div class="col">
                         <div class="form-group">
-                            {!! Form::label('buyerName', 'Buyer Name') !!}
-                            {!! Form::text('buyerName', old('buyerName'), ['id' => 'buyerName', 'placeholder' => 'Enter buyer name...', 'class' => 'form-control']) !!}
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-group">
                             {!! Form::label('contactName', 'Contact Name') !!}
-                            {!! Form::text('contact_name', old('contact_name'), ['id' => 'contactName', 'placeholder' => 'Enter contact name...', 'class' => 'form-control']) !!}
+                            {!! Form::text('name', old('name'), ['id' => 'contactName', 'placeholder' => 'Enter contact name...', 'class' => 'form-control']) !!}
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group">
                             {!! Form::label('contactEmail', 'Contact Email') !!}
-                            {!! Form::text('contact_email', old('contact_email'), ['id' => 'contactEmail', 'placeholder' => 'Enter contact email...', 'class' => 'form-control']) !!}
+                            {!! Form::text('email', old('email'), ['id' => 'contactEmail', 'placeholder' => 'Enter contact email...', 'class' => 'form-control']) !!}
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            {!! Form::label('contactMobile', 'Contact Mobile') !!}
+                            {!! Form::text('mobile', old('mobile'), ['id' => 'contactMobile', 'placeholder' => 'Enter contact mobile...', 'class' => 'form-control']) !!}
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col">
-                        <div class="form-group">
-                            {!! Form::label('contactMobile', 'Contact Mobile') !!}
-                            {!! Form::text('contact_mobile', old('contact_mobile'), ['id' => 'contactMobile', 'placeholder' => 'Enter contact mobile...', 'class' => 'form-control']) !!}
-                        </div>
-                    </div>
-                    <div class="col">
+                    <div class="col-sm-3">
                         <div class="form-group">
                             {!! Form::label('orderType', 'Order Type') !!}
                             {!! Form::select('order_type_id', [null => 'Select order type...', '1' => 'Pickup', '2' => 'Delivery'], old('order_type_id'), ['class' => 'form-control', 'id' => 'orderStatus', ]) !!}
                         </div>
                     </div>
-                    <div class="col">
+                    <div class="col-sm-3">
                         <div class="form-group">
                             {!! Form::label('deadlineDateRange', 'Select Deadline Date Range') !!}
                             <div class="input-group">
@@ -126,7 +120,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col">
+                    <div class="col-sm-3">
                         <div class="form-group">
                             {!! Form::label('createdAtDateRange', 'Select Created At Date Range') !!}
                             <div class="input-group">

@@ -70,6 +70,11 @@ class Task extends Model
         return $this->belongsTo(OrderStatus::class, 'current_status_id');
     }
 
+    public function taskStatusActivities()
+    {
+        return $this->hasMany(TaskStatusActivity::class, 'task_id');
+    }
+
     public function scopeFilterByTaskID($query, Request $request)
     {
         if ($request->filled('task_id')) {

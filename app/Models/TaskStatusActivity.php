@@ -12,6 +12,16 @@ class TaskStatusActivity extends Model
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];
     protected $guarded = ['id'];
 
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by_id');
+    }
+
+    public function taskStatus()
+    {
+        return $this->belongsTo(OrderStatus::class, 'status_id');
+    }
+
     public static function createActivity($taskId, $statusId)
     {
         $task = Task::find($taskId);

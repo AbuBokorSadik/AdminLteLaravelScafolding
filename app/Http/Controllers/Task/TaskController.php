@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Task;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Models\OrderProduct;
 use App\Models\OrderStatus;
 use App\Models\Task;
+use App\Models\TaskStatusActivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -20,6 +22,7 @@ class TaskController extends Controller
     public function index(Request $request)
     {
         $title = 'Task List';
+        $task_list_active = 'active';
         try {
             $tasks = Task::where('created_by_id', auth()->user()->id)
                 ->with(['orderAssignment.order.orderType', 'assignedTo', 'status'])
@@ -42,7 +45,7 @@ class TaskController extends Controller
 
             $request->flash();
 
-            return view('admin.pages.task.taskList', compact('title', 'tasks', 'orderStatuses'));
+            return view('admin.pages.task.taskList', compact('title', 'task_list_active', 'tasks', 'orderStatuses'));
         } catch (\Exception $e) {
             Log::error($e->getFile() . ' ' . $e->getLine() . ' ' . $e->getMessage());
             $request->session()->flash('error_alert', 'Something went wrong. Please try again later.');
@@ -77,9 +80,33 @@ class TaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        //
+        $title = 'Task Details';
+
+        try {
+            $task = Task::where('id', $id)
+                ->with(['orderAssignment.order.orderType', 'assignedTo', 'status'])
+                ->first();
+
+            $taskStatusActivities = TaskStatusActivity::where('task_id', $task->id)
+                ->with(['createdBy', 'taskStatus'])
+                ->paginate(15);
+
+            $products = OrderProduct::with(['product'])
+                ->where('order_id', $task->orderAssignment->order->id)
+                ->paginate(15);
+
+            // echo '<pre>';
+            // print_r($task->toArray());
+            // exit();
+
+            return view('admin.pages.task.taskShow', compact('title', 'task', 'products', 'taskStatusActivities'));
+        } catch (\Exception $e) {
+            Log::error($e->getFile() . ' ' . $e->getLine() . ' ' . $e->getMessage());
+            $request->session()->flash('error_alert', 'Something went wrong. Please try again later.');
+            return redirect()->back();
+        }
     }
 
     /**
@@ -145,8 +172,7 @@ class TaskController extends Controller
                 $task->note = $request->note;
                 $task->save();
 
-                $order = Order::where('id', $task->orderAssignment->order->id)
-                    ->first();
+                $order = $task->orderAssignment->order;
                 $order->ref_id = $task->ref_id;
                 $order->deadline = date('Y-m-d H:i:s', strtotime($request->deadline));
                 $order->contact_email = $task->contact_email;

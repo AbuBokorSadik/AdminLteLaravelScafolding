@@ -6,6 +6,7 @@ use App\Constant\OrderStatusTypeConst;
 use App\Http\Controllers\Controller;
 use App\Models\OrderAssignment;
 use App\Models\OrderAssignmentActivity;
+use App\Models\TaskStatusActivity;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -15,12 +16,13 @@ class OrderStatusUpdateController extends Controller
 {
     public function updateOrderStatus(Request $request)
     {
-        // echo "<pre>";
-        // print_r($request->all());
-        // exit();
-
         $orderAssignment = OrderAssignment::where('id', $request->formOrderAssignmentId)
+            ->with(['task'])
             ->first();
+
+        // echo "<pre>";
+        // print_r($orderAssignment->toArray());
+        // exit();
 
         if ($orderAssignment->current_order_status_id == OrderStatusTypeConst::CANCELED) {
             $request->session()->flash('error_alert', 'You can not change the status of a canceled order status.');
@@ -32,11 +34,15 @@ class OrderStatusUpdateController extends Controller
                 $orderAssignment->current_order_status_id = $request->formOrderStatusId;
                 $orderAssignment->save();
 
-                OrderAssignmentActivity::create([
-                    'order_assignment_id' => $request->formOrderAssignmentId,
-                    'created_by_id' => auth()->user()->id,
-                    'status_id' => $request->formOrderStatusId,
-                ]);
+                OrderAssignmentActivity::createActivity($orderAssignment, $orderAssignment->current_order_status_id);
+
+                $task = $orderAssignment->task;
+                if($task){
+                    $task->current_status_id = $orderAssignment->current_order_status_id;
+                    $task->save();
+
+                    TaskStatusActivity::createActivity($task->id, $orderAssignment->current_order_status_id);
+                }
             });
 
             $request->session()->flash('success_alert', 'Order status updated successfully.');

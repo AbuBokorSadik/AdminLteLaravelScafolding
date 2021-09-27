@@ -26,6 +26,8 @@ class AgentController extends Controller
     public function index(Request $request)
     {
         $title = 'Agent List';
+        $agent_list_active = 'active';
+
         try {
             $agents = User::where('user_type_id', UserTypeConst::AGENT)
                 ->whereHas('agentsAdmin', function (Builder $query) {
@@ -46,7 +48,7 @@ class AgentController extends Controller
 
             $request->flash();
 
-            return view('admin.pages.agent.agentList', compact('title', 'agents'));
+            return view('admin.pages.agent.agentList', compact('title', 'agent_list_active', 'agents'));
         } catch (\Exception $e) {
             Log::error($e->getFile() . ' ' . $e->getLine() . ' ' . $e->getMessage());
             $request->session()->flash('error_alert', 'Something went wrong. Please try again later.');
@@ -62,8 +64,10 @@ class AgentController extends Controller
     public function create(Request $request)
     {
         $title = 'Add Agent';
+        $agent_create_active = 'active';
+
         try {
-            return view('admin.pages.agent.agentAdd', compact('title'));
+            return view('admin.pages.agent.agentAdd', compact('title', 'agent_create_active'));
         } catch (\Exception $e) {
             Log::error($e->getFile() . ' ' . $e->getLine() . ' ' . $e->getMessage());
             $request->session()->flash('error_alert', 'Something went wrong. Please try again later.');

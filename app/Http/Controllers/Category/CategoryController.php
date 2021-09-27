@@ -21,6 +21,7 @@ class CategoryController extends Controller
     public function index(Request $request)
     {
         $title = 'Category List';
+        $category_list_active = 'active';
         try {
             $categories = Category::filterByID($request)
                 ->filterByName($request)
@@ -32,7 +33,7 @@ class CategoryController extends Controller
 
             $request->flash();
 
-            return view('admin.pages.category.categoryList', compact('title', 'categories'));
+            return view('admin.pages.category.categoryList', compact('title', 'category_list_active', 'categories'));
         } catch (\Exception $e) {
             Log::error($e->getFile() . ' ' . $e->getLine() . ' ' . $e->getMessage());
             $request->session()->flash('error_alert', 'Something went wrong. Please try again later.');
@@ -48,8 +49,9 @@ class CategoryController extends Controller
     public function create(Request $request)
     {
         $title = 'Add Category';
+        $category_create_active = 'active';
         try {
-            return view('admin.pages.category.categoryAdd', compact('title'));
+            return view('admin.pages.category.categoryAdd', compact('title', 'category_create_active'));
         } catch (\Exception $e) {
             Log::error($e->getFile() . ' ' . $e->getLine() . ' ' . $e->getMessage());
             $request->session()->flash('error_alert', 'Something went wrong. Please try again later.');

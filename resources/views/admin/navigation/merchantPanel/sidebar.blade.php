@@ -26,7 +26,7 @@
         <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
         <li class="nav-item">
-          <a href="{{ route('dashboard') }}" class="nav-link">
+          <a href="{{ route('dashboard') }}" class="nav-link {{ $dashboard_active ?? '' }}">
             <i class="fas fa-tachometer-alt"></i>
             <p>
               Dashboard
@@ -36,13 +36,13 @@
         </li>
         <li class="nav-header">MANAGE ORDER</li>
         <li class="nav-item">
-          <a href="{{ route('orders.index') }}" class="nav-link">
+          <a href="{{ route('orders.index') }}" class="nav-link {{ $order_list_active ?? '' }}">
           <i class="fas fa-shopping-cart"></i>
             <p>Order List</p>
           </a>
         </li>
         <li class="nav-item">
-          <a href="{{ route('orders.create') }}" class="nav-link">
+          <a href="{{ route('orders.create') }}" class="nav-link {{ $order_create_active ?? '' }}">
           <i class="fas fa-cart-plus"></i>
             <p>Add Order</p>
           </a>

@@ -38,13 +38,13 @@
         <!-- manage merchant -->
         <li class="nav-header">MANAGE MERCHANT</li>
         <li class="nav-item">
-          <a href="{{ route('merchants.index') }}" class="nav-link">
+          <a href="{{ route('merchants.index') }}" class="nav-link {{ $merchant_list_active ?? '' }}">
             <i class="fas fa-user-tie"></i>
             <p>Merchant List</p>
           </a>
         </li>
         <li class="nav-item">
-          <a href="{{ route('merchants.create') }}" class="nav-link">
+          <a href="{{ route('merchants.create') }}" class="nav-link {{ $merchant_create_active ?? '' }}">
             <i class="fas fa-user-plus"></i>
             <p>Add Merchant</p>
           </a>
@@ -52,13 +52,13 @@
 
         <li class="nav-header">MANAGE AGENT</li>
         <li class="nav-item">
-          <a href="{{ route('agents.index') }}" class="nav-link">
+          <a href="{{ route('agents.index') }}" class="nav-link {{ $agent_list_active ?? '' }}">
             <i class="fas fa-people-carry"></i>
             <p>Agent List</p>
           </a>
         </li>
         <li class="nav-item">
-          <a href="{{ route('agents.create') }}" class="nav-link">
+          <a href="{{ route('agents.create') }}" class="nav-link {{ $agent_create_active ?? '' }}">
             <i class="fas fa-user-plus"></i>
             <p>Add Agent</p>
           </a>
@@ -67,13 +67,13 @@
         <!-- category -->
         <li class="nav-header"> CATEGORY</li>
         <li class="nav-item">
-          <a href="{{ route('categories.index') }}" class="nav-link">
+          <a href="{{ route('categories.index') }}" class="nav-link {{ $category_list_active ?? '' }}">
             <i class="fas fa-list-alt"></i>
             <p>Category List</p>
           </a>
         </li>
         <li class="nav-item">
-          <a href="{{ route('categories.create') }}" class="nav-link">
+          <a href="{{ route('categories.create') }}" class="nav-link {{ $category_create_active ?? '' }}">
             <i class="fas fa-plus-circle"></i>
             <p>Add Category</p>
           </a>
@@ -82,13 +82,13 @@
         <!-- product -->
         <li class="nav-header">PRODUCT</li>
         <li class="nav-item">
-          <a href="{{ route('products.index') }}" class="nav-link">
+          <a href="{{ route('products.index') }}" class="nav-link {{ $product_list_active ?? '' }}">
             <i class="fas fa-boxes"></i>
             <p>Product List</p>
           </a>
         </li>
         <li class="nav-item">
-          <a href="{{ route('products.create') }}" class="nav-link">
+          <a href="{{ route('products.create') }}" class="nav-link {{ $product_create_active ?? '' }}">
             <i class="fas fa-plus-circle"></i>
             <p>Add Product</p>
           </a>
@@ -97,13 +97,13 @@
         <!-- order -->
         <li class="nav-header">ORDER</li>
         <li class="nav-item">
-          <a href="{{ route('order.index') }}" class="nav-link">
+          <a href="{{ route('order.index') }}" class="nav-link {{ $order_list_active ?? '' }}">
           <i class="fas fa-shopping-cart"></i>
             <p>Order List</p>
           </a>
         </li>
         <li class="nav-item">
-          <a href="{{ route('order.create') }}" class="nav-link">
+          <a href="{{ route('order.create') }}" class="nav-link {{ $order_create_active ?? '' }}">
           <i class="fas fa-cart-plus"></i>
             <p>Add Order</p>
           </a>
@@ -112,7 +112,7 @@
         <!-- task -->
         <li class="nav-header">TASK</li>
         <li class="nav-item">
-          <a href="{{ route('tasks.index') }}" class="nav-link">
+          <a href="{{ route('tasks.index') }}" class="nav-link {{ $task_list_active ?? '' }}">
           <i class="fas fa-tasks"></i>
             <p>Task List</p>
           </a>

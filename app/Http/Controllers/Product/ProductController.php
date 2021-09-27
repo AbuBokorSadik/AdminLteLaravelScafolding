@@ -26,6 +26,7 @@ class ProductController extends Controller
         // exit();
 
         $title = 'Product List';
+        $product_list_active = 'active';
         try {
             $products = Product::with(['category'])
                 ->filterByID($request)
@@ -41,7 +42,7 @@ class ProductController extends Controller
 
             $request->flash();
 
-            return view('admin.pages.product.productList', compact('title', 'products', 'categories'));
+            return view('admin.pages.product.productList', compact('title', 'product_list_active', 'products', 'categories'));
         } catch (\Exception $e) {
             Log::error($e->getFile() . ' ' . $e->getLine() . ' ' . $e->getMessage());
             $request->session()->flash('error_alert', 'Something went wrong. Please try again later.');
@@ -57,9 +58,10 @@ class ProductController extends Controller
     public function create(Request $request)
     {
         $title = 'Add Product';
+        $product_create_active = 'active';
         try {
             $categories = Category::where('created_by_id', auth()->user()->id)->pluck('name', 'id');
-            return view('admin.pages.product.productAdd', compact('title', 'categories'));
+            return view('admin.pages.product.productAdd', compact('title', 'product_create_active', 'categories'));
         } catch (\Exception $e) {
             Log::error($e->getFile() . ' ' . $e->getLine() . ' ' . $e->getMessage());
             $request->session()->flash('error_alert', 'Something went wrong. Please try again later.');

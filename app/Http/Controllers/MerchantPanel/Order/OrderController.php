@@ -30,6 +30,8 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         $title = 'Order List';
+        $order_list_active = 'active';
+
         try {
             $orders = Order::wherehas('orderAssignment', function (Builder $query) {
                 $query->where('assigned_by_id', auth()->user()->id);
@@ -42,8 +44,8 @@ class OrderController extends Controller
                 ->filterByContactMobile($request)
                 ->filterByContactMobile($request)
                 ->filterByOrderType($request)
-                ->filterByDeadlineDateRange($request)
-                ->filterByCreatedAtDateRange($request)
+                // ->filterByDeadlineDateRange($request)
+                // ->filterByCreatedAtDateRange($request)
                 ->orderBy('id', 'DESC')
                 ->paginate(20);
 
@@ -53,7 +55,7 @@ class OrderController extends Controller
 
             $request->flash();
 
-            return view('admin.pages.merchantPanel.order.orderList', compact('title', 'orders'));
+            return view('admin.pages.merchantPanel.order.orderList', compact('title', 'order_list_active', 'orders'));
         } catch (\Exception $e) {
             Log::error($e->getFile() . ' ' . $e->getLine() . ' ' . $e->getMessage());
             $request->session()->flash('error_alert', 'Something went wrong. Please try again later.');
@@ -69,11 +71,15 @@ class OrderController extends Controller
     public function create(Request $request)
     {
         $title = 'Add Order';
+        $order_create_active = 'active';
+
         try {
             $sellers = User::where('user_type_id', UserTypeConst::ADMIN)
                 ->whereHas('merchants', function (Builder $query) {
-                    $query->where('merchant_id', auth()->user()->id)
-                        ->where('status', StatusTypeConst::ACTIVE);
+                    $query->where([
+                        'merchant_id' => auth()->user()->id,
+                        'status' => StatusTypeConst::ACTIVE
+                        ]);
                 })
                 ->get();
 
@@ -82,7 +88,7 @@ class OrderController extends Controller
             // exit();
 
             $orderTypes = CompanyTaskOrderType::where('company_id', auth()->user()->id)->pluck('type', 'type_id');
-            return view('admin.pages.merchantPanel.order.orderAdd', compact('title', 'orderTypes', 'sellers'));
+            return view('admin.pages.merchantPanel.order.orderAdd', compact('title', 'order_create_active', 'orderTypes', 'sellers'));
         } catch (\Exception $e) {
             Log::error($e->getFile() . ' ' . $e->getLine() . ' ' . $e->getMessage());
             $request->session()->flash('error_alert', 'Something went wrong. Please try again later.');

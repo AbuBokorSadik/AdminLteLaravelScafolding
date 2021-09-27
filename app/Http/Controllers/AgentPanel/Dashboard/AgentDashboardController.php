@@ -15,8 +15,9 @@ class AgentDashboardController extends Controller
     public function index()
     {
         $title = 'Agent | Dashboard';
+        $dashboard_active = 'active';
 
-        return view('admin.pages.dashboard.dashboard', compact('title'));
+        return view('admin.pages.dashboard.dashboard', compact('title', 'dashboard_active'));
     }
 
     /**

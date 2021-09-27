@@ -31,6 +31,12 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         $title = 'Order List';
+        $order_list_active = 'active';
+
+        // echo '<pre>';
+        // print_r($request->all());
+        // exit();
+
         try {
             $orders = Order::wherehas('orderAssignment', function (Builder $query) {
                 $query->where('assigned_to_id', auth()->user()->id);
@@ -42,8 +48,8 @@ class OrderController extends Controller
                 ->filterByContactEmail($request)
                 ->filterByContactMobile($request)
                 ->filterByOrderType($request)
-                ->filterByDeadlineDateRange($request)
-                ->filterByCreatedAtDateRange($request)
+                // ->filterByDeadlineDateRange($request)
+                // ->filterByCreatedAtDateRange($request)
                 ->orderBy('id', 'DESC')
                 ->paginate(20);
 
@@ -54,13 +60,9 @@ class OrderController extends Controller
             })
                 ->get();
 
-            // echo '<pre>';
-            // print_r($orders->toArray());
-            // exit();
-
             $request->flash();
 
-            return view('admin.pages.order.orderList', compact('title', 'orders', 'orderStatuses', 'agents'));
+            return view('admin.pages.order.orderList', compact('title', 'order_list_active', 'orders', 'orderStatuses', 'agents'));
         } catch (\Exception $e) {
             Log::error($e->getFile() . ' ' . $e->getLine() . ' ' . $e->getMessage());
             $request->session()->flash('error_alert', 'Something went wrong. Please try again later.');
@@ -76,6 +78,7 @@ class OrderController extends Controller
     public function create(Request $request)
     {
         $title = 'Add Order';
+        $order_create_active = 'active';
         try {
             $buyers = User::wherehas('merchants', function (Builder $query) {
                 $query->where('user_id', auth()->user()->id);
@@ -95,7 +98,7 @@ class OrderController extends Controller
             // print_r($buyers->toArray());
             // exit();
 
-            return view('admin.pages.order.orderAdd', compact('title', 'buyers', 'products', 'areas'));
+            return view('admin.pages.order.orderAdd', compact('title', 'order_create_active', 'buyers', 'products', 'areas'));
         } catch (\Exception $e) {
             Log::error($e->getFile() . ' ' . $e->getLine() . ' ' . $e->getMessage());
             $request->session()->flash('error_alert', 'Something went wrong. Please try again later.');
@@ -223,7 +226,7 @@ class OrderController extends Controller
                 ->first();
 
             $products = OrderProduct::with(['product'])
-                ->where('order_id', $id)
+                ->where('order_id', $order->id)
                 ->paginate(15);
 
             $orderAssignmentActivities = OrderAssignmentActivity::with(['createdBy', 'orderStatus'])

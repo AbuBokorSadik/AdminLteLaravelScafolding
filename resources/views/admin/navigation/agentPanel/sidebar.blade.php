@@ -26,7 +26,7 @@
         <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
         <li class="nav-item">
-          <a href="{{ route('dashboard') }}" class="nav-link">
+          <a href="{{ route('dashboard') }}" class="nav-link {{ $dashboard_active ?? '' }}">
             <i class="fas fa-tachometer-alt"></i>
             <p>
               Dashboard
@@ -38,7 +38,7 @@
         <!-- task -->
         <li class="nav-header">TASK</li>
         <li class="nav-item">
-          <a href="{{ route('agent-tasks.index') }}" class="nav-link">
+          <a href="{{ route('agent-tasks.index') }}" class="nav-link {{ $task_list_active ?? '' }}">
           <i class="fas fa-tasks"></i>
             <p>Task List</p>
           </a>

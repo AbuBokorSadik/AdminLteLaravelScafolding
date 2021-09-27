@@ -65,7 +65,7 @@ class User extends Authenticatable
 
     public function merchants()
     {
-        return $this->hasMany(UsersMerchant::class, 'merchant_id');
+        return $this->hasMany(UsersMerchant::class, 'user_id');
     }
 
     public function merchantsAdmin()

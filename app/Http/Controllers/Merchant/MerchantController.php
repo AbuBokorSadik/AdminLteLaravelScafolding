@@ -26,6 +26,8 @@ class MerchantController extends Controller
     public function index(Request $request)
     {
         $title = 'Merchant List';
+        $merchant_list_active = 'active';
+
         try {
             $merchants = User::where('user_type_id', UserTypeConst::MERCHANT)
                 ->whereHas('merchantsAdmin', function (Builder $query) {
@@ -42,7 +44,7 @@ class MerchantController extends Controller
 
             $request->flash();
 
-            return view('admin.pages.merchant.merchantList', compact('title', 'merchants'));
+            return view('admin.pages.merchant.merchantList', compact('title', 'merchant_list_active', 'merchants'));
         } catch (\Exception $e) {
             Log::error($e->getFile() . ' ' . $e->getLine() . ' ' . $e->getMessage());
             $request->session()->flash('error_alert', 'Something went wrong. Please try again later.');
@@ -58,8 +60,10 @@ class MerchantController extends Controller
     public function create(Request $request)
     {
         $title = 'Add Merchant';
+        $merchant_create_active = 'active';
+
         try {
-            return view('admin.pages.merchant.merchantAdd', compact('title'));
+            return view('admin.pages.merchant.merchantAdd', compact('title', 'merchant_create_active'));
         } catch (\Exception $e) {
             Log::error($e->getFile() . ' ' . $e->getLine() . ' ' . $e->getMessage());
             $request->session()->flash('error_alert', 'Something went wrong. Please try again later.');

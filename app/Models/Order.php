@@ -40,21 +40,21 @@ class Order extends Model
 
     public function scopeFilterByContactName($query, Request $request)
     {
-        if ($request->filled('contact_name')) {
+        if ($request->filled('name')) {
             return $query->where('contact_name', $request->name);
         }
     }
 
     public function scopeFilterByContactEmail($query, Request $request)
     {
-        if ($request->filled('contact_email')) {
+        if ($request->filled('email')) {
             return $query->where('contact_email', $request->email);
         }
     }
 
     public function scopeFilterByContactMobile($query, Request $request)
     {
-        if ($request->filled('contact_mobile')) {
+        if ($request->filled('mobile')) {
             return $query->where('contact_mobile', $request->mobile);
         }
     }

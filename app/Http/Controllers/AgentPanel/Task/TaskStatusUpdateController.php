@@ -21,6 +21,7 @@ class TaskStatusUpdateController extends Controller
         // exit();
 
         $orderAssignment = OrderAssignment::where('id', $request->formOrderAssignmentId)
+            ->with(['task'])
             ->first();
 
         if ($orderAssignment->current_order_status_id == OrderStatusTypeConst::CANCELED) {
@@ -35,9 +36,7 @@ class TaskStatusUpdateController extends Controller
 
                 OrderAssignmentActivity::createActivity($orderAssignment, $orderAssignment->current_order_status_id);
 
-                $task = Task::where('order_assignment_id', $orderAssignment->id)
-                    ->first();
-
+                $task = $orderAssignment->task;
                 $task->current_status_id =  $orderAssignment->current_order_status_id;
                 $task->save();
 
