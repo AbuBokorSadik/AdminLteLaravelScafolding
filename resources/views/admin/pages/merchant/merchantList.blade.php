@@ -161,14 +161,14 @@
                             @php
                             $btnClass = $merchant->status ? 'btn-danger' : 'btn-success'
                             @endphp
-                            <td class="text-center">
+                            <td class="text-center" style="width: 200px;">
                                 <div class="row">
-                                    <div class="col-6">
+                                    <div class="col-sm-6">
                                         {!! Form::open(['route' => ['merchants.update', $merchant->id], 'method' => 'put']) !!}
                                         {!! Form::button(($merchant->status) ? 'Inactive' : 'Active', ['type'=>'submit', 'class' => 'btn ' . $btnClass . ' btn-sm', 'style' => 'width:80px']) !!}
                                         {!! Form::close() !!}
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-sm-6">
                                         <a class="btn btn-info btn-sm" href="{{ route('merchants.show', $merchant->id) }}" style="width: 80px;">
                                             <i class="fas fa-eye"></i>
                                             Show

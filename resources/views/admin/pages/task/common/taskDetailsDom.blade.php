@@ -58,7 +58,7 @@
                                     </div>
                                     <div class="col-6">
                                         <p>
-                                            {!! Form::submit($task->status->status, ['class' => 'btn btn-sm', 'style' => 'background-color:' . $task->status->color . '; width: 80px;']) !!}
+                                            {!! Form::submit($task->status->status, ['class' => 'btn btn-sm', 'style' => 'background-color:' . $task->status->color . ';']) !!}
                                         </p>
                                     </div>
                                 </div>

@@ -212,16 +212,16 @@
                             <td>
                                 {{ $product->updated_at }}
                             </td>
-                            <td class="text-center">
+                            <td class="text-center" style="width: 200px;">
                                 <div class="row">
-                                    <div class="col-6">
+                                    <div class="col-sm-6">
                                         <a class="btn btn-info btn-sm" href="products/{{$product->id}}/edit" style="width: 80px;">
                                             <i class="fas fa-pencil-alt">
                                             </i>
                                             Edit
                                         </a>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-sm-6">
                                         {!! Form::open(['route' => ['products.destroy', $product->id], 'method' => 'delete']) !!}
                                         {!! Form::button('<i class="fas fa-trash fa-sm"> Delete</i>', ['type'=>'submit', 'class' => 'btn btn-danger btn-sm', 'style' => 'width:80px']) !!}
                                         {!! Form::close() !!}

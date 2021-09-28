@@ -4,7 +4,15 @@
 <script>
     $(function() {
         const updateStatus = function() {
-            $("#taskStatusChangeModal").modal('show');
+            if ($(this).val() == "{{ App\Constant\OrderStatusTypeConst::RESCHEDULE }}") {
+                $("#deadline").val($(this).attr("taskDeadline"));
+                $("#rescheduleStatusModal").modal('show');
+            } else if ($(this).val() == "{{ App\Constant\OrderStatusTypeConst::SUCCESSFUL }}") {
+                $("#successfulStatusModal").modal('show');
+            } else {
+                $("#taskStatusChangeModal").modal('show');
+            }
+
             const orderAssignmentId = $(this).attr("orderAssignmentId");
             const orderStatusId = $(this).val();
             $("#formOrderAssignmentId").val(orderAssignmentId);
@@ -157,6 +165,9 @@
                                 Amount
                             </th>
                             <th>
+                                Collected Amount
+                            </th>
+                            <th>
                                 Service Charge
                             </th>
                             <th>
@@ -217,14 +228,17 @@
                                 {!! Form::submit($task->orderAssignment->order->orderType->type, ['class' => 'btn btn-sm', 'style' => 'background-color:' . $task->orderAssignment->order->orderType->color . '; width: 80px;']) !!}
                             </td>
                             <td>
-                                @if($task->status->id == App\Constant\OrderStatusTypeConst::CANCELED)
-                                {!! Form::submit($task->status->status, ['class' => 'btn btn-sm', 'style' => 'background-color:' . $task->status->color . '; width: 120px;']) !!}
+                                @if($task->status->id == App\Constant\OrderStatusTypeConst::CANCELED || $task->status->id == App\Constant\OrderStatusTypeConst::SUCCESSFUL)
+                                {!! Form::submit($task->status->status, ['class' => 'btn btn-sm', 'style' => 'background-color:' . $task->status->color . '; width: 130px;']) !!}
                                 @else
-                                {!! Form::select('change_order_status_id', $orderStatuses, $task->status->id, ['class' => 'form-control change_order_status_id', 'id' => 'change_order_status_id', 'orderAssignmentId' => $task->order_assignment_id, 'style' => 'background-color:' . $task->status->color . ';width: 120px;']) !!}
+                                {!! Form::select('change_order_status_id', $orderStatuses, $task->status->id, ['class' => 'form-control change_order_status_id', 'id' => 'change_order_status_id', 'orderAssignmentId' => $task->order_assignment_id, 'taskDeadline' => date('m/d/y', strtotime($task->deadline)), 'style' => 'background-color:' . $task->status->color . ';width: 130px;']) !!}
                                 @endif
                             </td>
                             <td>
                                 {{ ceil($task->assigned_amount) }} <b> {{ config('app_configuration.currency')}} </b>
+                            </td>
+                            <td>
+                                {{ ceil($task->collected_amount) }} <b> {{ config('app_configuration.currency')}} </b>
                             </td>
                             <td>
                                 {{ ceil($task->service_charge) }} <b> {{ config('app_configuration.currency')}} </b>
@@ -235,7 +249,7 @@
                             <td>
                                 {{ date('d M, Y', strtotime($task->created_at)) }}
                             </td>
-                            <td class="text-center">
+                            <td class="text-center" style="width: 200px;">
 
                                 <a class="btn btn-info btn-sm" href="{{ route('tasks.edit', $task->id) }}" style="width: 80px;">
                                     <i class="fas fa-pencil-alt">
@@ -266,6 +280,8 @@
 
 <!-- order status change modal -->
 
+{!! Form::open(['route' => 'task.status.update', 'method' => 'post']) !!}
+
 <div class="modal fade" id="taskStatusChangeModal">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -287,16 +303,87 @@
 
             <!-- Modal footer -->
             <div class="modal-footer">
-                {!! Form::open(['route' => 'task.status.update', 'method' => 'post']) !!}
-                {!! Form::hidden('formOrderAssignmentId', '', ['id' => 'formOrderAssignmentId']) !!}
-                {!! Form::hidden('formOrderStatusId', '', ['id' => 'formOrderStatusId']) !!}
                 {!! Form::submit('Close', ['class' => 'btn btn-danger', 'data-dismiss' => 'modal', ]) !!}
                 {!! Form::submit('Change task status', ['class' => 'btn btn-success']) !!}
-                {!! Form::close() !!}
             </div>
 
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="rescheduleStatusModal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Reschedule Task</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="form-group">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-2">
+                            <p><b>Deadline</b> </p>
+                        </div>
+                        <div class="col">
+                            {!! Form::text('deadline', '', ['class' => 'form-control float-right deadlineDate', 'id' => 'deadline']) !!}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                {!! Form::submit('Close', ['class' => 'btn btn-danger', 'data-dismiss' => 'modal', ]) !!}
+                {!! Form::submit('Reschedule task', ['class' => 'btn btn-success']) !!}
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="successfulStatusModal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Collected Amount</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="form-group">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-2">
+                            <p><b>Amount</b></p>
+                        </div>
+                        <div class="col">
+                            {!! Form::number('collected_amount', null, ['id' => 'collectedAmount', 'placeholder' => 'Enter amount...', 'class' => 'form-control', 'min' => 0]) !!}
+                        </div>
+                        <div class="col-2">
+                            <b> {{ config('app_configuration.currency')}} </b>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                {!! Form::submit('Close', ['class' => 'btn btn-danger', 'data-dismiss' => 'modal', ]) !!}
+                {!! Form::submit('Save change', ['class' => 'btn btn-success']) !!}
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{!! Form::hidden('formOrderAssignmentId', '', ['id' => 'formOrderAssignmentId']) !!}
+{!! Form::hidden('formOrderStatusId', '', ['id' => 'formOrderStatusId']) !!}
+{!! Form::close() !!}
 
 @endsection

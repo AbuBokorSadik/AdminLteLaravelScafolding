@@ -28,7 +28,7 @@ class TaskStatusActivity extends Model
 
         TaskStatusActivity::create([
             'task_id' => $task->id,
-            'created_by_id' => $task->created_by_id,
+            'created_by_id' => auth()->user()->id,
             'status_id' => $statusId,
         ]);
     }

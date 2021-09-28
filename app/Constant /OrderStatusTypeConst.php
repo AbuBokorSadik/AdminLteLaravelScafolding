@@ -10,4 +10,5 @@ class OrderStatusTypeConst
     const SUCCESSFUL = 4;
     const CANCELED = 5;
     const ASSIGNED = 6;
+    const RESCHEDULE = 7;
 }

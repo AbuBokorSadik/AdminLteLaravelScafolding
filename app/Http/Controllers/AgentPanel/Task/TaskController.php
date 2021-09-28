@@ -89,6 +89,7 @@ class TaskController extends Controller
 
             $taskStatusActivities = TaskStatusActivity::where('task_id', $task->id)
                 ->with(['createdBy', 'taskStatus'])
+                ->orderBy('id', 'DESC')
                 ->paginate(15);
 
             $products = OrderProduct::with(['product'])

@@ -21,10 +21,13 @@ class OrderStatusUpdateController extends Controller
         // exit();
 
         $orderAssignment = OrderAssignment::where('id', $request->formOrderAssignmentId)
+            ->with(['task', 'order'])
             ->first();
-
         if ($orderAssignment->current_order_status_id == OrderStatusTypeConst::CANCELED) {
             $request->session()->flash('error_alert', 'You can not change the status of a canceled order status.');
+            return redirect()->back();
+        } else if ($orderAssignment->current_order_status_id == OrderStatusTypeConst::SUCCESSFUL) {
+            $request->session()->flash('error_alert', 'You can not change the status of a successful order status.');
             return redirect()->back();
         }
 
@@ -35,13 +38,21 @@ class OrderStatusUpdateController extends Controller
 
                 OrderAssignmentActivity::createActivity($orderAssignment, $orderAssignment->current_order_status_id);
 
-                $task = Task::where('order_assignment_id', $orderAssignment->id)
-                    ->first();
+                $orderAssignment->task->current_status_id =  $orderAssignment->current_order_status_id;
 
-                $task->current_status_id =  $orderAssignment->current_order_status_id;
-                $task->save();
+                if ($orderAssignment->current_order_status_id == OrderStatusTypeConst::RESCHEDULE) {
+                    $orderAssignment->order->deadline = date('Y-m-d H:i:s', strtotime($request->deadline));
+                    $orderAssignment->order->save();
+                    $orderAssignment->task->deadline = $orderAssignment->order->deadline;
+                } else if ($orderAssignment->current_order_status_id == OrderStatusTypeConst::SUCCESSFUL) {
+                    $orderAssignment->order->collected_amount = $request->collected_amount;
+                    $orderAssignment->order->save();
+                    $orderAssignment->task->collected_amount = $orderAssignment->order->collected_amount;
+                }
 
-                TaskStatusActivity::createActivity($task->id, $orderAssignment->current_order_status_id);
+                $orderAssignment->task->save();
+
+                TaskStatusActivity::createActivity($orderAssignment->task->id, $orderAssignment->current_order_status_id);
             });
 
             $request->session()->flash('success_alert', 'Task status updated successfully.');

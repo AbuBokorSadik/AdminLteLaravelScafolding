@@ -72,7 +72,7 @@
                                 </div>
                             </li>
                             @php
-                            $total_payable = ceil($task->amount + $task->orderAssignment->service_charge + $task->orderAssignment->area_charge + $task->orderAssignment->weight_charge + $task->orderAssignment->delivery_type_charge);
+                            $total_payable = ceil($task->assigned_amount + $task->orderAssignment->service_charge + $task->orderAssignment->area_charge + $task->orderAssignment->weight_charge + $task->orderAssignment->delivery_type_charge);
                             @endphp
                             <li class="list-group-item">
                                 <div class="row">
