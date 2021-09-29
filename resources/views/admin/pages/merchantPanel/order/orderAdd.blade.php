@@ -147,7 +147,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="far fa-clock"></i></span>
                                     </div>
-                                    {!! Form::text('deadline', '', ['id' => 'deadlineDate', 'class' => 'form-control float-right']) !!}
+                                    {!! Form::text('deadline', '', ['class' => 'form-control float-right deadlineDate']) !!}
                                 </div>
                                 @error('deadline')
                                 <span class="text-danger">{{ $message }}</span>
@@ -258,14 +258,14 @@
                             </div>
                             <div class="form-group">
                                 {!! Form::label('instruction', 'Instruction') !!}
-                                {!! Form::textarea('instruction','', ['id' => 'instruction', 'placeholder' => 'Enter instruction...', 'class' => 'form-control', 'row' => '2']) !!}
+                                {!! Form::textarea('instruction','', ['id' => 'instruction', 'placeholder' => 'Enter instruction...', 'class' => 'form-control', 'rows' => 2]) !!}
                                 @error('instruction')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="form-group">
                                 {!! Form::label('note', 'Note') !!}
-                                {!! Form::textarea('note','', ['id' => 'note', 'placeholder' => 'Enter note...', 'class' => 'form-control', 'row' => '2']) !!}
+                                {!! Form::textarea('note','', ['id' => 'note', 'placeholder' => 'Enter note...', 'class' => 'form-control', 'rows' => 2]) !!}
                                 @error('note')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror

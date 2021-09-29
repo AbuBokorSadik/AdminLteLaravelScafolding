@@ -249,13 +249,15 @@
                             <td>
                                 {{ date('d M, Y', strtotime($task->created_at)) }}
                             </td>
-                            <td class="text-center" style="width: 200px;">
-
+                            <td class="text-center">
+                                @if($task->status->id == App\Constant\OrderStatusTypeConst::CANCELED || $task->status->id == App\Constant\OrderStatusTypeConst::SUCCESSFUL)
+                                @else
                                 <a class="btn btn-info btn-sm" href="{{ route('tasks.edit', $task->id) }}" style="width: 80px;">
                                     <i class="fas fa-pencil-alt">
                                     </i>
                                     Edit
                                 </a>
+                                @endif
 
                                 <a class="btn btn-info btn-sm" href="{{ route('tasks.show', $task->id) }}" style="width: 80px;">
                                     <i class="fas fa-eye"></i>

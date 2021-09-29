@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Task;
 
+use App\Constant\OrderStatusTypeConst;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\OrderProduct;
@@ -121,7 +122,16 @@ class TaskController extends Controller
         $title = 'Task Update';
         try {
             $task = Task::where('id', $id)
+                ->with(['status'])
                 ->first();
+
+            if ($task->status->id == OrderStatusTypeConst::CANCELED) {
+                $request->session()->flash('error_alert', 'You can not change the status of a canceled task status.');
+                return redirect()->back();
+            } else if ($task->status->id == OrderStatusTypeConst::SUCCESSFUL) {
+                $request->session()->flash('error_alert', 'You can not change the status of a successful task status.');
+                return redirect()->back();
+            }
 
             // echo '<pre>';
             // print_r($task->toArray());

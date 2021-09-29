@@ -106,7 +106,7 @@
                                                     <p><b>Instruction</b> </p>
                                                 </div>
                                                 <div class="col">
-                                                    {!! Form::textarea('instruction', $task->instruction , ['placeholder' => 'Enter instruction...', 'class' => 'form-control']) !!}
+                                                    {!! Form::textarea('instruction', $task->instruction , ['placeholder' => 'Enter instruction...', 'class' => 'form-control', 'rows' => 2]) !!}
                                                     @error('instruction')
                                                     <span class="text-danger">{{ $message }}</span>
                                                     @enderror
@@ -119,7 +119,7 @@
                                                     <p><b>Note</b> </p>
                                                 </div>
                                                 <div class="col">
-                                                    {!! Form::textarea('note', $task->note, ['placeholder' => 'Enter note...', 'class' => 'form-control']) !!}
+                                                    {!! Form::textarea('note', $task->note, ['placeholder' => 'Enter note...', 'class' => 'form-control', 'rows' => 2]) !!}
                                                     @error('note')
                                                     <span class="text-danger">{{ $message }}</span>
                                                     @enderror
