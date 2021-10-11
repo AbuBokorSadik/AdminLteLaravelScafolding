@@ -59,6 +59,7 @@
 @section('contentWrapper')
 
 <div class="content-wrapper">
+    <!-- header section -->
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -72,15 +73,10 @@
                     </ol>
                 </div>
             </div>
-            <div class="row mb-2">
-                <div class="col-sm-4">
-                    @include('alert.flashAlert')
-                </div>
-            </div>
-        </div><!-- /.container-fluid -->
+        </div>
     </section>
 
-    <!-- Main content -->
+    <!-- filter section -->
     <section class="content">
         <div class="card">
             {!! Form::open(['route' => 'order.index', 'method' => 'get']) !!}
@@ -125,7 +121,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="far fa-clock"></i></span>
                                 </div>
-                                {!! Form::text('deadlineDateRange', old('deadlineDateRange'), ['class' => 'form-control float-right reservationtime']) !!}
+                                {!! Form::text('deadlineDateRange', old('deadlineDateRange'), ['class' => 'form-control float-right dateRange']) !!}
                             </div>
                         </div>
                     </div>
@@ -136,7 +132,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="far fa-clock"></i></span>
                                 </div>
-                                {!! Form::text('createdAtDateRange', old('createdAtDateRange'), ['class' => 'form-control float-right reservationtime']) !!}
+                                {!! Form::text('createdAtDateRange', old('createdAtDateRange'), ['class' => 'form-control float-right dateRange']) !!}
                             </div>
                         </div>
                     </div>
@@ -148,16 +144,35 @@
             </div>
             {!! Form::close() !!}
         </div>
+    </section>
 
+    <!-- error message -->
+    <section class="content">
+        <div class="row mb-2">
+            <div class="col-sm-4">
+                @include('alert.flashAlert')
+            </div>
+        </div>
+    </section>
 
-        <!-- Default box -->
+    <!-- order list section -->
+    <section class="content">
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Order List</h3>
                 <div class="card-tools">
-                    {!! Form::open(['route' => 'order.create', 'method' => 'get']) !!}
-                    {!! Form::button('<i class="fas fa-plus"> Add order</i>', ['type'=>'submit', 'class' => 'btn btn-success']) !!}
-                    {!! Form::close() !!}
+                    <a class="btn btn-success" href="{{ route('order.create') }}" style="width: 150px;">
+                        <i class="fas fa-plus"></i>
+                        Add order
+                    </a>
+
+                    @php
+                    $order_ids = $orders->pluck('id');
+                    @endphp
+                    <a class="btn btn-info" href="{{ route('order.export', $order_ids) }}" style="width: 150px;">
+                        <i class="fas fa-file-download"></i>
+                        Export Excel
+                    </a>
                 </div>
             </div>
             <div class="card-body table-responsive p-0">
@@ -212,6 +227,12 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @if ($orders->isEmpty())
+                        <tr>
+                            <td colspan="100%">No data found!!!</td>
+                        </tr>
+                        @endif
+
                         @foreach($orders as $order)
                         <tr>
                             <td>
@@ -224,7 +245,7 @@
                                 <div class="row">
                                     <div class="col-sm-12">
                                         @php
-                                        $imgpath = $order->orderAssignment->task->assignedTo->avater ? '/storage/' . $order->orderAssignment->task->assignedTo->avater : 'img/dummy-user.png';
+                                        $imgpath = $order->orderAssignment->task->assignedTo->avatar ? '/storage/' . $order->orderAssignment->task->assignedTo->avatar : 'img/dummy-user.png';
                                         @endphp
                                         <img class="profile-user-img img-fluid img-circle" style="height: 45px; width: 45px;" src="{{ asset($imgpath) }}" alt="">
                                     </div>
@@ -243,7 +264,7 @@
                                 <div class="row">
                                     <div class="col-sm-12">
                                         @php
-                                        $imgpath = $order->orderAssignment->assignedBy->avater ? '/storage/' . $order->orderAssignment->assignedBy->avater : 'img/dummy-user.png';
+                                        $imgpath = $order->orderAssignment->assignedBy->avatar ? '/storage/' . $order->orderAssignment->assignedBy->avatar : 'img/dummy-user.png';
                                         @endphp
                                         <img class="profile-user-img img-fluid img-circle" style="height: 45px; width: 45px;" src="{{ asset($imgpath) }}" alt="">
                                     </div>
@@ -315,11 +336,8 @@
             <div class="card-footer clearfix">
                 {{ $orders->links() }}
             </div>
-            <!-- /.card-body -->
         </div>
-        <!-- /.card -->
     </section>
-    <!-- /.content -->
 </div>
 
 <!-- order status change modal -->

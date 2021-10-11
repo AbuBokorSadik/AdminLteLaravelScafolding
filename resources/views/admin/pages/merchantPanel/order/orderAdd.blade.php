@@ -64,6 +64,7 @@
 @section('contentWrapper')
 
 <div class="content-wrapper">
+    <!-- header section -->
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -77,28 +78,29 @@
                     </ol>
                 </div>
             </div>
-            <div class="row mb-2">
-                <div class="col-sm-4">
-                    @include('alert.flashAlert')
-                </div>
+        </div>
+    </section>
+
+    <!-- filter section -->
+    <section class="content">
+        <div class="container-fluid row mb-2">
+            <div class="col-sm-4">
+                @include('alert.flashAlert')
             </div>
         </div>
     </section>
 
-    <!-- Main content -->
+    <!-- add section -->
     <section class="content">
         <div class="container-fluid">
+            <!-- add order info section -->
             {!! Form::open(['route' => 'orders.store', 'method' => 'post', 'files' => true]) !!}
             <div class="row">
-                <!-- left column -->
                 <div class="col-md">
-                    <!-- general form elements -->
                     <div class="card card-success">
                         <div class="card-header">
                             <h3 class="card-title">Add Order Information</h3>
                         </div>
-                        <!-- /.card-header -->
-                        <!-- form start -->
                         <div class="card-body">
                             <div class="form-group">
                                 {!! Form::label('orderType', 'Order Type') !!}
@@ -113,7 +115,7 @@
                                     <option value="" selected>Select seller...</option>
                                     @foreach($sellers as $seller)
                                     @php
-                                    $imgpath = $seller->avater ? '/storage/' . $seller->avater : 'img/dummy-user.png';
+                                    $imgpath = $seller->avatar ? '/storage/' . $seller->avatar : 'img/dummy-user.png';
                                     @endphp
                                     <option value="{{ $seller->id }}" data-img-src="{{ asset($imgpath) }}">
                                         {{ $seller->name }}
@@ -164,15 +166,13 @@
                     </div>
                 </div>
             </div>
+            <!-- add product info section -->
             <div class="row">
                 <div class="col-md">
-                    <!-- general form elements -->
                     <div class="card card-success">
                         <div class="card-header">
                             <h3 class="card-title">Add Product Information</h3>
                         </div>
-                        <!-- /.card-header -->
-                        <!-- form start -->
                         <div class="card-body">
                             <div class="form-group">
                                 {!! Form::label('productWeight', 'Product Weight') !!}
@@ -206,6 +206,7 @@
                     </div>
                 </div>
             </div>
+            <!-- add contact info section -->
             <div class="row">
                 <div class="col-md">
                     <div class="card card-success">
@@ -214,21 +215,21 @@
                         </div>
                         <div class="card-body">
                             <div class="form-group">
-                                {!! Form::label('name', 'Contact Name') !!}
+                                {!! Form::label('name', 'Name') !!}
                                 {!! Form::text('name','', ['id' => 'name', 'placeholder' => 'Enter name...', 'class' => 'form-control']) !!}
                                 @error('name')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="form-group">
-                                {!! Form::label('email', 'Contact Email') !!}
+                                {!! Form::label('email', 'Email') !!}
                                 {!! Form::text('email','', ['id' => 'email', 'placeholder' => 'Enter email...', 'class' => 'form-control']) !!}
                                 @error('email')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="form-group">
-                                {!! Form::label('mobile', 'Contact Mobile') !!}
+                                {!! Form::label('mobile', 'Mobile') !!}
                                 {!! Form::text('mobile','', ['id' => 'mobile', 'placeholder' => 'Enter mobile...', 'class' => 'form-control']) !!}
                                 @error('mobile')
                                 <span class="text-danger">{{ $message }}</span>
@@ -236,7 +237,7 @@
                             </div>
                             <div id="contactArea"></div>
                             <div class="form-group">
-                                {!! Form::label('address', 'Contact Address') !!}
+                                {!! Form::label('address', 'Address') !!}
                                 {!! Form::text('address','', ['id' => 'address', 'placeholder' => 'Enter address...', 'class' => 'form-control']) !!}
                                 @error('address')
                                 <span class="text-danger">{{ $message }}</span>
@@ -271,22 +272,20 @@
                                 @enderror
                             </div>
                         </div>
+                        <!-- footer section-->
+                        <div class="card-footer">
+                            {!! Form::submit('Place order', ['class' => 'btn btn-success']) !!}
+                            <a class="btn btn-secondary" href="{{ route('orders.index') }}">
+                                </i>
+                                Cancel
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="card-footer">
-                {!! Form::submit('Place order', ['class' => 'btn btn-success btn-sm']) !!}
-
-                <a class="btn btn-secondary btn-sm" href="{{ route('orders.index') }}">
-                    </i>
-                    Cancel
-                </a>
-
-            </div>
             {!! Form::close() !!}
-        </div><!-- /.container-fluid -->
+        </div>
     </section>
-    <!-- /.content -->
 </div>
 
 @endsection

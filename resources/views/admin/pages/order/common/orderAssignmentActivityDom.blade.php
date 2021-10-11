@@ -39,14 +39,20 @@
                             $serialNo++;
                             $imgpath = $orderAssignmentActivity->createdBy->avater ? '/storage/' . $orderAssignmentActivity->createdBy->avater : 'img/dummy-user.png';
                             @endphp
-                            <img class="profile-user-img img-fluid img-circle" style="height: 45px; width: 45px;" src="{{ asset($imgpath) }}" alt="">
-                            {{ $orderAssignmentActivity->createdBy->name }}
+                            <div class="row">
+                                <div class="col-6 text-right" >
+                                    <img class="profile-user-img img-fluid img-circle" style="height: 45px; width: 45px;" src="{{ asset($imgpath) }}" alt="">
+                                </div>
+                                <dev class="col-6 text-left">
+                                    {{ $orderAssignmentActivity->createdBy->name }}
+                                </dev>
+                            </div>
                         </td>
                         <td>
                             {{ $orderAssignmentActivity->created_at }}
                         </td>
                         <td>
-                            {!! Form::submit($orderAssignmentActivity->orderStatus->status, ['class' => 'btn btn-sm', 'style' => 'background-color:' . $orderAssignmentActivity->orderStatus->color . '; width: 80px;']) !!}
+                            {!! Form::submit($orderAssignmentActivity->orderStatus->status, ['class' => 'btn btn-sm', 'style' => 'background-color:' . $orderAssignmentActivity->orderStatus->color . '; width: 100px;']) !!}
                         </td>
                         </tr>
                         @endforeach

@@ -6,6 +6,7 @@ use App\Http\Controllers\AgentPanel\Dashboard\AgentDashboardController;
 use App\Http\Controllers\AgentPanel\Task\TaskStatusUpdateController;
 use App\Http\Controllers\MerchantPanel\Dashboard\MerchantDashboardController;
 use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\MerchantPanel\Order\OrderPaymentController;
 use App\Http\Controllers\MerchantPanel\Order\ProductSelectController;
 use App\Http\Controllers\MerchantPanel\Order\ProductServiceChargeController;
 use App\Http\Controllers\MerchantPanel\Order\SellerAreaController;
@@ -78,6 +79,20 @@ Route::group(['middleware' => ['isAuth', 'isActive']], function () {
         Route::post('assigne-agent', [AssigneAgentController::class, 'assigneAgent'])->name('assigne.agent');
 
         Route::get('agent-info/{agent_id}', [AgentInfoController::class, 'getAgentInfo'])->name('agent.info');
+
+        Route::get('merchant-user-export/{merchant_ids}', 'Exports\MerchantUserController@export')->name('merchant.user.export');
+
+        Route::get('agent-user-export/{agent_ids}', 'Exports\AgentUserController@export')->name('agent.user.export');
+
+        Route::get('category-export/{category_ids}', 'Exports\CategoryController@export')->name('category.export');
+
+        Route::get('product-export/{product_ids}', 'Exports\ProductController@export')->name('product.export');
+
+        Route::get('order-export/{order_ids}', 'Exports\OrderController@export')->name('order.export');
+
+        Route::get('task-export/{task_ids}', 'Exports\TaskController@export')->name('task.export');
+
+        Route::get('export', 'User\UsersController@export')->name('admin.export');
     });
 
     Route::group(['prefix' => 'agent', 'middleware' => ['isAgent']], function () {
@@ -86,6 +101,8 @@ Route::group(['middleware' => ['isAuth', 'isActive']], function () {
         Route::resource('agent-tasks', AgentPanel\Task\TaskController::class);
 
         Route::post('task-status-update', [TaskStatusUpdateController::class, 'updateOrderStatus'])->name('agent.task.status.update');
+
+        Route::get('agent-task-export/{task_ids}', 'AgentPanel\Exports\TaskController@export')->name('agent.task.export');
     });
 
     Route::group(['prefix' => 'merchant', 'middleware' => ['isMerchant']], function () {
@@ -102,5 +119,9 @@ Route::group(['middleware' => ['isAuth', 'isActive']], function () {
         Route::resource('orders', MerchantPanel\Order\OrderController::class);
 
         Route::post('order-status-update',[OrderStatusUpdateController::class, 'updateOrderStatus'])->name('merchant.order.status.update');
+
+        Route::post('order-payment', [OrderPaymentController::class, 'payment'])->name('order.payment');
+
+        Route::get('merchant-order-export/{order_ids}', 'MerchantPanel\Exports\OrderController@export')->name('merchant.order.export');
     });
 });

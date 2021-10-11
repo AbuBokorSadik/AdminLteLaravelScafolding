@@ -59,23 +59,20 @@
 
     bsCustomFileInput.init();
 
-
-
-    $('#createdAtDateRange').daterangepicker({
-      timePicker: true,
-      timePickerIncrement: 30,
+    $('.dateRange').daterangepicker({
+      autoUpdateInput: false,
       locale: {
-        format: 'YYYY-MM-DD HH:mm:ss'
+        cancelLabel: 'Clear'
       }
-    })
+    });
 
-    $('#deadlineDateRange').daterangepicker({
-      timePicker: true,
-      timePickerIncrement: 30,
-      locale: {
-        format: 'YYYY-MM-DD HH:mm:ss'
-      }
-    })
+    $('.dateRange').on('apply.daterangepicker', function(ev, picker) {
+      $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+    });
+
+    $('.dateRange').on('cancel.daterangepicker', function(ev, picker) {
+      $(this).val('');
+    });
 
     //Date picker
     $('.deadlineDate').daterangepicker({

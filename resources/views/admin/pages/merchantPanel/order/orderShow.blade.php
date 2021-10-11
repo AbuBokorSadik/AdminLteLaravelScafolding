@@ -41,16 +41,14 @@
                                         <li class="list-group-item">
                                             <div class="row">
                                                 <div class="col-6">
-                                                    <p><b>Seller Name</b> </p>
+                                                    <p><b>Name</b> </p>
                                                 </div>
                                                 <div class="col-6">
-                                                    <p>
-                                                        @php
-                                                        $imgpath = $order->orderAssignment->assignedTo->avater ? '/storage/' . $order->orderAssignment->assignedTo->avater : 'img/dummy-user.png';
-                                                        @endphp
-                                                        <img class="profile-user-img img-fluid img-circle" style="height: 45px; width: 45px;" src="{{ asset($imgpath) }}" alt="">
-                                                        {{ $order->orderAssignment->assignedTo->name }}
-                                                    </p>
+                                                    @php
+                                                    $imgpath = $order->orderAssignment->assignedTo->avater ? '/storage/' . $order->orderAssignment->assignedTo->avater : 'img/dummy-user.png';
+                                                    @endphp
+                                                    <img class="profile-user-img img-fluid img-circle" style="height: 45px; width: 45px;" src="{{ asset($imgpath) }}" alt="">
+                                                    {{ $order->orderAssignment->assignedTo->name }}
                                                 </div>
                                             </div>
                                         </li>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Product;
 
+use App\Constant\StatusTypeConst;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Product\ProductStoreRequest;
 use App\Http\Requests\Product\ProductUpdateRequest;
@@ -21,10 +22,6 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        // echo '<pre>';
-        // print_r(explode(' - ', $request->createdAtDateRange));
-        // exit();
-
         $title = 'Product List';
         $product_list_active = 'active';
         try {
@@ -37,6 +34,10 @@ class ProductController extends Controller
                 ->where('created_by_id', auth()->user()->id)
                 ->orderBy('id', 'DESC')
                 ->paginate(20);
+
+            // echo '<pre>';
+            // print_r($products->toArray());
+            // exit();
 
             $categories = Category::where('created_by_id', auth()->user()->id)->pluck('name', 'id');
 
@@ -104,7 +105,7 @@ class ProductController extends Controller
         } catch (\Exception $e) {
             Log::error($e->getFile() . ' ' . $e->getLine() . ' ' . $e->getMessage());
             $request->session()->flash('error_alert', 'Something went wrong. Please try again later.');
-            return redirect()->route('products.index');
+            return redirect()->back();
         }
     }
 
@@ -153,6 +154,11 @@ class ProductController extends Controller
     public function update(ProductUpdateRequest $request, $id)
     {
         try {
+            $category = Category::find($request->category_id);
+            if ($category->status == StatusTypeConst::INACTIVE && $request->status == StatusTypeConst::ACTIVE) {
+                $request->session()->flash('error_alert', 'You can not change product status of a inactive category.');
+                return redirect()->route('products.index');
+            }
             DB::transaction(function () use ($request, $id) {
                 $product = Product::find($id);
                 $product->category_id = $request->category_id;
@@ -171,16 +177,15 @@ class ProductController extends Controller
                     Storage::disk('public')->delete($product->image);
                     $product->image = $filePath;
                 }
-
                 $product->save();
             });
 
             $request->session()->flash('success_alert', 'Products Updated Successfully.');
-            return redirect()->route('products.index');
+            return redirect()->back();
         } catch (\Exception $e) {
             Log::error($e->getFile() . ' ' . $e->getLine() . ' ' . $e->getMessage());
             $request->session()->flash('error_alert', 'Something went wrong. Please try again later.');
-            return redirect()->route('products.index');
+            return redirect()->back();
         }
     }
 

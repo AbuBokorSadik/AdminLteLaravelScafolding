@@ -2,7 +2,7 @@
 
 @section('contentWrapper')
 <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
+    <!-- header section -->
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -16,15 +16,19 @@
                     </ol>
                 </div>
             </div>
-            <div class="row mb-2">
-                <div class="col-sm-4">
-                    @include('alert.flashAlert')
-                </div>
+        </div>
+    </section>
+
+    <!-- error message -->
+    <section class="content">
+        <div class="container-fluid row mb-2">
+            <div class="col-sm-4">
+                @include('alert.flashAlert')
             </div>
         </div>
     </section>
 
-    <!-- Main content -->
+    <!-- update section -->
     <section class="content">
         <div class="container-fluid">
             <div class="row">
@@ -60,16 +64,19 @@
                         </div>
 
                         <div class="card-footer">
-                            {!! Form::submit('Update Category', ['class' => 'btn btn-success btn-sm']) !!}
+                            {!! Form::submit('Update Category', ['class' => 'btn btn-success']) !!}
+
+                            <a class="btn btn-secondary" href="{{ route('categories.index') }}">
+                                </i>
+                                Cancel
+                            </a>
                         </div>
                         {!! Form::close() !!}
                     </div>
                 </div>
             </div>
-            <!-- /.row -->
-        </div><!-- /.container-fluid -->
+        </div>
     </section>
-    <!-- /.content -->
 </div>
 
 @endsection

@@ -15,9 +15,9 @@ class OrderStatusUpdateController extends Controller
 {
     public function updateOrderStatus(Request $request)
     {
-        echo "<pre>";
-        print_r($request->all());
-        exit();
+        // echo "<pre>";
+        // print_r($request->all());
+        // exit();
 
         $orderAssignment = OrderAssignment::where('id', $request->formOrderAssignmentId)
             ->first();

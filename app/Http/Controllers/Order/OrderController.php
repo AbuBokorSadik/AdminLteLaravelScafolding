@@ -80,7 +80,7 @@ class OrderController extends Controller
         $title = 'Add Order';
         $order_create_active = 'active';
         try {
-            $buyers = User::wherehas('merchants', function (Builder $query) {
+            $buyers = User::wherehas('buyers', function (Builder $query) {
                 $query->where('user_id', auth()->user()->id);
             })
                 ->get();
@@ -94,6 +94,7 @@ class OrderController extends Controller
                 'created_by_id' => auth()->user()->id,
             ])
                 ->pluck('name', 'id');
+                
             // echo '<pre>';
             // print_r($buyers->toArray());
             // exit();
@@ -235,7 +236,7 @@ class OrderController extends Controller
                 ->paginate(15);
 
             // echo '<pre>';
-            // print_r($orderAssignmentActivities->toArray());
+            // print_r($order->toArray());
             // exit();
 
             return view('admin.pages.order.orderShow', compact('title', 'order', 'products', 'orderAssignmentActivities'));

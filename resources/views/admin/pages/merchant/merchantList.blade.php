@@ -3,6 +3,7 @@
 @section('contentWrapper')
 
 <div class="content-wrapper">
+    <!-- header section -->
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -16,15 +17,10 @@
                     </ol>
                 </div>
             </div>
-            <div class="row mb-2">
-                <div class="col-sm-4">
-                    @include('alert.flashAlert')
-                </div>
-            </div>
         </div><!-- /.container-fluid -->
     </section>
 
-    <!-- Main content -->
+    <!-- filter section -->
     <section class="content">
         <div class="card">
             {!! Form::open(['route' => 'merchants.index', 'method' => 'get']) !!}
@@ -32,36 +28,31 @@
                 <div class="row">
                     <div class="col">
                         <div class="form-group">
-                            {!! Form::label('merchantId', 'Id') !!}
-                            {!! Form::text('id', old('id'), ['id' => 'merchantId', 'placeholder' => 'Enter merchant id...', 'class' => 'form-control']) !!}
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-group">
                             {!! Form::label('merchantName', 'Name') !!}
-                            {!! Form::text('name', old('name'), ['id' => 'merchantName', 'placeholder' => 'Enter merchant name...', 'class' => 'form-control']) !!}
+                            {!! Form::text('name', old('name'), ['id' => 'merchantName', 'placeholder' => 'Enter name...', 'class' => 'form-control']) !!}
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group">
                             {!! Form::label('merchantEmail', 'Email') !!}
-                            {!! Form::text('email', old('email'), ['id' => 'merchantEmail', 'placeholder' => 'Enter merchant email...', 'class' => 'form-control']) !!}
+                            {!! Form::text('email', old('email'), ['id' => 'merchantEmail', 'placeholder' => 'Enter email...', 'class' => 'form-control']) !!}
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group">
                             {!! Form::label('merchantMobile', 'Mobile') !!}
-                            {!! Form::text('mobile', old('mobile'), ['id' => 'merchantMobile', 'placeholder' => 'Enter merchant mobile...', 'class' => 'form-control']) !!}
+                            {!! Form::text('mobile', old('mobile'), ['id' => 'merchantMobile', 'placeholder' => 'Enter mobile...', 'class' => 'form-control']) !!}
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            {!! Form::label('merchantStatus', 'Status') !!}
+                            {!! Form::select('status', [null => 'Select status...', App\Constant\StatusTypeConst::ACTIVE => 'Active', App\Constant\StatusTypeConst::INACTIVE => 'Inactive'], old('status'), ['class' => 'form-control', 'id' => 'merchantStatus', ]) !!}
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            {!! Form::label('merchantStatus', 'Status') !!}
-                            {!! Form::select('status', [null => 'Select merchant status...', '1' => 'Active', '0' => 'Inactive'], old('status'), ['class' => 'form-control', 'id' => 'merchantStatus', ]) !!}
-                        </div>
-                    </div>
+
                     <div class="col-sm-3">
                         <div class="form-group">
                             {!! Form::label('createdAtDateRange', 'Select Created At Date Range') !!}
@@ -69,7 +60,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="far fa-clock"></i></span>
                                 </div>
-                                {!! Form::text('createdAtDateRange', old('createdAtDateRange'), ['id' => 'createdAtDateRange', 'class' => 'form-control float-right']) !!}
+                                {!! Form::text('createdAtDateRange', old('createdAtDateRange'), ['class' => 'form-control float-right dateRange']) !!}
                             </div>
                         </div>
                     </div>
@@ -81,24 +72,42 @@
             </div>
             {!! Form::close() !!}
         </div>
+    </section>
 
+    <!-- error message -->
+    <section class="content">
+        <div class="row mb-2">
+            <div class="col-sm-4">
+                @include('alert.flashAlert')
+            </div>
+        </div>
+    </section>
 
-        <!-- Default box -->
+    <!-- order list section -->
+    <section class="content">
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Merchant List</h3>
                 <div class="card-tools">
-                    {!! Form::open(['route' => 'merchants.create', 'method' => 'get']) !!}
-                    {!! Form::button('<i class="fas fa-plus"> Add Merchant</i>', ['type'=>'submit', 'class' => 'btn btn-success']) !!}
-                    {!! Form::close() !!}
+                    <a class="btn btn-success" href="{{ route('merchants.create') }}" style="width: 150px;">
+                        <i class="fas fa-plus"></i>
+                        Add Merchant
+                    </a>
+                    @php
+                    $merchant_ids = $merchants->pluck('id');
+                    @endphp
+                    <a class="btn btn-info" href="{{ route('merchant.user.export', $merchant_ids) }}" style="width: 150px;">
+                        <i class="fas fa-file-download"></i>
+                        Export Excel
+                    </a>
                 </div>
             </div>
-            <div class="card-body p-0">
-                <table class="table table-striped projects">
+            <div class="card-body table-responsive p-0">
+                <table class="table table-striped projects text-center">
                     <thead>
                         <tr>
                             <th>
-                                Id
+                                Sl#
                             </th>
                             <th>
                                 Name
@@ -109,10 +118,10 @@
                             <th>
                                 Mobile
                             </th>
-                            <th class="text-center">
-                                Avater
+                            <th>
+                                avatar
                             </th>
-                            <th class="text-center">
+                            <th>
                                 Status
                             </th>
                             <th>
@@ -121,16 +130,26 @@
                             <th>
                                 Updated Time
                             </th>
-                            <th class="text-center">
+                            <th>
                                 Action
                             </th>
                         </tr>
                     </thead>
                     <tbody>
+                        @if ($merchants->isEmpty())
+                        <tr>
+                            <td colspan="100%">No data found!!!</td>
+                        </tr>
+                        @endif
+
+                        @php
+                        $serial = 1;
+                        @endphp
+
                         @foreach($merchants as $merchant)
                         <tr>
                             <td>
-                                {{ $merchant->id }}
+                                {{ $serial }}
                             </td>
                             <td>
                                 {{ $merchant->name }}
@@ -143,9 +162,10 @@
                             </td>
                             <td class="text-center">
                                 @php
-                                $imgpath = $merchant->avater ? '/storage/' . $merchant->avater : 'img/dummy-user.png';
+                                $serial++;
+                                $imgpath = $merchant->avatar ? '/storage/' . $merchant->avatar : 'img/dummy-user.png';
                                 @endphp
-                                <img class="profile-user-img img-fluid img-circle" style="height: 45px; width: 45px;" src="{{ asset($imgpath) }}" alt="">
+                                <img class="profile-user-img img-fluid img-circle" style="height: 45px; width: 45px;" src="{{ asset($imgpath) }}" alt="Image not found.">
                             </td>
                             <td class="project-state">
                                 <span class="badge badge-{{ ($merchant->status) ? 'success' : 'danger' }}" style="width: 60px;">
@@ -165,7 +185,7 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         {!! Form::open(['route' => ['merchants.update', $merchant->id], 'method' => 'put']) !!}
-                                        {!! Form::button(($merchant->status) ? 'Inactive' : 'Active', ['type'=>'submit', 'class' => 'btn ' . $btnClass . ' btn-sm', 'style' => 'width:80px']) !!}
+                                        {!! Form::button(($merchant->status) ? 'Inactive' : 'Active', ['type'=>'submit', 'class' => 'btn ' . $btnClass . ' btn-sm', 'style' => 'width: 80px;']) !!}
                                         {!! Form::close() !!}
                                     </div>
                                     <div class="col-sm-6">
@@ -184,12 +204,8 @@
             <div class="card-footer clearfix">
                 {{ $merchants->links() }}
             </div>
-            <!-- /.card-body -->
         </div>
-        <!-- /.card -->
-
     </section>
-    <!-- /.content -->
 </div>
 
 @endsection

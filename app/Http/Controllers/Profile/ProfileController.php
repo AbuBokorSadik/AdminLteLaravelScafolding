@@ -106,17 +106,17 @@ class ProfileController extends Controller
                 $profile->address = $request->address;
                 $profile->additional_email = $request->additional_email;
                 $profile->additional_mobile = $request->additional_mobile;
-                if ($request->avater) {
-                    $fileName = time() . '_' . $request->avater->getClientOriginalName();
-                    $filePath = $request->file('avater')->storeAs('profiles', $fileName, 'public');
-                    Storage::disk('public')->delete($profile->avater);
-                    $profile->avater = $filePath;
+                if ($request->avatar) {
+                    $fileName = time() . '_' . $request->avatar->getClientOriginalName();
+                    $filePath = $request->file('avatar')->storeAs('profiles', $fileName, 'public');
+                    Storage::disk('public')->delete($profile->avatar);
+                    $profile->avatar = $filePath;
                 }
                 $profile->save();
             });
 
             $request->session()->flash('success_alert', 'Profile Updated Successfully.');
-            return redirect()->route('profiles.index');
+            return redirect()->back();
         } catch (\Exception $e) {
             Log::error($e->getFile() . ' ' . $e->getLine() . ' ' . $e->getMessage());
             $request->session()->flash('error_alert', 'Something went wrong. Please try again later.');

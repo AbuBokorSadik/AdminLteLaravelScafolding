@@ -3,6 +3,7 @@
 @section('contentWrapper')
 
 <div class="content-wrapper">
+    <!-- header section -->
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -16,15 +17,10 @@
                     </ol>
                 </div>
             </div>
-            <div class="row mb-2">
-                <div class="col-sm-4">
-                    @include('alert.flashAlert')
-                </div>
-            </div>
         </div><!-- /.container-fluid -->
     </section>
 
-    <!-- Main content -->
+    <!-- filter section -->
     <section class="content">
         <div class="card">
             {!! Form::open(['route' => 'categories.index', 'method' => 'get']) !!}
@@ -32,30 +28,22 @@
                 <div class="row">
                     <div class="col">
                         <div class="form-group">
-                            {!! Form::label('categoryId', 'Id') !!}
-                            {!! Form::text('id', old('id'), ['id' => 'categoryId', 'placeholder' => 'Enter category id...', 'class' => 'form-control']) !!}
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-group">
                             {!! Form::label('categoryName', 'Name') !!}
-                            {!! Form::text('name', old('name'), ['id' => 'categoryName', 'placeholder' => 'Enter category name...', 'class' => 'form-control']) !!}
+                            {!! Form::text('name', old('name'), ['id' => 'categoryName', 'placeholder' => 'Enter name...', 'class' => 'form-control']) !!}
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group">
                             {!! Form::label('categoryAlias', 'Alias') !!}
-                            {!! Form::text('alias', old('alias'), ['id' => 'categoryAlias', 'placeholder' => 'Enter category alias...', 'class' => 'form-control']) !!}
+                            {!! Form::text('alias', old('alias'), ['id' => 'categoryAlias', 'placeholder' => 'Enter alias...', 'class' => 'form-control']) !!}
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group">
                             {!! Form::label('categoryStatus', 'Status') !!}
-                            {!! Form::select('status', [null => 'Select category status...', '1' => 'Active', '0' => 'Inactive'], old('status'), ['class' => 'form-control', 'id' => 'categoryStatus', ]) !!}
+                            {!! Form::select('status', [null => 'Select status...', App\Constant\StatusTypeConst::ACTIVE => 'Active', App\Constant\StatusTypeConst::INACTIVE => 'Inactive'], old('status'), ['class' => 'form-control', 'id' => 'categoryStatus', ]) !!}
                         </div>
                     </div>
-                </div>
-                <div class="row">
                     <div class="col-sm-3">
                         <div class="form-group">
                             {!! Form::label('createdAtDateRange', 'Select Created At Date Range') !!}
@@ -63,7 +51,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="far fa-clock"></i></span>
                                 </div>
-                                {!! Form::text('createdAtDateRange', old('createdAtDateRange'), ['id' => 'createdAtDateRange', 'class' => 'form-control float-right']) !!}
+                                {!! Form::text('createdAtDateRange', old('createdAtDateRange'), ['class' => 'form-control float-right dateRange']) !!}
                             </div>
                         </div>
                     </div>
@@ -76,23 +64,43 @@
             {!! Form::close() !!}
         </div>
 
+    </section>
 
-        <!-- Default box -->
+    <!-- error message -->
+    <section class="content">
+        <div class="row mb-2">
+            <div class="col-sm-4">
+                @include('alert.flashAlert')
+            </div>
+        </div>
+    </section>
+
+    <!-- category list section -->
+    <section class="content">
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Category List</h3>
                 <div class="card-tools">
-                    {!! Form::open(['route' => 'categories.create', 'method' => 'get']) !!}
-                    {!! Form::button('<i class="fas fa-plus"> Add Category</i>', ['type'=>'submit', 'class' => 'btn btn-success']) !!}
-                    {!! Form::close() !!}
+                    <a class="btn btn-success" href="{{ route('categories.create') }}" style="width: 150px;">
+                        <i class="fas fa-plus"></i>
+                        Add Category
+                    </a>
+
+                    @php
+                    $category_ids = $categories->pluck('id');
+                    @endphp
+                    <a class="btn btn-info" href="{{ route('category.export', $category_ids) }}" style="width: 150px;">
+                        <i class="fas fa-file-download"></i>
+                        Export Excel
+                    </a>
                 </div>
             </div>
-            <div class="card-body p-0">
-                <table class="table table-striped projects">
+            <div class="card-body table-responsive p-0">
+                <table class="table table-striped projects text-center">
                     <thead>
                         <tr>
                             <th>
-                                Id
+                                Sl#
                             </th>
                             <th>
                                 Name
@@ -100,7 +108,7 @@
                             <th>
                                 Alias
                             </th>
-                            <th class="text-center">
+                            <th>
                                 Status
                             </th>
                             <th>
@@ -109,16 +117,29 @@
                             <th>
                                 Updated Time
                             </th>
-                            <th class="text-center">
+                            <th>
                                 Action
                             </th>
                         </tr>
                     </thead>
                     <tbody>
+                        @if ($categories->isEmpty())
+                        <tr>
+                            <td colspan="100%">No data found!!!</td>
+                        </tr>
+                        @endif
+
+                        @php
+                        $serial = 1;
+                        @endphp
+
                         @foreach($categories as $category)
                         <tr>
                             <td>
-                                {{ $category->id }}
+                                {{ $serial }}
+                                @php
+                                $serial++;
+                                @endphp
                             </td>
                             <td>
                                 {{ $category->name }}
@@ -138,7 +159,7 @@
                             <td>
                                 {{ $category->updated_at }}
                             </td>
-                            <td class="text-center" style="width: 200px;">
+                            <td style="width: 200px;">
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <a class="btn btn-info btn-sm" href="categories/{{$category->id}}/edit" style="width: 80px;">
@@ -162,12 +183,8 @@
             <div class="card-footer clearfix">
                 {{ $categories->links() }}
             </div>
-            <!-- /.card-body -->
         </div>
-        <!-- /.card -->
-
     </section>
-    <!-- /.content -->
 </div>
 
 @endsection

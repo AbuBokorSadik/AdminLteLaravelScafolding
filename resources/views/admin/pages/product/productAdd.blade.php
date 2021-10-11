@@ -3,6 +3,7 @@
 @section('contentWrapper')
 
 <div class="content-wrapper">
+    <!-- header section -->
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -16,32 +17,33 @@
                     </ol>
                 </div>
             </div>
-            <div class="row mb-2">
-                <div class="col-sm-4">
-                    @include('alert.flashAlert')
-                </div>
+
+        </div>
+    </section>
+
+    <!-- error message -->
+    <section class="content">
+        <div class="row mb-2">
+            <div class="col-sm-4">
+                @include('alert.flashAlert')
             </div>
         </div>
     </section>
 
-    <!-- Main content -->
+    <!-- add section -->
     <section class="content">
         <div class="container-fluid">
             <div class="row">
-                <!-- left column -->
                 <div class="col-md">
-                    <!-- general form elements -->
                     <div class="card card-success">
                         <div class="card-header">
                             <h3 class="card-title">Add Product</h3>
                         </div>
-                        <!-- /.card-header -->
-                        <!-- form start -->
                         {!! Form::open(['route' => 'products.store', 'method' => 'post', 'files' => true]) !!}
                         <div class="card-body">
                             <div class="form-group">
                                 {!! Form::label('productName', 'Name') !!}
-                                {!! Form::text('name','', ['id' => 'productName', 'placeholder' => 'Enter product name', 'class' => 'form-control']) !!}
+                                {!! Form::text('name','', ['id' => 'productName', 'placeholder' => 'Enter name...', 'class' => 'form-control']) !!}
                                 @error('name')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -52,49 +54,49 @@
                             </div>
                             <div class="form-group">
                                 {!! Form::label('productUnitPrice', 'Unit Price') !!}
-                                {!! Form::text('unit_price','', ['id' => 'productUnitPrice', 'placeholder' => 'Enter unit price', 'class' => 'form-control']) !!}
+                                {!! Form::text('unit_price','', ['id' => 'productUnitPrice', 'placeholder' => 'Enter unit price...', 'class' => 'form-control']) !!}
                                 @error('unit_price')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="form-group">
                                 {!! Form::label('productHeight', 'Height') !!}
-                                {!! Form::text('height','', ['id' => 'productHeight', 'placeholder' => 'Enter height', 'class' => 'form-control']) !!}
+                                {!! Form::text('height','', ['id' => 'productHeight', 'placeholder' => 'Enter height...', 'class' => 'form-control']) !!}
                                 @error('productHeight')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="form-group">
                                 {!! Form::label('productWidth', 'Width') !!}
-                                {!! Form::text('width','', ['id' => 'productHeight', 'placeholder' => 'Enter width', 'class' => 'form-control']) !!}
+                                {!! Form::text('width','', ['id' => 'productHeight', 'placeholder' => 'Enter width...', 'class' => 'form-control']) !!}
                                 @error('width')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="form-group">
                                 {!! Form::label('productWeight', 'Weight') !!}
-                                {!! Form::text('weight','', ['id' => 'productWeight', 'placeholder' => 'Enter weight', 'class' => 'form-control']) !!}
+                                {!! Form::text('weight','', ['id' => 'productWeight', 'placeholder' => 'Enter weight...', 'class' => 'form-control']) !!}
                                 @error('weight')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="form-group">
                                 {!! Form::label('productSize', 'Size') !!}
-                                {!! Form::text('size','', ['id' => 'productSize', 'placeholder' => 'Enter size', 'class' => 'form-control']) !!}
+                                {!! Form::text('size','', ['id' => 'productSize', 'placeholder' => 'Enter size...', 'class' => 'form-control']) !!}
                                 @error('size')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="form-group">
                                 {!! Form::label('productMeasurementUnit', 'Measurement Unit') !!}
-                                {!! Form::text('measurement_unit','', ['id' => 'productMeasurementUnit', 'placeholder' => 'Enter measurement unit', 'class' => 'form-control']) !!}
+                                {!! Form::text('measurement_unit','', ['id' => 'productMeasurementUnit', 'placeholder' => 'Enter measurement unit...', 'class' => 'form-control']) !!}
                                 @error('measurement_unit')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="form-group">
                                 {!! Form::label('productStatus', 'Status') !!}
-                                {!! Form::select('status', ['1' => 'Active', '0' => 'Inactive'], 1, ['class' => 'form-control', 'id' => 'productStatus']) !!}
+                                {!! Form::select('status', [App\Constant\StatusTypeConst::ACTIVE => 'Active', App\Constant\StatusTypeConst::INACTIVE => 'Inactive'], App\Constant\StatusTypeConst::ACTIVE, ['class' => 'form-control', 'id' => 'productStatus']) !!}
                             </div>
                             <div class="custom-file">
                                 {!! Form::file('image', ['id' => 'chooseFile', 'class' => 'custom-file-input']) !!}
@@ -105,13 +107,13 @@
                             </div>
                             <div class="form-group">
                                 {!! Form::label('productDescription', 'Description') !!}
-                                {!! Form::textarea('description','', ['id' => 'productDescription', 'placeholder' => 'Enter product description ...', 'class' => 'form-control', 'row' => '5']) !!}
+                                {!! Form::textarea('description','', ['id' => 'productDescription', 'placeholder' => 'Enter description ...', 'class' => 'form-control', 'rows' => '2']) !!}
                             </div>
                         </div>
 
                         <div class="card-footer">
-                            {!! Form::submit('Add Product', ['class' => 'btn btn-success btn-sm']) !!}
-                            <a class="btn btn-secondary btn-sm" href="{{ route('products.index') }}">
+                            {!! Form::submit('Add Product', ['class' => 'btn btn-success']) !!}
+                            <a class="btn btn-secondary" href="{{ route('products.index') }}">
                                 </i>
                                 Cancel
                             </a>
@@ -120,10 +122,8 @@
                     </div>
                 </div>
             </div>
-            <!-- /.row -->
-        </div><!-- /.container-fluid -->
+        </div>
     </section>
-    <!-- /.content -->
 </div>
 
 @endsection

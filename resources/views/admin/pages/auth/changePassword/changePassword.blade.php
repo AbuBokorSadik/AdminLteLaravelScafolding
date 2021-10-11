@@ -16,6 +16,11 @@
                     </ol>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <section class="content">
+        <div>
             @include('alert.flashAlert')
         </div>
     </section>
@@ -51,12 +56,11 @@
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <div class="card-footer">
-                                {!! Form::submit('Change Password', ['class' => 'btn btn-success']) !!}
-                                {!! Form::submit('Cancel', ['class' => 'btn btn-default float-right']) !!}
+                        </div>
+                        <div class="card-footer">
+                                {!! Form::submit('Change Password', ['class' => 'btn btn-success float-right']) !!}
                             </div>
                             {!! Form::close() !!}
-                        </div>
                     </div>
 
                 </div>

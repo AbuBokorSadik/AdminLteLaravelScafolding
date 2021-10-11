@@ -37,4 +37,14 @@ class OrderAssignment extends Model
     {
         return $this->hasOne(Task::class, 'order_assignment_id');
     }
+
+    public function area()
+    {
+        return $this->belongsTo(Area::class, 'area_id');
+    }
+
+    public function userAccount()
+    {
+        return $this->hasOne(UserAccount::class, 'user_id');
+    }
 }

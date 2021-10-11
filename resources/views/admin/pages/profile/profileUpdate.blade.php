@@ -3,6 +3,7 @@
 @section('contentWrapper')
 
 <div class="content-wrapper">
+    <!-- header section -->
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -10,10 +11,14 @@
                     <h1>Profile Update</h1>
                 </div>
             </div>
-            <div class="row mb-2">
-                <div class="col-sm-4">
-                    @include('alert.flashAlert')
-                </div>
+        </div>
+    </section>
+
+    <!-- error message -->
+    <section class="content">
+        <div class="container-fluid row mb-2">
+            <div class="col-sm-4">
+                @include('alert.flashAlert')
             </div>
         </div>
     </section>
@@ -107,7 +112,7 @@
                                                     <p><b>Additional mobile</b> </p>
                                                 </div>
                                                 <div class="col-6">
-                                                    {!! Form::text('additional_mobile', auth()->user()->additional_mobile, ['placeholder' => 'Enter additional mobile number...', 'class' => 'form-control']) !!}
+                                                    {!! Form::text('additional_mobile', auth()->user()->additional_mobile, ['placeholder' => 'Enter additional mobile...', 'class' => 'form-control']) !!}
                                                     @error('additional_mobile')
                                                     <span class="text-danger">{{ $message }}</span>
                                                     @enderror
@@ -144,13 +149,13 @@
                                         <li class="list-group-item">
                                             <div class="row">
                                                 <div class="col-6">
-                                                    <p><b>Avater</b> </p>
+                                                    <p><b>Avatar</b> </p>
                                                 </div>
                                                 <div class="col-6">
                                                     <div class="custom-file">
-                                                        {!! Form::label('chooseFile', 'Select avater file', ['class' => 'custom-file-label']) !!}
-                                                        {!! Form::file('avater', ['id' => 'chooseFile', 'class' => 'custom-file-input']) !!}
-                                                        @error('avater')
+                                                        {!! Form::label('chooseFile', 'Select avatar file', ['class' => 'custom-file-label']) !!}
+                                                        {!! Form::file('avatar', ['id' => 'chooseFile', 'class' => 'custom-file-input']) !!}
+                                                        @error('avatar')
                                                         <span class="text-danger">{{ $message }}</span>
                                                         @enderror
                                                     </div>
@@ -160,7 +165,7 @@
                                     </ul>
                                 </div>
                                 @php
-                                $imgpath = auth()->user()->avater ? '/storage/' . auth()->user()->avater : 'img/dummy-user.png';
+                                $imgpath = auth()->user()->avatar ? '/storage/' . auth()->user()->avatar : 'img/dummy-user.png';
                                 @endphp
                                 <div class="col-sm-4">
                                     <div class="text-center">

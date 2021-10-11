@@ -100,7 +100,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="far fa-clock"></i></span>
                                 </div>
-                                {!! Form::text('deadlineDateRange', old('deadlineDateRange'), ['class' => 'form-control float-right reservationtime']) !!}
+                                {!! Form::text('deadlineDateRange', old('deadlineDateRange'), ['class' => 'form-control float-right dateRange']) !!}
                             </div>
                         </div>
                     </div>
@@ -111,7 +111,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="far fa-clock"></i></span>
                                 </div>
-                                {!! Form::text('createdAtDateRange', old('createdAtDateRange'), ['class' => 'form-control float-right reservationtime']) !!}
+                                {!! Form::text('createdAtDateRange', old('createdAtDateRange'), ['class' => 'form-control float-right dateRange']) !!}
                             </div>
                         </div>
                     </div>
@@ -129,6 +129,16 @@
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Task List</h3>
+                <div class="card-tools">
+
+                    @php
+                    $task_ids = $tasks->pluck('id');
+                    @endphp
+                    <a class="btn btn-info" href="{{ route('task.export', $task_ids) }}" style="width: 150px;">
+                        <i class="fas fa-file-download"></i>
+                        Export Excel
+                    </a>
+                </div>
             </div>
             <div class="card-body table-responsive p-0">
                 <table class="table table-striped projects text-center">
@@ -182,6 +192,12 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @if ($tasks->isEmpty())
+                        <tr>
+                            <td colspan="100%">No data found!!!</td>
+                        </tr>
+                        @endif
+
                         @foreach($tasks as $task)
                         <tr>
                             <td>
@@ -198,7 +214,7 @@
                                 <div class="row">
                                     <div class="col-sm-12">
                                         @php
-                                        $imgpath = $task->assignedTo->avater ? '/storage/' . $task->assignedTo->avater : 'img/dummy-user.png';
+                                        $imgpath = $task->assignedTo->avatar ? '/storage/' . $task->assignedTo->avatar : 'img/dummy-user.png';
                                         @endphp
                                         <img class="profile-user-img img-fluid img-circle" style="height: 45px; width: 45px;" src="{{ asset($imgpath) }}" alt="">
                                     </div>

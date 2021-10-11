@@ -212,7 +212,7 @@ class OrderController extends Controller
         $title = 'Order Details';
         try {
             $order = Order::where('id', $id)
-                ->with(['orderType', 'orderAssignment.orderStatus', 'orderAssignment.assignedBy'])
+                ->with(['orderType', 'orderAssignment.orderStatus', 'orderAssignment.assignedBy', 'orderAssignment.area'])
                 ->first();
 
             $products = OrderProduct::with(['product'])
@@ -225,7 +225,7 @@ class OrderController extends Controller
             ->paginate(15);
 
             // echo '<pre>';
-            // print_r($products->toArray());
+            // print_r($order->toArray());
             // exit();
 
             return view('admin.pages.merchantPanel.order.orderShow', compact('title', 'order', 'products', 'orderAssignmentActivities'));

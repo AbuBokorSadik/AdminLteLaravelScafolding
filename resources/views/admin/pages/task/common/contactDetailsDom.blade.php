@@ -14,7 +14,7 @@
                                         <li class="list-group-item">
                                             <div class="row">
                                                 <div class="col-6">
-                                                    <p><b>Contact Name</b> </p>
+                                                    <p><b>Name</b> </p>
                                                 </div>
                                                 <div class="col-6">
                                                     <p>{{ $task->contact_name }}</p>
@@ -24,7 +24,7 @@
                                         <li class="list-group-item">
                                             <div class="row">
                                                 <div class="col-6">
-                                                    <p><b>Contact Address</b> </p>
+                                                    <p><b>Address</b> </p>
                                                 </div>
                                                 <div class="col-6">
                                                     <p>{{ $task->address }}</p>
@@ -34,7 +34,7 @@
                                         <li class="list-group-item">
                                             <div class="row">
                                                 <div class="col-6">
-                                                    <p><b>Contact Email</b> </p>
+                                                    <p><b>Email</b> </p>
                                                 </div>
                                                 <div class="col-6">
                                                     <p>{{ $task->contact_email }}</p>
@@ -44,7 +44,7 @@
                                         <li class="list-group-item">
                                             <div class="row">
                                                 <div class="col-6">
-                                                    <p><b>Contact Mobile</b> </p>
+                                                    <p><b>Mobile</b> </p>
                                                 </div>
                                                 <div class="col-6">
                                                     <p>{{ $task->contact_mobile }}</p>

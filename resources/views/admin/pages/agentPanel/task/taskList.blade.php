@@ -41,15 +41,17 @@
                     </ol>
                 </div>
             </div>
-            <div class="row mb-2">
-                <div class="col-sm-4">
-                    @include('alert.flashAlert')
-                </div>
-            </div>
-        </div><!-- /.container-fluid -->
+        </div>
     </section>
 
-    <!-- Main content -->
+    <section class="content">
+        <div class="row mb-2">
+            <div class="col-sm-4">
+                @include('alert.flashAlert')
+            </div>
+        </div>
+    </section>
+
     <section class="content">
         <div class="card">
             {!! Form::open(['route' => 'agent-tasks.index', 'method' => 'get']) !!}
@@ -70,13 +72,13 @@
                     <div class="col">
                         <div class="form-group">
                             {!! Form::label('contactName', 'Contact Name') !!}
-                            {!! Form::text('contact_name', old('contact_name'), ['id' => 'contactName', 'placeholder' => 'Enter contact name...', 'class' => 'form-control']) !!}
+                            {!! Form::text('contact_name', old('contact_name'), ['id' => 'contactName', 'placeholder' => 'Enter name...', 'class' => 'form-control']) !!}
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group">
                             {!! Form::label('contactEmail', 'Contact Email') !!}
-                            {!! Form::text('contact_email', old('contact_email'), ['id' => 'contactEmail', 'placeholder' => 'Enter contact email...', 'class' => 'form-control']) !!}
+                            {!! Form::text('contact_email', old('contact_email'), ['id' => 'contactEmail', 'placeholder' => 'Enter email...', 'class' => 'form-control']) !!}
                         </div>
                     </div>
                 </div>
@@ -84,7 +86,7 @@
                     <div class="col">
                         <div class="form-group">
                             {!! Form::label('contactMobile', 'Contact Mobile') !!}
-                            {!! Form::text('contact_mobile', old('contact_mobile'), ['id' => 'contactMobile', 'placeholder' => 'Enter contact mobile...', 'class' => 'form-control']) !!}
+                            {!! Form::text('contact_mobile', old('contact_mobile'), ['id' => 'contactMobile', 'placeholder' => 'Enter mobile...', 'class' => 'form-control']) !!}
                         </div>
                     </div>
                     <div class="col">
@@ -100,7 +102,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="far fa-clock"></i></span>
                                 </div>
-                                {!! Form::text('deadlineDateRange', old('deadlineDateRange'), ['class' => 'form-control float-right reservationtime']) !!}
+                                {!! Form::text('deadlineDateRange', old('deadlineDateRange'), ['class' => 'form-control float-right dateRange']) !!}
                             </div>
                         </div>
                     </div>
@@ -111,7 +113,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="far fa-clock"></i></span>
                                 </div>
-                                {!! Form::text('createdAtDateRange', old('createdAtDateRange'), ['class' => 'form-control float-right reservationtime']) !!}
+                                {!! Form::text('createdAtDateRange', old('createdAtDateRange'), ['class' => 'form-control float-right dateRange']) !!}
                             </div>
                         </div>
                     </div>
@@ -123,17 +125,30 @@
             </div>
             {!! Form::close() !!}
         </div>
+    </section>
 
-
-        <!-- Default box -->
+    <section class="content">
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Task List</h3>
+                <div class="card-tools">
+
+                    @php
+                    $task_ids = $tasks->pluck('id');
+                    @endphp
+                    <a class="btn btn-info" href="{{ route('agent.task.export', $task_ids) }}" style="width: 150px;">
+                        <i class="fas fa-file-download"></i>
+                        Export Excel
+                    </a>
+                </div>
             </div>
             <div class="card-body table-responsive p-0">
                 <table class="table table-striped projects text-center">
                     <thead>
                         <tr>
+                            <th>
+                                Sl#
+                            </th>
                             <th>
                                 Task Id
                             </th>
@@ -182,8 +197,20 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @if ($tasks->isEmpty())
+                        <tr>
+                            <td colspan="100%">No data found!!!</td>
+                        </tr>
+                        @endif
+
+                        @php
+                        $serial = 1;
+                        @endphp
                         @foreach($tasks as $task)
                         <tr>
+                            <td>
+                                {{ $serial }}
+                            </td>
                             <td>
                                 <span style="font-weight: bold; color: #3d9970;">
                                     {{ $task->task_id}}
@@ -198,7 +225,8 @@
                                 <div class="row">
                                     <div class="col-sm-12">
                                         @php
-                                        $imgpath = $task->assignedBy->avater ? '/storage/' . $task->assignedBy->avater : 'img/dummy-user.png';
+                                        $serial++;
+                                        $imgpath = $task->assignedBy->avatar ? '/storage/' . $task->assignedBy->avatar : 'img/dummy-user.png';
                                         @endphp
                                         <img class="profile-user-img img-fluid img-circle" style="height: 45px; width: 45px;" src="{{ asset($imgpath) }}" alt="">
                                     </div>
@@ -263,11 +291,8 @@
             <div class="card-footer clearfix">
                 {{ $tasks->links() }}
             </div>
-            <!-- /.card-body -->
         </div>
-        <!-- /.card -->
     </section>
-    <!-- /.content -->
 </div>
 
 <!-- order status change modal -->

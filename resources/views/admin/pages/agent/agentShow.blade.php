@@ -3,6 +3,7 @@
 @section('contentWrapper')
 
 <div class="content-wrapper">
+    <!-- header section -->
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -10,27 +11,18 @@
                     <h1>Agent Details</h1>
                 </div>
             </div>
-            <div class="row mb-2">
-                <div class="col-sm-4">
-                    @include('alert.flashAlert')
-                </div>
-            </div>
         </div>
     </section>
 
-    <!-- Main content -->
+    <!-- Main section -->
     <section class="content">
         <div class="container-fluid">
             <div class="row">
-                <!-- left column -->
                 <div class="col-md">
-                    <!-- general form elements -->
                     <div class="card card-success">
                         <div class="card-header">
                             <h3 class="card-title">Agent Details</h3>
                         </div>
-                        <!-- /.card-header -->
-                        <!-- form start -->
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-sm-8">
@@ -121,7 +113,7 @@
                                     </ul>
                                 </div>
                                 @php
-                                $imgpath = $agent->avater ? '/storage/' . $agent->avater : 'img/dummy-user.png';
+                                $imgpath = $agent->avatar ? '/storage/' . $agent->avatar : 'img/dummy-user.png';
                                 @endphp
                                 <div class="col-sm-4">
                                     <div class="text-center">
@@ -139,10 +131,8 @@
                     </div>
                 </div>
             </div>
-            <!-- /.row -->
-        </div><!-- /.container-fluid -->
+        </div>
     </section>
-    <!-- /.content -->
 </div>
 
 @endsection

@@ -3,6 +3,7 @@
 @section('contentWrapper')
 
 <div class="content-wrapper">
+    <!-- header section -->
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -16,73 +17,69 @@
                     </ol>
                 </div>
             </div>
-            <div class="row mb-2">
-                <div class="col-sm-4">
-                    @include('alert.flashAlert')
-                </div>
+        </div>
+    </section>
+
+    <!-- error message -->
+    <section class="content">
+        <div class="container-fluid row mb-2">
+            <div class="col-sm-4">
+                @include('alert.flashAlert')
             </div>
         </div>
     </section>
 
-    <!-- Main content -->
+    <!-- add section -->
     <section class="content">
         <div class="container-fluid">
             <div class="row">
-                <!-- left column -->
                 <div class="col-md">
-                    <!-- general form elements -->
                     <div class="card card-success">
                         <div class="card-header">
                             <h3 class="card-title">Add Agent</h3>
                         </div>
-                        <!-- /.card-header -->
-                        <!-- form start -->
                         {!! Form::open(['route' => 'agents.store', 'method' => 'post']) !!}
                         <div class="card-body">
                             <div class="form-group">
                                 {!! Form::label('agentName', 'Name') !!}
-                                {!! Form::text('name','', ['id' => 'agentName', 'placeholder' => 'Enter agent name', 'class' => 'form-control']) !!}
+                                {!! Form::text('name','', ['id' => 'agentName', 'placeholder' => 'Enter name', 'class' => 'form-control']) !!}
                                 @error('name')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="form-group">
                                 {!! Form::label('agentEmail', 'Email') !!}
-                                {!! Form::text('email','', ['id' => 'agentEmail', 'placeholder' => 'Enter agent email', 'class' => 'form-control']) !!}
+                                {!! Form::text('email','', ['id' => 'agentEmail', 'placeholder' => 'Enter email', 'class' => 'form-control']) !!}
                                 @error('email')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="form-group">
                                 {!! Form::label('agentMobile', 'Mobile') !!}
-                                {!! Form::text('mobile','', ['id' => 'agentMobile', 'placeholder' => 'Enter agent mobile', 'class' => 'form-control']) !!}
+                                {!! Form::text('mobile','', ['id' => 'agentMobile', 'placeholder' => 'Enter mobile', 'class' => 'form-control']) !!}
                                 @error('mobile')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="form-group">
                                 {!! Form::label('userTypeID', 'User Type') !!}
-                                {!! Form::select('user_type_id', ['3' => 'Agent', ], '3', ['class' => 'form-control', 'id' => 'userTypeID', 'disabled', ]) !!}
+                                {!! Form::select('user_type_id', [ App\Constant\UserTypeConst::AGENT => 'Agent', ], App\Constant\UserTypeConst::AGENT, ['class' => 'form-control', 'id' => 'userTypeID', 'readonly', ]) !!}
                             </div>
                         </div>
-
                         <div class="card-footer">
-                            {!! Form::submit('Add Agent', ['class' => 'btn btn-success btn-sm']) !!}
-
-                            <a class="btn btn-secondary btn-sm" href="{{ route('agents.index') }}">
+                            {!! Form::submit('Add Agent', ['class' => 'btn btn-success']) !!}
+                            
+                            <a class="btn btn-secondary" href="{{ route('agents.index') }}">
                                 </i>
                                 Cancel
                             </a>
-
                         </div>
                         {!! Form::close() !!}
                     </div>
                 </div>
             </div>
-            <!-- /.row -->
-        </div><!-- /.container-fluid -->
+        </div>
     </section>
-    <!-- /.content -->
 </div>
 
 @endsection

@@ -105,7 +105,7 @@ class CategoryController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        $title = 'Update  Category';
+        $title = 'Update Category';
 
         try {
             $category = Category::where([
@@ -131,22 +131,29 @@ class CategoryController extends Controller
     {
         try {
             DB::transaction(function () use ($request, $id) {
-                Category::where([
-                    'id' => $id,
-                ])
-                    ->update([
-                        'name' => $request->name,
-                        'alias' => $request->alias,
-                        'status' => $request->status,
-                    ]);
+                $category = Category::where('id', $id)
+                    ->first();
+
+                $category->name = $request->name;
+                $category->alias = $request->alias;
+                $category->status = $request->status;
+                $category->save();
+
+                $products = Product::where('category_id', $category->id)
+                    ->get();
+
+                    foreach($products as $product){
+                        $product->status = $category->status;
+                        $product->save();
+                    }
             });
 
             $request->session()->flash('success_alert', 'Category Updated Successfully.');
-            return redirect()->route('categories.index');
+            return redirect()->back();
         } catch (\Exception $e) {
             Log::error($e->getFile() . ' ' . $e->getLine() . ' ' . $e->getMessage());
             $request->session()->flash('error_alert', 'Something went wrong. Please try again later.');
-            return redirect()->route('categories.index');
+            return redirect()->back();
         }
     }
 

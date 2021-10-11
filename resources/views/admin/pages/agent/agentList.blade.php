@@ -3,6 +3,7 @@
 @section('contentWrapper')
 
 <div class="content-wrapper">
+    <!-- header section -->
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -16,15 +17,10 @@
                     </ol>
                 </div>
             </div>
-            <div class="row mb-2">
-                <div class="col-sm-4">
-                    @include('alert.flashAlert')
-                </div>
-            </div>
         </div><!-- /.container-fluid -->
     </section>
 
-    <!-- Main content -->
+    <!-- filter section -->
     <section class="content">
         <div class="card">
             {!! Form::open(['route' => 'agents.index', 'method' => 'get']) !!}
@@ -32,44 +28,38 @@
                 <div class="row">
                     <div class="col">
                         <div class="form-group">
-                            {!! Form::label('agentId', 'Id') !!}
-                            {!! Form::text('id', old('id'), ['id' => 'agentId', 'placeholder' => 'Enter agent id...', 'class' => 'form-control']) !!}
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-group">
                             {!! Form::label('agentName', 'Name') !!}
-                            {!! Form::text('name', old('name'), ['id' => 'agentName', 'placeholder' => 'Enter agent name...', 'class' => 'form-control']) !!}
+                            {!! Form::text('name', old('name'), ['id' => 'agentName', 'placeholder' => 'Enter name...', 'class' => 'form-control']) !!}
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group">
                             {!! Form::label('agentEmail', 'Email') !!}
-                            {!! Form::text('email', old('email'), ['id' => 'agentEmail', 'placeholder' => 'Enter agent email...', 'class' => 'form-control']) !!}
+                            {!! Form::text('email', old('email'), ['id' => 'agentEmail', 'placeholder' => 'Enter email...', 'class' => 'form-control']) !!}
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group">
                             {!! Form::label('agentMobile', 'Mobile') !!}
-                            {!! Form::text('mobile', old('mobile'), ['id' => 'agentEmail', 'placeholder' => 'Enter agent mobile...', 'class' => 'form-control']) !!}
+                            {!! Form::text('mobile', old('mobile'), ['id' => 'agentEmail', 'placeholder' => 'Enter mobile...', 'class' => 'form-control']) !!}
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            {!! Form::label('agentStatus', 'Status') !!}
+                            {!! Form::select('status', [null => 'Select agent status...', App\Constant\StatusTypeConst::ACTIVE => 'Active', App\Constant\StatusTypeConst::INACTIVE => 'Inactive'], old('status'), ['class' => 'form-control', 'id' => 'agentStatus', ]) !!}
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            {!! Form::label('agentStatus', 'Status') !!}
-                            {!! Form::select('status', [null => 'Select agent status...', '1' => 'Active', '0' => 'Inactive'], old('status'), ['class' => 'form-control', 'id' => 'agentStatus', ]) !!}
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
+                    <div class="col-3">
                         <div class="form-group">
                             {!! Form::label('createdAtDateRange', 'Select Created At Date Range') !!}
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="far fa-clock"></i></span>
                                 </div>
-                                {!! Form::text('createdAtDateRange', old('createdAtDateRange'), ['id' => 'createdAtDateRange', 'class' => 'form-control float-right']) !!}
+                                {!! Form::text('createdAtDateRange', old('createdAtDateRange'), ['class' => 'form-control float-right dateRange']) !!}
                             </div>
                         </div>
                     </div>
@@ -81,24 +71,43 @@
             </div>
             {!! Form::close() !!}
         </div>
+    </section>
 
+    <!-- error message -->
+    <section class="content">
+        <div class="row mb-2">
+            <div class="col-sm-4">
+                @include('alert.flashAlert')
+            </div>
+        </div>
+    </section>
 
-        <!-- Default box -->
+    <!-- agent list section -->
+    <section class="content">
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Agent List</h3>
                 <div class="card-tools">
-                    {!! Form::open(['route' => 'agents.create', 'method' => 'get']) !!}
-                    {!! Form::button('<i class="fas fa-plus"> Add Agent</i>', ['type'=>'submit', 'class' => 'btn btn-success']) !!}
-                    {!! Form::close() !!}
+                    <a class="btn btn-success" href="{{ route('agents.create') }}" style="width: 150px;">
+                        <i class="fas fa-plus"></i>
+                        Add Agent
+                    </a>
+
+                    @php
+                    $agent_ids = $agents->pluck('id');
+                    @endphp
+                    <a class="btn btn-info" href="{{ route('agent.user.export', $agent_ids) }}" style="width: 150px;">
+                        <i class="fas fa-file-download"></i>
+                        Export Excel
+                    </a>
                 </div>
             </div>
-            <div class="card-body p-0">
-                <table class="table table-striped projects">
+            <div class="card-body table-responsive p-0">
+                <table class="table table-striped projects text-center">
                     <thead>
                         <tr>
                             <th>
-                                Id
+                                Sl#
                             </th>
                             <th>
                                 Name
@@ -109,10 +118,10 @@
                             <th>
                                 Mobile
                             </th>
-                            <th class="text-center">
-                                Avater
+                            <th>
+                                Avatar
                             </th>
-                            <th class="text-center">
+                            <th>
                                 Status
                             </th>
                             <th>
@@ -121,16 +130,26 @@
                             <th>
                                 Updated Time
                             </th>
-                            <th class="text-center">
+                            <th>
                                 Action
                             </th>
                         </tr>
                     </thead>
                     <tbody>
+                        @if ($agents->isEmpty())
+                        <tr>
+                            <td colspan="100%">No data found!!!</td>
+                        </tr>
+                        @endif
+
+                        @php
+                        $serial = 1;
+                        @endphp
+
                         @foreach($agents as $agent)
                         <tr>
                             <td>
-                                {{ $agent->id }}
+                                {{ $serial }}
                             </td>
                             <td>
                                 {{ $agent->name }}
@@ -141,9 +160,10 @@
                             <td>
                                 {{ $agent->mobile }}
                             </td>
-                            <td class="text-center">
+                            <td>
                                 @php
-                                $imgpath = $agent->avater ? '/storage/' . $agent->avater : 'img/dummy-user.png';
+                                $serial++;
+                                $imgpath = $agent->avatar ? '/storage/' . $agent->avatar : 'img/dummy-user.png';
                                 @endphp
                                 <img class="profile-user-img img-fluid img-circle" style="height: 45px; width: 45px;" src="{{ asset($imgpath) }}" alt="">
                             </td>
@@ -158,7 +178,7 @@
                             <td>
                                 {{ $agent->updated_at }}
                             </td>
-                            <td class="text-center" style="width: 200px;">
+                            <td style="width: 200px;">
 
                                 @php
                                 $btnClass = $agent->status ? 'btn-danger' : 'btn-success'
@@ -185,12 +205,8 @@
             <div class="card-footer clearfix">
                 {{ $agents->links() }}
             </div>
-            <!-- /.card-body -->
         </div>
-        <!-- /.card -->
-
     </section>
-    <!-- /.content -->
 </div>
 
 @endsection

@@ -220,35 +220,35 @@
                         </div>
                         <div class="card-body">
                             <div class="form-group">
-                                {!! Form::label('name', 'Contact Name') !!}
+                                {!! Form::label('name', 'Name') !!}
                                 {!! Form::text('name','', ['id' => 'name', 'placeholder' => 'Enter name...', 'class' => 'form-control']) !!}
                                 @error('name')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="form-group">
-                                {!! Form::label('email', 'Contact Email') !!}
+                                {!! Form::label('email', 'Email') !!}
                                 {!! Form::text('email','', ['id' => 'email', 'placeholder' => 'Enter email...', 'class' => 'form-control']) !!}
                                 @error('email')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="form-group">
-                                {!! Form::label('mobile', 'Contact Mobile') !!}
+                                {!! Form::label('mobile', 'Mobile') !!}
                                 {!! Form::text('mobile','', ['id' => 'mobile', 'placeholder' => 'Enter mobile...', 'class' => 'form-control']) !!}
                                 @error('mobile')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="form-group">
-                                {!! Form::label('area_id', 'Contact Area') !!}
+                                {!! Form::label('area_id', 'Area') !!}
                                 {!! Form::select('area_id', $areas->prepend('Select contact area...', null), null, ['class' => 'form-control', 'id' => 'area_id']) !!}
                                 @error('product')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="form-group">
-                                {!! Form::label('address', 'Contact Address') !!}
+                                {!! Form::label('address', 'Address') !!}
                                 {!! Form::text('address','', ['id' => 'address', 'placeholder' => 'Enter address...', 'class' => 'form-control']) !!}
                                 @error('address')
                                 <span class="text-danger">{{ $message }}</span>

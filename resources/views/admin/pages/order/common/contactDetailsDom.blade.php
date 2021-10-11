@@ -14,7 +14,7 @@
                                         <li class="list-group-item">
                                             <div class="row">
                                                 <div class="col-6">
-                                                    <p><b>Contact Name</b> </p>
+                                                    <p><b>Name</b> </p>
                                                 </div>
                                                 <div class="col-6">
                                                     <p>{{ $order->contact_name }}</p>
@@ -24,17 +24,7 @@
                                         <li class="list-group-item">
                                             <div class="row">
                                                 <div class="col-6">
-                                                    <p><b>Contact Address</b> </p>
-                                                </div>
-                                                <div class="col-6">
-                                                    <p>{{ $order->address }}</p>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <p><b>Contact Email</b> </p>
+                                                    <p><b>Email</b> </p>
                                                 </div>
                                                 <div class="col-6">
                                                     <p>{{ $order->contact_email }}</p>
@@ -44,10 +34,30 @@
                                         <li class="list-group-item">
                                             <div class="row">
                                                 <div class="col-6">
-                                                    <p><b>Contact Mobile</b> </p>
+                                                    <p><b>Mobile</b> </p>
                                                 </div>
                                                 <div class="col-6">
                                                     <p>{{ $order->contact_mobile }}</p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <p><b>Area</b> </p>
+                                                </div>
+                                                <div class="col-6">
+                                                    <p>{{ $order->orderAssignment->area->name }}</p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <p><b>Address</b> </p>
+                                                </div>
+                                                <div class="col-6">
+                                                    <p>{{ $order->address }}</p>
                                                 </div>
                                             </div>
                                         </li>

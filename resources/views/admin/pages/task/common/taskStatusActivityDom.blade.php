@@ -39,14 +39,20 @@
                             $serialNo++;
                             $imgpath = $taskStatusActivitity->createdBy->avater ? '/storage/' . $taskStatusActivitity->createdBy->avater : 'img/dummy-user.png';
                             @endphp
-                            <img class="profile-user-img img-fluid img-circle" style="height: 45px; width: 45px;" src="{{ asset($imgpath) }}" alt="">
-                            {{ $taskStatusActivitity->createdBy->name }}
+                            <div class="row">
+                                <div class="col-6 text-right">
+                                    <img class="profile-user-img img-fluid img-circle" style="height: 45px; width: 45px;" src="{{ asset($imgpath) }}" alt="">
+                                </div>
+                                <dev class="col-6 text-left">
+                                    {{ $taskStatusActivitity->createdBy->name }}
+                                </dev>
+                            </div>
                         </td>
                         <td>
                             {{ $taskStatusActivitity->created_at }}
                         </td>
                         <td>
-                            {!! Form::submit($taskStatusActivitity->taskStatus->status, ['class' => 'btn btn-sm', 'style' => 'background-color:' . $taskStatusActivitity->taskStatus->color . '; width: 80px;']) !!}
+                            {!! Form::submit($taskStatusActivitity->taskStatus->status, ['class' => 'btn btn-sm', 'style' => 'background-color:' . $taskStatusActivitity->taskStatus->color . '; width: 100px;']) !!}
                         </td>
                         </tr>
                         @endforeach

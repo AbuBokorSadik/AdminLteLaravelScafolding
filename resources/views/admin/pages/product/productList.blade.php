@@ -3,7 +3,7 @@
 @section('contentWrapper')
 
 <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
+    <!-- header section -->
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -17,87 +17,41 @@
                     </ol>
                 </div>
             </div>
-            <div class="row mb-2">
-                <div class="col-sm-4">
-                    @include('alert.flashAlert')
-                </div>
-            </div>
         </div><!-- /.container-fluid -->
     </section>
 
-    <!-- Main content -->
+    <!-- filter section -->
     <section class="content">
-
         <div class="card">
             {!! Form::open(['route' => 'products.index', 'method' => 'get']) !!}
             <div class="card-body">
                 <div class="row">
                     <div class="col">
                         <div class="form-group">
-                            {!! Form::label('productId', 'Id') !!}
-                            {!! Form::text('id', old('id'), ['id' => 'productId', 'placeholder' => 'Enter product id...', 'class' => 'form-control']) !!}
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-group">
                             {!! Form::label('productName', 'Name') !!}
-                            {!! Form::text('name', old('name'), ['id' => 'productName', 'placeholder' => 'Enter product name...', 'class' => 'form-control']) !!}
+                            {!! Form::text('name', old('name'), ['id' => 'productName', 'placeholder' => 'Enter name...', 'class' => 'form-control']) !!}
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group">
                             {!! Form::label('categoryName', 'Category') !!}
-                            {!! Form::select('category_id', [null => 'Select product category'] + $categories->toArray(), old('category_id'), ['class' => 'form-control', 'id' => 'categoryName', ]) !!}
+                            {!! Form::select('category_id', [null => 'Select category'] + $categories->toArray(), old('category_id'), ['class' => 'form-control', 'id' => 'categoryName', ]) !!}
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group">
                             {!! Form::label('productStatus', 'Status') !!}
-                            {!! Form::select('status', [null => 'Select product status', '1' => 'Active', '0' => 'Inactive'], old('status'), ['class' => 'form-control', 'id' => 'productStatus', ]) !!}
-                        </div>
-                    </div>
-                </div>
-                <!-- <div class="row">
-                    <div class="col">
-                        <div class="form-group">
-                            {!! Form::label('unitPrice', 'Unit Price') !!}
-                            {!! Form::text('unit_price', old('unit_price'), ['id' => 'unitPrice']) !!}
+                            {!! Form::select('status', [null => 'Select status', App\Constant\StatusTypeConst::ACTIVE => 'Active', App\Constant\StatusTypeConst::INACTIVE => 'Inactive'], old('status'), ['class' => 'form-control', 'id' => 'productStatus', ]) !!}
                         </div>
                     </div>
                     <div class="col">
-                        <div class="form-group">
-                            {!! Form::label('height', 'Height') !!}
-                            {!! Form::text('height', old('height'), ['id' => 'height']) !!}
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-group">
-                            {!! Form::label('width', 'Width') !!}
-                            {!! Form::text('width', old('width'), ['id' => 'width']) !!}
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-group">
-                            {!! Form::label('weight', 'Weight') !!}
-                            {!! Form::text('weight', old('weight'), ['id' => 'weight']) !!}
-                        </div>
-                    </div>
-                </div> -->
-                <div class="row">
-                    <!-- <div class="col-sm-3">
-                        <div class="form-group">
-                            {!! Form::label('size', 'Size') !!}
-                            {!! Form::text('size', old('size'), ['id' => 'size']) !!}
-                        </div>
-                    </div> -->
-                    <div class="col-sm-3">
                         <div class="form-group">
                             {!! Form::label('createdAtDateRange', 'Select Created At Date Range') !!}
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="far fa-clock"></i></span>
                                 </div>
-                                {!! Form::text('createdAtDateRange', old('createdAtDateRange'), ['id' => 'createdAtDateRange', 'class' => 'form-control float-right']) !!}
+                                {!! Form::text('createdAtDateRange', old('createdAtDateRange'), ['id' => 'createdAtDateRange', 'class' => 'form-control float-right dateRange']) !!}
                             </div>
                         </div>
                     </div>
@@ -109,23 +63,44 @@
             </div>
             {!! Form::close() !!}
         </div>
-        <!-- Default box -->
+    </section>
+
+    <!-- error message -->
+    <section class="content">
+        <div class="row mb-2">
+            <div class="col-sm-4">
+                @include('alert.flashAlert')
+            </div>
+        </div>
+    </section>
+
+    <!-- product list section -->
+    <section class="content">
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Product List</h3>
 
                 <div class="card-tools">
-                    {!! Form::open(['route' => 'products.create', 'method' => 'get']) !!}
-                    {!! Form::button('<i class="fas fa-plus fa-sm"> Add Product</i>', ['type'=>'submit', 'class' => 'btn btn-success']) !!}
-                    {!! Form::close() !!}
+                    <a class="btn btn-success" href="{{ route('products.create') }}" style="width: 150px;">
+                        <i class="fas fa-plus"></i>
+                        Add Product
+                    </a>
+
+                    @php
+                    $product_ids = $products->pluck('id');
+                    @endphp
+                    <a class="btn btn-info" href="{{ route('product.export', $product_ids) }}" style="width: 150px;">
+                        <i class="fas fa-file-download"></i>
+                        Export Excel
+                    </a>
                 </div>
             </div>
-            <div class="card-body p-0">
-                <table class="table table-striped projects">
+            <div class="card-body table-responsive p-0">
+                <table class="table table-striped projects text-center">
                     <thead>
                         <tr>
                             <th>
-                                Id
+                                Sl#
                             </th>
                             <th>
                                 Name
@@ -154,7 +129,7 @@
                             <th>
                                 Size
                             </th>
-                            <th class="text-center">
+                            <th>
                                 Status
                             </th>
                             <th>
@@ -163,16 +138,29 @@
                             <th>
                                 Updated Time
                             </th>
-                            <th class="text-center">
+                            <th>
                                 Action
                             </th>
                         </tr>
                     </thead>
                     <tbody>
+                        @if ($products->isEmpty())
+                        <tr>
+                            <td colspan="100%">No data found!!!</td>
+                        </tr>
+                        @endif
+
+                        @php
+                        $serial = 1;
+                        @endphp
+
                         @foreach($products as $product)
                         <tr>
                             <td>
-                                {{ $product->id }}
+                                {{ $serial }}
+                                @php
+                                $serial++;
+                                @endphp
                             </td>
                             <td>
                                 {{ $product->name }}
@@ -212,7 +200,7 @@
                             <td>
                                 {{ $product->updated_at }}
                             </td>
-                            <td class="text-center" style="width: 200px;">
+                            <td style="width: 200px;">
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <a class="btn btn-info btn-sm" href="products/{{$product->id}}/edit" style="width: 80px;">
@@ -236,13 +224,8 @@
             <div class="card-footer clearfix">
                 {{ $products->links() }}
             </div>
-
-            <!-- /.card-body -->
         </div>
-        <!-- /.card -->
-
     </section>
-    <!-- /.content -->
 </div>
 
 @endsection

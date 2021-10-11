@@ -3,6 +3,7 @@
 @section('contentWrapper')
 
 <div class="content-wrapper">
+    <!-- header section -->
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -16,27 +17,27 @@
                     </ol>
                 </div>
             </div>
-            <div class="row mb-2">
-                <div class="col-sm-4">
-                    @include('alert.flashAlert')
-                </div>
+        </div>
+    </section>
+
+    <!-- error message -->
+    <section class="content">
+        <div class="container-fluid row mb-2">
+            <div class="col-sm-4">
+                @include('alert.flashAlert')
             </div>
         </div>
     </section>
 
-    <!-- Main content -->
+    <!-- add section -->
     <section class="content">
         <div class="container-fluid">
             <div class="row">
-                <!-- left column -->
                 <div class="col-md">
-                    <!-- general form elements -->
                     <div class="card card-success">
                         <div class="card-header">
                             <h3 class="card-title">Add Category</h3>
                         </div>
-                        <!-- /.card-header -->
-                        <!-- form start -->
                         {!! Form::open(['route' => 'categories.store', 'method' => 'post']) !!}
                         <div class="card-body">
                             <div class="form-group">
@@ -60,8 +61,8 @@
                         </div>
 
                         <div class="card-footer">
-                            {!! Form::submit('Add Category', ['class' => 'btn btn-success btn-sm']) !!}
-                            <a class="btn btn-secondary btn-sm" href="{{ route('categories.index') }}">
+                            {!! Form::submit('Add Category', ['class' => 'btn btn-success']) !!}
+                            <a class="btn btn-secondary" href="{{ route('categories.index') }}">
                                 </i>
                                 Cancel
                             </a>
@@ -70,10 +71,8 @@
                     </div>
                 </div>
             </div>
-            <!-- /.row -->
-        </div><!-- /.container-fluid -->
+        </div>
     </section>
-    <!-- /.content -->
 </div>
 
 @endsection
