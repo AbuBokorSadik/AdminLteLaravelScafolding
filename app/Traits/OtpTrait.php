@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Jobs\SendOtpMailJob;
 use App\Mail\OtpMail;
 use App\Models\Otp;
 use Illuminate\Support\Facades\App;
@@ -33,12 +34,7 @@ trait OtpTrait
             'status' => 0,
         ]);
 
-        $this->send_mail($user, $otp);
+        SendOtpMailJob::dispatch($user, $otp)->delay(now()->addSeconds(15));
         
-    }
-
-    public function send_mail($user, $otp)
-    {
-        Mail::to($user->email)->send(new OtpMail($user, $otp));
     }
 }
