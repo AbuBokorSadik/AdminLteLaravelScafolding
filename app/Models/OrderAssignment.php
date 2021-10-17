@@ -47,4 +47,9 @@ class OrderAssignment extends Model
     {
         return $this->hasOne(UserAccount::class, 'user_id');
     }
+
+    public function orderAssignmentActivity()
+    {
+        return $this->hasMany(OrderAssignmentActivity::class, 'order_assignment_id');
+    }
 }

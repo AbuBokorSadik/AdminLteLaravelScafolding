@@ -46,7 +46,7 @@
                                                 <div class="col-6">
                                                     <p>
                                                         @php
-                                                        $imgpath = $order->orderAssignment->assignedBy->avater ? '/storage/' . $order->orderAssignment->assignedBy->avater : 'img/dummy-user.png';
+                                                        $imgpath = $order->orderAssignment->assignedBy->avatar ? '/storage/' . $order->orderAssignment->assignedBy->avatar : 'img/dummy-user.png';
                                                         @endphp
                                                         <img class="profile-user-img img-fluid img-circle" style="height: 45px; width: 45px;" src="{{ asset($imgpath) }}" alt="">
                                                         {{ $order->orderAssignment->assignedBy->name }}
@@ -106,13 +106,10 @@
 
             <div class="row">
                 <div class="col-md">
-                    <!-- general form elements -->
                     <div class="card card-info">
                         <div class="card-header">
                             <h3 class="card-title">Total Receivable</h3>
                         </div>
-                        <!-- /.card-header -->
-                        <!-- form start -->
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-sm">
@@ -207,6 +204,6 @@
             </a>
         </div>
     </section>
-</div><!-- /.container-fluid -->
+</div>
 
 @endsection

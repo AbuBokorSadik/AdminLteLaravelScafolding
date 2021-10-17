@@ -81,7 +81,7 @@ class ProductController extends Controller
         try {
 
             $fileName = time() . '_' . $request->image->getClientOriginalName();
-            $filePath = $request->file('image')->storeAs('uploads', $fileName, 'public');
+            $filePath = $request->file('image')->storeAs('products', $fileName, 'public');
 
             DB::transaction(function () use ($request, $filePath) {
                 Product::create([

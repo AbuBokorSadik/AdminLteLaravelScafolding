@@ -158,9 +158,6 @@
                         <tr>
                             <td>
                                 {{ $serial }}
-                                @php
-                                $serial++;
-                                @endphp
                             </td>
                             <td>
                                 {{ $product->name }}
@@ -169,7 +166,11 @@
                                 {{ $product->category->name }}
                             </td>
                             <td>
-                                <img src="{{ asset('/storage/' . $product->image) }}" alt="Image not found" style="height:80px; width:80px;">
+                                @php
+                                $serial++;
+                                $imgpath = $product->image ? '/storage/' . $product->image : 'img/dummy-product.jpg';
+                                @endphp
+                                <img src="{{ asset($imgpath) }}" alt="Image not found" style="height:80px; width:80px;">
                             </td>
                             <td>
                                 {{ $product->description }}

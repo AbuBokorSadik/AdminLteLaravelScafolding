@@ -33,8 +33,19 @@ class OrderController extends Controller
         $title = 'Order List';
         $order_list_active = 'active';
 
+        // $start_date_time = now()->subMonth()->setTime(0, 0, 0)->format('Y-m-d H:i:s');
+        // $end_date_time = now()->subMonth()->setTime(23, 59, 59)->format('Y-m-d H:i:s');
+
+        // DB::enableQueryLog();
+        // $order = Order::whereHas('orderAssignment', function (Builder $query) {
+        //     $query->has('orderAssignmentActivity', 'task');
+        // })
+        //     ->whereBetween('created_at', [$start_date_time, $end_date_time])
+        //     ->get();
+        // dd(DB::getQueryLog());
+
         // echo '<pre>';
-        // print_r($request->all());
+        // print_r($order->toArray());
         // exit();
 
         try {
@@ -48,8 +59,8 @@ class OrderController extends Controller
                 ->filterByContactEmail($request)
                 ->filterByContactMobile($request)
                 ->filterByOrderType($request)
-                // ->filterByDeadlineDateRange($request)
-                // ->filterByCreatedAtDateRange($request)
+                ->filterByDeadlineDateRange($request)
+                ->filterByCreatedAtDateRange($request)
                 ->orderBy('id', 'DESC')
                 ->paginate(20);
 
@@ -94,7 +105,7 @@ class OrderController extends Controller
                 'created_by_id' => auth()->user()->id,
             ])
                 ->pluck('name', 'id');
-                
+
             // echo '<pre>';
             // print_r($buyers->toArray());
             // exit();

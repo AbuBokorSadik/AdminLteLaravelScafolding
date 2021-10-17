@@ -116,7 +116,7 @@ class MerchantController extends Controller
                     'user_id' => auth()->user()->id,
                     'merchant_id' => $merchant->id,
                 ]);
-                
+
                 $request->session()->flash('success_alert', 'Merchant Created Successfully.');
                 return redirect()->route('merchants.create');
             });
@@ -137,7 +137,7 @@ class MerchantController extends Controller
     {
         $title = 'Merchant Details';
         try {
-            $merchant = User::where('id',$id)->first();
+            $merchant = User::where('id', $id)->first();
 
             return view('admin.pages.merchant.merchantShow', compact('title', 'merchant'));
         } catch (\Exception $e) {

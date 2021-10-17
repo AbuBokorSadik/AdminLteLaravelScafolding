@@ -366,7 +366,7 @@
             <!-- Modal footer -->
             <div class="modal-footer">
                 {!! Form::submit('Close', ['class' => 'btn btn-danger', 'data-dismiss' => 'modal', ]) !!}
-                {!! Form::submit('Change task status', ['class' => 'btn btn-success']) !!}
+                {!! Form::submit('Save change', ['class' => 'btn btn-success']) !!}
             </div>
 
         </div>
