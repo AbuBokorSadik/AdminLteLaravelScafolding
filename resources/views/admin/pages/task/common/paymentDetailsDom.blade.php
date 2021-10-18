@@ -1,12 +1,9 @@
 <div class="row">
     <div class="col-md">
-        <!-- general form elements -->
         <div class="card card-info">
             <div class="card-header">
                 <h3 class="card-title">Total Receivable</h3>
             </div>
-            <!-- /.card-header -->
-            <!-- form start -->
             <div class="card-body">
                 <div class="row">
                     <div class="col-sm">

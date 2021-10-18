@@ -18,7 +18,6 @@
         </div>
     </section>
 
-    <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
             @include('admin.pages.task.common.taskDetailsDom')
@@ -27,13 +26,10 @@
 
             <div class="row">
                 <div class="col-md">
-                    <!-- general form elements -->
                     <div class="card card-info">
                         <div class="card-header">
                             <h3 class="card-title">Assigned By</h3>
                         </div>
-                        <!-- /.card-header -->
-                        <!-- form start -->
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-sm">
@@ -46,7 +42,7 @@
                                                 <div class="col-6">
                                                     <p>
                                                         @php
-                                                        $imgpath = $task->assignedBy->avater ? '/storage/' . $task->assignedBy->avater : 'img/dummy-user.png';
+                                                        $imgpath = $task->assignedBy->avatar ? '/storage/' . $task->assignedBy->avatar : 'img/dummy-user.png';
                                                         @endphp
                                                         <img class="profile-user-img img-fluid img-circle" style="height: 45px; width: 45px;" src="{{ asset($imgpath) }}" alt="">
                                                         {{ $task->assignedBy->name }}
@@ -111,6 +107,6 @@
             </a>
         </div>
     </section>
-</div><!-- /.container-fluid -->
+</div>
 
 @endsection

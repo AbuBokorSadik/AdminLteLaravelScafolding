@@ -128,7 +128,7 @@
                             <td colspan="100%">No data found!!!</td>
                         </tr>
                         @endif
-
+                        
                         @php
                         $serial = 1;
                         @endphp

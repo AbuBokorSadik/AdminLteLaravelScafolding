@@ -3,6 +3,7 @@
 @section('contentWrapper')
 
 <div class="content-wrapper">
+        <!-- header section -->
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -10,15 +11,10 @@
                     <h1>Order Details</h1>
                 </div>
             </div>
-            <div class="row mb-2">
-                <div class="col-sm-4">
-                    @include('alert.flashAlert')
-                </div>
-            </div>
         </div>
     </section>
 
-    <!-- Main content -->
+    <!-- order details -->
     <section class="content">
         <div class="container-fluid">
             @include('admin.pages.order.common.orderDetailsDom')
@@ -193,15 +189,15 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="card-footer">
+                            <a class="btn btn-secondary" href="{{ route('order.index') }}">
+                                </i>
+                                Cancel
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="card-footer">
-            <a class="btn btn-secondary" href="{{ route('order.index') }}">
-                </i>
-                Cancel
-            </a>
         </div>
     </section>
 </div>

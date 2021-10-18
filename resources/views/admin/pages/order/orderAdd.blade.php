@@ -3,26 +3,26 @@
 @section('customJs')
 <script>
     $(function() {
-        const getOrderType = function(){
+        const getOrderType = function() {
             if ($(this).val()) {
-                    const getUrl = "{{ URL('admin/order-types') }}" + "/" + $(this).val();
-                    $.ajax({
-                        type: "GET",
-                        url: getUrl,
-                        success: function(response) {
-                            const data = JSON.parse(response);
-                            if (data.code == 200) {
-                                $("#add-orderType").html(data.data);
-                                console.log(data.data);
-                            } else {
-                                alert("Something went wrong. Please try again later.");
-                            }
-                        },
-                        error: function() {
+                const getUrl = "{{ URL('admin/order-types') }}" + "/" + $(this).val();
+                $.ajax({
+                    type: "GET",
+                    url: getUrl,
+                    success: function(response) {
+                        const data = JSON.parse(response);
+                        if (data.code == 200) {
+                            $("#add-orderType").html(data.data);
+                            console.log(data.data);
+                        } else {
                             alert("Something went wrong. Please try again later.");
                         }
-                    });
-                }
+                    },
+                    error: function() {
+                        alert("Something went wrong. Please try again later.");
+                    }
+                });
+            }
         }
 
         const getProduct = function() {
@@ -67,6 +67,7 @@
 @section('contentWrapper')
 
 <div class="content-wrapper">
+    <!-- header section -->
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -80,28 +81,27 @@
                     </ol>
                 </div>
             </div>
-            <div class="row mb-2">
-                <div class="col-sm-4">
-                    @include('alert.flashAlert')
-                </div>
+        </div>
+    </section>
+
+    <!-- filter section -->
+    <section class="content">
+        <div class="row mb-2 container-fluid">
+            <div class="col-sm-4">
+                @include('alert.flashAlert')
             </div>
         </div>
     </section>
 
-    <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
             {!! Form::open(['route' => 'order.store', 'method' => 'post', 'files' => true]) !!}
             <div class="row">
-                <!-- left column -->
                 <div class="col-md">
-                    <!-- general form elements -->
                     <div class="card card-success">
                         <div class="card-header">
                             <h3 class="card-title">Add Order Information</h3>
                         </div>
-                        <!-- /.card-header -->
-                        <!-- form start -->
                         <div class="card-body">
                             <div class="form-group" id="seller-div">
                                 <label>Buyer</label>
@@ -170,40 +170,42 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <section class="content">
+        <div class="container-fluid">
             <div class="row">
                 <div class="col-md">
-                    <!-- general form elements -->
                     <div class="card card-success">
                         <div class="card-header">
                             <h3 class="card-title">Add Product Information</h3>
                         </div>
-                        <!-- /.card-header -->
-                        <!-- form start -->
                         <div class="card-body">
                             <div class="form-group">
                                 {!! Form::label('productWeight', 'Product Weight') !!}
-                                {!! Form::text('product_weight','', ['id' => 'productWeight', 'placeholder' => 'Enter product weight...', 'class' => 'form-control']) !!}
+                                {!! Form::text('product_weight','', ['id' => 'productWeight', 'placeholder' => 'Enter weight...', 'class' => 'form-control']) !!}
                                 @error('product_weight')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="form-group">
                                 {!! Form::label('productHeight', 'Product Height') !!}
-                                {!! Form::text('product_height','', ['id' => 'productHeight', 'placeholder' => 'Enter product height...', 'class' => 'form-control']) !!}
+                                {!! Form::text('product_height','', ['id' => 'productHeight', 'placeholder' => 'Enter height...', 'class' => 'form-control']) !!}
                                 @error('product_height')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="form-group">
                                 {!! Form::label('productLength', 'Product Length') !!}
-                                {!! Form::text('product_length','', ['id' => 'productLength', 'placeholder' => 'Enter product length...', 'class' => 'form-control']) !!}
+                                {!! Form::text('product_length','', ['id' => 'productLength', 'placeholder' => 'Enter length...', 'class' => 'form-control']) !!}
                                 @error('product_length')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="form-group">
                                 {!! Form::label('productWidth', 'Product Width') !!}
-                                {!! Form::text('product_width','', ['id' => 'productWidth', 'placeholder' => 'Enter product width...', 'class' => 'form-control']) !!}
+                                {!! Form::text('product_width','', ['id' => 'productWidth', 'placeholder' => 'Enter width...', 'class' => 'form-control']) !!}
                                 @error('product_width')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -212,6 +214,11 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <section class="content">
+        <div class="container-fluid">
             <div class="row">
                 <div class="col-md">
                     <div class="card card-success">
@@ -242,7 +249,7 @@
                             </div>
                             <div class="form-group">
                                 {!! Form::label('area_id', 'Area') !!}
-                                {!! Form::select('area_id', $areas->prepend('Select contact area...', null), null, ['class' => 'form-control', 'id' => 'area_id']) !!}
+                                {!! Form::select('area_id', $areas->prepend('Select area...', null), null, ['class' => 'form-control', 'id' => 'area_id']) !!}
                                 @error('product')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -270,35 +277,32 @@
                             </div>
                             <div class="form-group">
                                 {!! Form::label('instruction', 'Instruction') !!}
-                                {!! Form::textarea('instruction','', ['id' => 'instruction', 'placeholder' => 'Enter instruction...', 'class' => 'form-control', 'row' => '2']) !!}
+                                {!! Form::textarea('instruction','', ['id' => 'instruction', 'placeholder' => 'Enter instruction...', 'class' => 'form-control', 'rows' => '2']) !!}
                                 @error('instruction')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="form-group">
                                 {!! Form::label('note', 'Note') !!}
-                                {!! Form::textarea('note','', ['id' => 'note', 'placeholder' => 'Enter note...', 'class' => 'form-control', 'row' => '2']) !!}
+                                {!! Form::textarea('note','', ['id' => 'note', 'placeholder' => 'Enter note...', 'class' => 'form-control', 'rows' => '2']) !!}
                                 @error('note')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                         </div>
+                        <div class="card-footer">
+                            {!! Form::submit('Place order', ['class' => 'btn btn-success']) !!}
+                            <a class="btn btn-secondary" href="{{ route('order.index') }}">
+                                </i>
+                                Cancel
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="card-footer">
-                {!! Form::submit('Place order', ['class' => 'btn btn-success btn-sm']) !!}
-
-                <a class="btn btn-secondary btn-sm" href="{{ route('order.index') }}">
-                    </i>
-                    Cancel
-                </a>
-
-            </div>
-            {!! Form::close() !!}
-        </div><!-- /.container-fluid -->
+        </div>
     </section>
-    <!-- /.content -->
+    {!! Form::close() !!}
 </div>
 
 @endsection

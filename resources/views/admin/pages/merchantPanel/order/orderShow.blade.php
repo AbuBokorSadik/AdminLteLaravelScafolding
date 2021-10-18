@@ -3,6 +3,7 @@
 @section('contentWrapper')
 
 <div class="content-wrapper">
+    
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -18,7 +19,6 @@
         </div>
     </section>
 
-    <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
             @include('admin.pages.order.common.orderDetailsDom')
@@ -27,13 +27,10 @@
 
             <div class="row">
                 <div class="col-md">
-                    <!-- general form elements -->
                     <div class="card card-info">
                         <div class="card-header">
                             <h3 class="card-title">Seller Details</h3>
                         </div>
-                        <!-- /.card-header -->
-                        <!-- form start -->
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-sm">
@@ -45,7 +42,7 @@
                                                 </div>
                                                 <div class="col-6">
                                                     @php
-                                                    $imgpath = $order->orderAssignment->assignedTo->avater ? '/storage/' . $order->orderAssignment->assignedTo->avater : 'img/dummy-user.png';
+                                                    $imgpath = $order->orderAssignment->assignedTo->avatar ? '/storage/' . $order->orderAssignment->assignedTo->avatar : 'img/dummy-user.png';
                                                     @endphp
                                                     <img class="profile-user-img img-fluid img-circle" style="height: 45px; width: 45px;" src="{{ asset($imgpath) }}" alt="">
                                                     {{ $order->orderAssignment->assignedTo->name }}
@@ -104,13 +101,10 @@
 
             <div class="row">
                 <div class="col-md">
-                    <!-- general form elements -->
                     <div class="card card-info">
                         <div class="card-header">
                             <h3 class="card-title">Total Payable</h3>
                         </div>
-                        <!-- /.card-header -->
-                        <!-- form start -->
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-sm">
@@ -205,6 +199,6 @@
             </a>
         </div>
     </section>
-</div><!-- /.container-fluid -->
+</div>
 
 @endsection

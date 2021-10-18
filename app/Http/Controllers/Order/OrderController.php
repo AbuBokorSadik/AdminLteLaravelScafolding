@@ -124,7 +124,7 @@ class OrderController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(OrderStoreRequest $request)
     {
         // echo '<pre>';
         // print_r($request->all());
@@ -247,7 +247,7 @@ class OrderController extends Controller
                 ->paginate(15);
 
             // echo '<pre>';
-            // print_r($order->toArray());
+            // print_r($products->toArray());
             // exit();
 
             return view('admin.pages.order.orderShow', compact('title', 'order', 'products', 'orderAssignmentActivities'));

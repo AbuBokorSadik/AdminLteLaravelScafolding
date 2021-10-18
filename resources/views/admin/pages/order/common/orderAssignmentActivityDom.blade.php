@@ -1,12 +1,9 @@
 <div class="row">
     <div class="col-md">
-        <!-- general form elements -->
         <div class="card card-info">
             <div class="card-header">
                 <h3 class="card-title">Order Assignment Status Activities</h3>
             </div>
-            <!-- /.card-header -->
-            <!-- form start -->
             <div class="card-body">
                 <table class="table table-striped projects text-center">
                     <thead>
@@ -29,6 +26,12 @@
                         @php
                         $serialNo = 1;
                         @endphp
+
+                        @if ($orderAssignmentActivities->isEmpty())
+                        <tr>
+                            <td colspan="100%">No data found!!!</td>
+                        </tr>
+                        @endif
 
                         @foreach($orderAssignmentActivities as $orderAssignmentActivity)
                         <td>

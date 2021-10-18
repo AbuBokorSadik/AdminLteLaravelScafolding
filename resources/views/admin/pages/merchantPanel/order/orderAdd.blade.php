@@ -176,28 +176,28 @@
                         <div class="card-body">
                             <div class="form-group">
                                 {!! Form::label('productWeight', 'Product Weight') !!}
-                                {!! Form::text('product_weight','', ['id' => 'productWeight', 'placeholder' => 'Enter product weight...', 'class' => 'form-control']) !!}
+                                {!! Form::text('product_weight','', ['id' => 'productWeight', 'placeholder' => 'Enter weight...', 'class' => 'form-control']) !!}
                                 @error('product_weight')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="form-group">
                                 {!! Form::label('productHeight', 'Product Height') !!}
-                                {!! Form::text('product_height','', ['id' => 'productHeight', 'placeholder' => 'Enter product height...', 'class' => 'form-control']) !!}
+                                {!! Form::text('product_height','', ['id' => 'productHeight', 'placeholder' => 'Enter height...', 'class' => 'form-control']) !!}
                                 @error('product_height')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="form-group">
                                 {!! Form::label('productLength', 'Product Length') !!}
-                                {!! Form::text('product_length','', ['id' => 'productLength', 'placeholder' => 'Enter product length...', 'class' => 'form-control']) !!}
+                                {!! Form::text('product_length','', ['id' => 'productLength', 'placeholder' => 'Enter length...', 'class' => 'form-control']) !!}
                                 @error('product_length')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="form-group">
                                 {!! Form::label('productWidth', 'Product Width') !!}
-                                {!! Form::text('product_width','', ['id' => 'productWidth', 'placeholder' => 'Enter product width...', 'class' => 'form-control']) !!}
+                                {!! Form::text('product_width','', ['id' => 'productWidth', 'placeholder' => 'Enter width...', 'class' => 'form-control']) !!}
                                 @error('product_width')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror

@@ -28,6 +28,7 @@
 @section('contentWrapper')
 
 <div class="content-wrapper">
+
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -92,7 +93,7 @@
                     <div class="col">
                         <div class="form-group">
                             {!! Form::label('orderType', 'Task Type') !!}
-                            {!! Form::select('order_type_id', [null => 'Select order type...', '1' => 'Pickup', '2' => 'Delivery'], old('order_type_id'), ['class' => 'form-control', 'id' => 'orderStatus', ]) !!}
+                            {!! Form::select('order_type_id', [null => 'Select task type...', '1' => 'Pickup', '2' => 'Delivery'], old('order_type_id'), ['class' => 'form-control', 'id' => 'orderStatus', ]) !!}
                         </div>
                     </div>
                     <div class="col">

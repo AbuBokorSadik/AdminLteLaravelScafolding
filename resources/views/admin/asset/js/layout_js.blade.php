@@ -77,8 +77,20 @@
     //Date picker
     $('.deadlineDate').daterangepicker({
       singleDatePicker: true,
-      showDropdowns: true,
-    })
+      // showDropdowns: true,
+      autoUpdateInput: false,
+      locale: {
+        cancelLabel: 'Clear'
+      }
+    });
+
+    $('.deadlineDate').on('apply.daterangepicker', function(ev, picker) {
+      $(this).val(picker.startDate.format('MM/DD/YYYY') );
+    });
+
+    $('.deadlineDate').on('cancel.daterangepicker', function(ev, picker) {
+      $(this).val('');
+    });
 
     const clearFilter = function() {
       $('input:text, select').each(function() {

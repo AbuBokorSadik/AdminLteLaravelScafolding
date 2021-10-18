@@ -1,12 +1,9 @@
 <div class="row">
     <div class="col-md">
-        <!-- general form elements -->
         <div class="card card-info">
             <div class="card-header">
                 <h3 class="card-title">Task Status Activities</h3>
             </div>
-            <!-- /.card-header -->
-            <!-- form start -->
             <div class="card-body">
                 <table class="table table-striped projects text-center">
                     <thead>
@@ -37,7 +34,7 @@
                         <td>
                             @php
                             $serialNo++;
-                            $imgpath = $taskStatusActivitity->createdBy->avater ? '/storage/' . $taskStatusActivitity->createdBy->avater : 'img/dummy-user.png';
+                            $imgpath = $taskStatusActivitity->createdBy->avatar ? '/storage/' . $taskStatusActivitity->createdBy->avatar : 'img/dummy-user.png';
                             @endphp
                             <div class="row">
                                 <div class="col-6 text-right">

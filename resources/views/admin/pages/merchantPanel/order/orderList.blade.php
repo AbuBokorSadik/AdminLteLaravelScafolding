@@ -209,7 +209,7 @@
                         @php
                         $serial = 1;
                         @endphp
-                        
+
                         @foreach($orders as $order)
                         <tr>
                             <td>
@@ -267,15 +267,15 @@
                             <td>
                                 {{ date('d M, Y', strtotime($order->created_at)) }}
                             </td>
-                            <td class="text-center" style="width: 200px;">
+                            <td style="width: 200px;">
                                 <div class="row">
-                                    <div class="col-6">
+                                    <div class="col-sm-6">
                                         <a class="btn btn-info btn-sm" href="{{ route('orders.show', $order->id) }}" style="width: 80px;">
                                             <i class="fas fa-eye"></i>
                                             Show
                                         </a>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-sm-6">
                                         @if($order->orderAssignment->orderStatus->id == App\Constant\OrderStatusTypeConst::PENDING)
                                         {!! Form::button('<i class="fas fa-trash fa-sm"> Cancel</i>', ['orderAssignmentId' => $order->orderAssignment->id, 'type'=>'submit', 'class' => 'btn btn-danger btn-sm cancelOrder', 'style' => 'width:80px;']) !!}
                                         @endif

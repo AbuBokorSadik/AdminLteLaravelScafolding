@@ -60,7 +60,7 @@
                                     <td>
                                         @php
                                         $serialNo++;
-                                        $imgpath = $product->image ? '/storage/' . $product->image : 'img/dummy-product.jpg';
+                                        $imgpath = $product->product->image ? '/storage/' . $product->product->image : 'img/dummy-product.jpg';
                                         @endphp
                                         <img src="{{ asset($imgpath) }}" alt="Image not found" style="height:50px; width:50px;">
                                     </td>
