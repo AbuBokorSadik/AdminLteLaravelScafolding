@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Http\Request;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable, SoftDeletes, HelperTrait;
+    use HasFactory, Notifiable, SoftDeletes, HelperTrait, HasRoles;
 
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];
 
