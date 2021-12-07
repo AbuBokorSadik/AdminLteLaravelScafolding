@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Events\ForgotPassword\ForgotPasswordEvent;
 use App\Jobs\SendOtpMailJob;
 use App\Mail\OtpMail;
 use App\Models\Otp;
@@ -34,7 +35,9 @@ trait OtpTrait
             'status' => 0,
         ]);
 
-        SendOtpMailJob::dispatch($user, $otp)->delay(now()->addSeconds(15));
+        // SendOtpMailJob::dispatch($user, $otp)->delay(now()->addSeconds(15));
+
+        ForgotPasswordEvent::dispatch($user, $otp);
         
     }
 }
